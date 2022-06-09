@@ -1,0 +1,207 @@
+body,
+html {
+  margin: 0px;
+  padding: 0px;
+}
+:root {
+  --grayColor: rgba(243, 244, 246);
+  --white: #fff;
+  --primary: rgba(0, 159, 127);
+  --primaryHover: rgba(1, 147, 118);
+}
+
+@font-face {
+  font-family: "PT-Bold";
+  src: url("../../asset/font/PTSerif-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "PT-Bold-Italic";
+  src: url("../../asset/font/PTSerif-BoldItalic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "PT-Italic";
+  src: url("../../asset/font/PTSerif-Italic.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "PT-Regular";
+  src: url("../../asset/font/PTSerif-Regular.ttf") format("truetype");
+}
+
+a {
+  text-decoration: none !important;
+}
+.font_family_bold {
+  font-family: "PT-Bold";
+}
+.font_family_bold_italic {
+  font-family: "PT-Bold-Italic";
+}
+.font_family_italic {
+  font-family: "PT-Italic";
+}
+.font_family_Regular {
+  font-family: "PT-Regular";
+}
+.font11 {
+  font-size: 11px;
+}
+.font12 {
+  font-size: 12px;
+}
+.font13 {
+  font-size: 13px;
+}
+.font14 {
+  font-size: 14px !important;
+}
+.font15 {
+  font-size: 15px;
+}
+.font16 {
+  font-size: 16px;
+}
+.font18 {
+  font-size: 18px;
+}
+.font20 {
+  font-size: 20px;
+}
+.font25 {
+  font-size: 25px;
+}
+.icon50x50 {
+  width: 50px;
+  height: 50px;
+}
+.icon40x40 {
+  width: 40px;
+  height: 40px;
+}
+.icon30x30 {
+  width: 30px;
+  height: 30px;
+}
+.icon25x25 {
+  width: 25px;
+  height: 25px;
+}
+.icon20x20 {
+  width: 20px;
+  height: 20px;
+}
+.icon15x15 {
+  width: 15px;
+  height: 15px;
+}
+.border_gray_1px {
+  border: 1px solid var(--grayColor);
+}
+.outline_gray_1px {
+  outline: 1px solid var(--grayColor);
+}
+.border_radius_3 {
+  border-radius: 3px;
+}
+.border_radius_5 {
+  border-radius: 5px;
+}
+.border_radius_10 {
+  border-radius: 10px;
+}
+.bg_white {
+  background-color: #fff;
+}
+.bg_black {
+  background-color: #000;
+}
+.color_white {
+  color: #fff !important;
+}
+.color_888 {
+  color: #888888;
+}
+.color_primary {
+  color: var(--primary);
+}
+.color_primary_hover {
+  color: var(--primaryHover);
+}
+.color_gray {
+  color: var(--grayColor);
+}
+.bg_primary {
+  background-color: var(--primary);
+}
+.bg_primary_hover {
+  background-color: var(--primaryHover);
+}
+.w100_per {
+  width: 100%;
+}
+.h100_per {
+  height: 100%;
+}
+.h100_screen {
+  height: 100vh;
+}
+.top0 {
+  top: 0px;
+}
+.left0 {
+  left: 0px;
+}
+.right0 {
+  right: 0px;
+}
+.cursor_pointer {
+  cursor: pointer;
+}
+.m_10px {
+  margin: 10px;
+}
+.ml_20px {
+  margin-left: 20px;
+}
+.ml_10px {
+  margin-left: 10px;
+}
+.ml_5px {
+  margin-left: 5px;
+}
+.mr_20px {
+  margin-right: 20px;
+}
+.mr_10px {
+  margin-right: 10px;
+}
+.mr_5px {
+  margin-right: 5px;
+}
+.p_5px {
+  padding: 5px;
+}
+.box_shadow_dropdown {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.menu_item,
+.box_profile_item a {
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -ms-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+}
+.box_profile {
+  transition: 0.25s;
+  opacity: 0;
+  background-color: var(--white);
+  margin-top: 5px;
+  position: absolute;
+  pointer-events: none;
+  width: 180px;
+}
+.show.box_profile {
+  opacity: 1;
+  pointer-events: all;
+}
