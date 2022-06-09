@@ -8,6 +8,7 @@ html {
   --white: #fff;
   --primary: rgba(0, 159, 127);
   --primaryHover: rgba(1, 147, 118);
+  --color888: #888;
 }
 
 @font-face {
@@ -97,6 +98,9 @@ a {
 .border_gray_1px {
   border: 1px solid var(--grayColor);
 }
+.border_dashed_gray_2px {
+  border: 2px dashed var(--grayColor);
+}
 .outline_gray_1px {
   outline: 1px solid var(--grayColor);
 }
@@ -121,6 +125,9 @@ a {
 .color_888 {
   color: #888888;
 }
+.color_red {
+  color: red;
+}
 .color_primary {
   color: var(--primary);
 }
@@ -131,13 +138,19 @@ a {
   color: var(--grayColor);
 }
 .bg_primary {
-  background-color: var(--primary);
+  background-color: var(--primary) !important;
 }
 .bg_primary_hover {
   background-color: var(--primaryHover);
 }
 .w100_per {
   width: 100%;
+}
+.w50_per {
+  width: 50%;
+}
+.h40_px {
+  height: 40px;
 }
 .h100_per {
   height: 100%;
@@ -184,6 +197,20 @@ a {
 .box_shadow_dropdown {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+.box_shadow_card {
+  box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em,
+    rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+}
+.divider_vertical_solid {
+  width: 100%;
+  border-top: 1px solid #888;
+  height: 1px;
+}
+.divider_vertical_dashed {
+  width: 100%;
+  border-top: 1px dashed #888;
+  height: 1px;
+}
 .menu_item,
 .box_profile_item a {
   -webkit-transition: 0.5s ease-in-out;
@@ -204,4 +231,30 @@ a {
 .show.box_profile {
   opacity: 1;
   pointer-events: all;
+}
+input[type="text"] {
+  padding: 0px 15px;
+  border: 1px solid var(--color888);
+  border-radius: 3px;
+  font-family: "PT-Regular";
+  transition: 0.25s ease-in-out;
+  color: var(--color888);
+}
+input[type="text"]:focus {
+  outline: 0px;
+  box-shadow: 0px !important;
+  border: 1px solid var(--primaryHover);
+}
+.btn:focus {
+  box-shadow: none !important;
+}
+.row > * {
+  padding: 0px !important;
+}
+.col {
+  padding: 0px !important;
+  margin: 0px;
+}
+.choose_image_large {
+  border: 1px dashed #888;
 }

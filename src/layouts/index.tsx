@@ -8,7 +8,8 @@ const ContainerPage = styled.div`
   margin-top: 80px;
   margin-left: 300px;
   background: rgba(243, 244, 246);
-  padding: 20px
+  padding: 20px;
+  min-height: calc(100vh - 80px)
 `;
 function Layout() {
   return (
