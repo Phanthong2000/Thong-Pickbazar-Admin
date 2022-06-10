@@ -11,22 +11,26 @@ html {
   --color888: #888;
 }
 
+.enable_backdrop {
+  max-height: 100vh;
+  overflow: hidden;
+}
 @font-face {
   font-family: "PT-Bold";
-  src: url("../../asset/font/PTSerif-Bold.ttf") format("truetype");
+  src: url("../../assets/font/PTSerif-Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "PT-Bold-Italic";
-  src: url("../../asset/font/PTSerif-BoldItalic.ttf") format("truetype");
+  src: url("../../assets/font/PTSerif-BoldItalic.ttf") format("truetype");
 }
 @font-face {
   font-family: "PT-Italic";
-  src: url("../../asset/font/PTSerif-Italic.ttf") format("truetype");
+  src: url("../../assets/font/PTSerif-Italic.ttf") format("truetype");
   font-display: swap;
 }
 @font-face {
   font-family: "PT-Regular";
-  src: url("../../asset/font/PTSerif-Regular.ttf") format("truetype");
+  src: url("../../assets/font/PTSerif-Regular.ttf") format("truetype");
 }
 
 a {
@@ -98,6 +102,9 @@ a {
 .border_gray_1px {
   border: 1px solid var(--grayColor);
 }
+.border_top_gray_1px {
+  border-top: 1px solid #ddd;
+}
 .border_dashed_gray_2px {
   border: 2px dashed var(--grayColor);
 }
@@ -129,7 +136,7 @@ a {
   color: #888888;
 }
 .color_red {
-  color: red;
+  color: #f55858;
 }
 .color_primary {
   color: var(--primary);
@@ -145,6 +152,9 @@ a {
 }
 .bg_primary_hover {
   background-color: var(--primaryHover);
+}
+.bg_red {
+  background-color: rgba(254, 226, 226);
 }
 .w100_per {
   width: 100%;

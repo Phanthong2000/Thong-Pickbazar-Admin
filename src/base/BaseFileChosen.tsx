@@ -10,7 +10,8 @@ type Props = {
 const Image = styled.img`
     width: 100px;
     height: 100px;
-    border-radius: 5px
+    border-radius: 5px;
+    object-fit: contain
 `
 function BaseFileChosen({ image, close, index }: Props) {
     return (

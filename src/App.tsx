@@ -5,6 +5,7 @@ import { themeSelector } from "./redux/slices/themeSlice";
 import Router from "./routes";
 import "./theme/css/style.css";
 import "bootstrap/dist/css/bootstrap.css";
+import Redux from "./utils/Redux";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,9 +17,9 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const theme = useSelector(themeSelector);
   return (
     <QueryClientProvider client={queryClient}>
+      <Redux />
       <Router />
     </QueryClientProvider>
   );

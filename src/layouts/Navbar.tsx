@@ -11,7 +11,7 @@ const Container = styled.div`
   position: fixed;
   border-bottom: 1px solid #ddd;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-  z-index: 1000;
+  z-index: 100;
   top: 0px;
   background: #fff;
   width: 100%;
