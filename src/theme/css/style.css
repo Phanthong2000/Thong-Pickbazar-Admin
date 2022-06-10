@@ -113,6 +113,9 @@ a {
 .border_radius_10 {
   border-radius: 10px;
 }
+.border_radius_20 {
+  border-radius: 20px;
+}
 .bg_white {
   background-color: #fff;
 }
