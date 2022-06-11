@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import themeSlice from "../redux/slices/themeSlice";
 import { createGroup } from "../apis/group";
 import { useNavigate } from "react-router-dom";
+import groupSlice from "../redux/slices/groupSlice";
 
 const schema = yup.object({
   name_vi: yup.string().required("Name Vietnamese is required"),
@@ -103,7 +104,7 @@ function CreateGroup() {
   const saveGroup = async (group: any) => {
     try {
       const data: any[] = [];
-      const galleryUrl = await saveImage("groups", gallery);
+      const galleryUrl = await saveImage("groups", gallery[0]);
       sliders.forEach(async (file) => {
         const url = await saveImage("groups", file);
         data.push(url);
@@ -118,17 +119,19 @@ function CreateGroup() {
           };
           const result = await createGroup({}, body, {});
           if (result) {
-            //add group to table
+            dispatch(groupSlice.actions.addGroup(result));
             dispatch(
               themeSlice.actions.hideBackdrop({
                 isShow: false,
                 content: "",
               })
             );
-            dispatch(themeSlice.actions.showToast({
-              content: "Successfully create group",
-              type: "success"
-            }))
+            dispatch(
+              themeSlice.actions.showToast({
+                content: "Successfully create group",
+                type: "success",
+              })
+            );
             navigate("/groups");
           }
         }

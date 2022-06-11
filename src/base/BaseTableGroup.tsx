@@ -6,7 +6,7 @@ import { GroupType } from "../interfaces";
 
 type Props = {
   data: Array<GroupType | any>;
-  handleDelete: (position: number) => void;
+  handleDelete: (group: GroupType) => void;
 };
 type Type =
   | "start"
@@ -17,6 +17,9 @@ type Type =
   | "justify"
   | "match-parent";
 const TableCell = styled.td`
+  padding: 10px;
+`;
+const TableCellHead = styled.th`
   padding: 10px;
 `;
 function BaseTableGroup({ data, handleDelete }: Props) {
@@ -45,19 +48,21 @@ function BaseTableGroup({ data, handleDelete }: Props) {
   ];
   return (
     <table className="mt-4 w100_per bg_white box_shadow_card border_radius_3">
-      <thead>
-        {header.map((item, index) => (
-          <TableCell
-            key={index}
-            className="font_family_regular font16"
-            style={{
-              width: item.width,
-              textAlign: item.textAlign,
-            }}
-          >
-            {item.name}
-          </TableCell>
-        ))}
+      <thead className="bg_ddd">
+        <tr>
+          {header.map((item, index) => (
+            <TableCellHead
+              key={index}
+              className="font_family_regular font16"
+              style={{
+                width: item.width,
+                textAlign: item.textAlign,
+              }}
+            >
+              {item.name}
+            </TableCellHead>
+          ))}
+        </tr>
       </thead>
       <tbody>
         {data.map((item, index) => (
@@ -93,7 +98,7 @@ function BaseTableGroup({ data, handleDelete }: Props) {
               }}
             >
               <button
-                onClick={() => handleDelete(index)}
+                onClick={() => handleDelete(item)}
                 className="btn p-0 mr_5px"
               >
                 <Icon className="icon20x20 color_red" icon="bi:trash3" />

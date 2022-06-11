@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getAllGroups } from '../../apis/group';
+import { GroupType } from '../../interfaces';
 
 const defaultState = {
     allGroups: [],
@@ -9,6 +10,16 @@ const groupSlice = createSlice({
     name: 'group',
     initialState: defaultState,
     reducers: {
+        setAllGroup: (state, action) => {
+            state.allGroups = action.payload;
+        },
+        addGroup: (state, action) => {
+            state.allGroups.push(action.payload as never)
+        },
+        deleteGroup: (state, action) => {
+            const newAllGroups = state.allGroups.filter((group: GroupType) => group.id !== action.payload.id)
+            state.allGroups = newAllGroups;
+        }
     },
     extraReducers: (builder) => {
         builder

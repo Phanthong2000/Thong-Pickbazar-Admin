@@ -9,6 +9,7 @@ html {
   --primary: rgba(0, 159, 127);
   --primaryHover: rgba(1, 147, 118);
   --color888: #888;
+  --colorDDD: #ddd
 }
 
 .enable_backdrop {
@@ -128,6 +129,15 @@ a {
 }
 .bg_black {
   background-color: #000;
+}
+.bg_gray {
+  background-color: var(--grayColor);
+}
+.bg_888 {
+  background-color: var(--color888);
+}
+.bg_ddd{
+  background-color: var(--colorDDD);
 }
 .color_white {
   color: #fff !important;

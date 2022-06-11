@@ -13,6 +13,7 @@ export type BannerGroupType = {
 }
 
 export type GroupType = {
+    id: string;
     name: string;
     icon: string;
     layout: string;

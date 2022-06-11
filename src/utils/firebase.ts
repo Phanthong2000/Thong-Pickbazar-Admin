@@ -3,7 +3,7 @@ import { storage } from "../firebase.config";
 
 export const saveImage = (refImage: string, image: any) => {
     const promise = new Promise((resolve: any, reject: any) => {
-        const storageRef = ref(storage, `${refImage}/${new Date().getTime()}/${image.name}`);
+        const storageRef = ref(storage, `${refImage}/${new Date().getTime()}.${image.name}`);
         const uploadTask = uploadBytesResumable(storageRef, image);
         uploadTask.on('state_changed',
             (snapshot) => {

@@ -35,3 +35,17 @@ export const createGroup = async (header: {}, body: {}, param: {}) => {
         console.log(error)
     }
 }
+
+export const deleteGroup = async (header: {}, body: {}, param: {}, id: string) => {
+    try {
+        const result = await axios.delete(`${hostname}/delete/${id}`, {
+            headers: {
+                ...header
+            }
+        });
+        if(result.status === 200) return result.data.group;
+        else return null;
+    } catch (error) {
+        console.log(error)
+    }
+}
