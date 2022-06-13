@@ -1,13 +1,10 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
 import styled from "styled-components";
-import themeSlice, { toastSelector } from "../redux/slices/themeSlice";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import showToast from "../utils/toast";
 import useShowToast from "../hooks/useShowToast";
 import BaseBackdrop from "../base/BaseBackdrop";
 import BaseLoading from "../base/BaseLoading";

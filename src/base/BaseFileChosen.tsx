@@ -5,7 +5,8 @@ import styled from 'styled-components';
 type Props = {
     image: any;
     close: (index: number) => void;
-    index: number
+    index: number,
+    file: boolean
 }
 const Image = styled.img`
     width: 100px;
@@ -13,10 +14,14 @@ const Image = styled.img`
     border-radius: 5px;
     object-fit: contain
 `
-function BaseFileChosen({ image, close, index }: Props) {
+function BaseFileChosen({ image, close, index, file }: Props) {
     return (
         <div className='position-relative mr_5px'>
-            <Image src={URL.createObjectURL(image)} alt="slider" />
+            {
+                file ? <Image src={URL.createObjectURL(image)} alt="" />
+                    :
+                    <Image src={image} alt="" />
+            }
             <div onClick={() => close(index)} className='cursor_pointer position-absolute top0 right0 mr_5px'>
                 <Icon className='color_red icon20x20 bg_white border_radius_20' icon="ant-design:close-circle-filled" />
             </div>

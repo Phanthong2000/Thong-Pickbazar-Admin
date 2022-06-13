@@ -36,7 +36,6 @@ function CreateGroup() {
     resolver: yupResolver(schema),
   });
   const onSubmit = (data: any) => {
-    console.log(data);
     if (sliders.length === 0) setErrorImage("Must choose promotional sliders");
     else if (gallery.length === 0) setErrorImage("Must choose gallery banner");
     else {
@@ -217,6 +216,7 @@ function CreateGroup() {
             <div className="d-flex flex-wrap mt-2">
               {sliders.map((item: any, index: any) => (
                 <BaseFileChosen
+                  file={true}
                   close={handleDeleteSlider}
                   index={index}
                   key={index}
@@ -300,6 +300,7 @@ function CreateGroup() {
             <div className="d-flex flex-wrap mt-2">
               {gallery.map((item: any, index: any) => (
                 <BaseFileChosen
+                  file={true}
                   close={handleDeleteBanner}
                   index={index}
                   key={index}
@@ -312,9 +313,8 @@ function CreateGroup() {
         <div className="row mt-3">
           <div className="col-12 col-lg-4"></div>
           <div
-            className={`col-12 col-lg-8 border_radius_5 py-2 px-4 color_red ${
-              errorImage.length > 0 ? `bg_red` : `d-none`
-            }`}
+            className={`col-12 col-lg-8 border_radius_5 py-2 px-4 color_red ${errorImage.length > 0 ? `bg_red` : `d-none`
+              }`}
           >
             {errorImage}
           </div>

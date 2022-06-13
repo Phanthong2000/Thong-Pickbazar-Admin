@@ -1,9 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Avatar from "../components/Avatar";
 import BoxProfile from "../components/BoxProfile";
 import Logo from "../components/navbar/Logo";
-import useClickOutSide from "../hooks/useClickOutside";
 import { primaryColor, primaryHoverColor } from "../theme";
 
 const Container = styled.div`

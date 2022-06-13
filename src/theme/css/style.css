@@ -9,7 +9,7 @@ html {
   --primary: rgba(0, 159, 127);
   --primaryHover: rgba(1, 147, 118);
   --color888: #888;
-  --colorDDD: #ddd
+  --colorDDD: #ddd;
 }
 
 .enable_backdrop {
@@ -53,7 +53,7 @@ a {
   font-size: 11px;
 }
 .font12 {
-  font-size: 12px;
+  font-size: 12px !important;
 }
 .font13 {
   font-size: 13px;
@@ -136,7 +136,7 @@ a {
 .bg_888 {
   background-color: var(--color888);
 }
-.bg_ddd{
+.bg_ddd {
   background-color: var(--colorDDD);
 }
 .color_white {
@@ -264,6 +264,20 @@ input[type="text"] {
   color: var(--color888);
 }
 input[type="text"]:focus {
+  outline: 0px;
+  box-shadow: 0px !important;
+  border: 1px solid var(--primaryHover);
+}
+textarea {
+  padding: 5px 15px 0px;
+  border: 1px solid var(--color888);
+  border-radius: 3px;
+  font-family: "PT-Regular";
+  transition: 0.25s ease-in-out;
+  color: var(--color888);
+  resize: none !important;
+}
+textarea:focus {
   outline: 0px;
   box-shadow: 0px !important;
   border: 1px solid var(--primaryHover);

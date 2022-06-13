@@ -4,7 +4,9 @@ import { useSelector } from "react-redux";
 import { themeSelector } from "./redux/slices/themeSlice";
 import Router from "./routes";
 import "./theme/css/style.css";
-import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/js/bootstrap.min.js';
+import "bootstrap/js/src/collapse.js";
 import Redux from "./utils/Redux";
 
 const queryClient = new QueryClient({

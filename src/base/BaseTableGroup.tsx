@@ -7,6 +7,7 @@ import { GroupType } from "../interfaces";
 type Props = {
   data: Array<GroupType | any>;
   handleDelete: (group: GroupType) => void;
+  handleUpdate: (name: string) => void;
 };
 type Type =
   | "start"
@@ -22,7 +23,7 @@ const TableCell = styled.td`
 const TableCellHead = styled.th`
   padding: 10px;
 `;
-function BaseTableGroup({ data, handleDelete }: Props) {
+function BaseTableGroup({ data, handleDelete, handleUpdate }: Props) {
   const textAlign = (value: Type) => value;
   const header = [
     {
@@ -103,7 +104,7 @@ function BaseTableGroup({ data, handleDelete }: Props) {
               >
                 <Icon className="icon20x20 color_red" icon="bi:trash3" />
               </button>
-              <button className="btn p-0 m-0">
+              <button onClick={() => handleUpdate(item.name_en)} className="btn p-0 m-0">
                 <Icon className="icon20x20 color_888" icon="bx:edit" />
               </button>
             </TableCell>

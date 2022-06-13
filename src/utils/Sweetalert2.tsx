@@ -2,7 +2,6 @@ import { Icon } from "@iconify/react";
 import Swal from "sweetalert2";
 
 type Icon = "success" | "error" | "warning" | "info" | "question";
-type Boolean = true | false;
 const alert2 = (
   title: string,
   icon: Icon,

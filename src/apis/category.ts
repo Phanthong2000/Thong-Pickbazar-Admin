@@ -4,9 +4,9 @@ import path from "./path";
 const version = {
   v1: "/api/v1",
 };
-const hostname = `${path}${version.v1}/groups`;
+const hostname = `${path}${version.v1}/categories`;
 
-export const getAllGroups = async (header: {}, body: {}, param: {}) => {
+export const getAllCategories = async (header: {}, body: {}, param: {}) => {
   try {
     const result = await axios.get(`${hostname}/list`, {
       headers: {
@@ -19,7 +19,7 @@ export const getAllGroups = async (header: {}, body: {}, param: {}) => {
   }
 };
 
-export const createGroup = async (header: {}, body: {}, param: {}) => {
+export const createCategory = async (header: {}, body: {}, param: {}) => {
   try {
     const result = await axios.post(
       `${hostname}/create`,
@@ -33,52 +33,53 @@ export const createGroup = async (header: {}, body: {}, param: {}) => {
         },
       }
     );
-    if (result.status === 200) return result.data.group;
+    if (result.status === 200) return result.data.category;
     else return null;
   } catch (error) {
     console.log(error);
   }
 };
-
-export const deleteGroup = async (
+export const deleteCategory = async (
   header: {},
   body: {},
   param: {},
   id: string
 ) => {
   try {
+    console.log(id);
     const result = await axios.delete(`${hostname}/delete/${id}`, {
       headers: {
         ...header,
       },
     });
-    if (result.status === 200) return result.data.group;
+    if (result.status === 200) return result.data.category;
     else return null;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getGroupByName = async (
+export const getCategoryById = async (
   header: {},
   body: {},
   param: {},
-  name: string
+  id: string
 ) => {
   try {
-    const result = await axios.get(`${hostname}/detail/name/${name}`, {
+    const result = await axios.get(`${hostname}/detail/${id}`, {
       headers: {
         ...header,
       },
     });
-    if (result.status === 200) return result.data.group;
+    if (result.status === 200) return result.data.category;
     else return null;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const updateGroup = async (header: {}, body: {}, param: {}) => {
+export const updateCategory = async (header: {}, body: {}, param: {}) => {
+  console.log(body);
   try {
     const result = await axios.put(
       `${hostname}/edit`,
@@ -87,12 +88,11 @@ export const updateGroup = async (header: {}, body: {}, param: {}) => {
       },
       {
         headers: {
-          "Content-Type": "application/json",
           ...header,
         },
       }
     );
-    if (result.status === 200) return result.data.group;
+    if (result.status === 200) return result.data.category;
     else return null;
   } catch (error) {
     console.log(error);

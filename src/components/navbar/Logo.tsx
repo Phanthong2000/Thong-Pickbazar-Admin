@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { primaryColor, primaryHoverColor } from "../../theme";
+import { primaryColor } from "../../theme";
 
 const Name = styled.a`
   color: ${primaryColor};

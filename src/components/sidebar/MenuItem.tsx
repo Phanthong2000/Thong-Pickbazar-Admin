@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import { MenuType } from "../../interfaces";
-import { primaryColor, primaryHoverColor } from "../../theme";
+import { primaryHoverColor } from "../../theme";
 import { Link, useLocation } from "react-router-dom";
 
 type Props = {
