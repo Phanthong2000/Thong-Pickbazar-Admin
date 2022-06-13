@@ -33,3 +33,22 @@ export type CategoryType = {
   parentId: string;
   groupId: string;
 };
+export type TagType = {
+  id: string;
+  name: string;
+  icon: string;
+  group: any;
+  detail: string;
+  slug: string;
+}
+
+export type AttributeValueType = {
+  value: string,
+  meta: string
+}
+export type AttributeType = {
+  id: string;
+  name_en: string;
+  name_vi: string;
+  values: Array<AttributeValueType>
+}

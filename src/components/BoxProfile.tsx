@@ -27,8 +27,9 @@ function BoxProfile({ close, show }: Props) {
   return (
     <Container
       ref={profileRef}
-      className={`box_shadow_dropdown border_radius_5 ${show ? "show" : ""
-        } box_profile`}
+      className={`box_shadow_dropdown border_radius_5 ${
+        show ? "show" : ""
+      } box_profile`}
     >
       <div className="bg_primary py-2 px-3 border_radius_5">
         <div className="color_white font14 font_family_bold_italic">
@@ -52,4 +53,4 @@ function BoxProfile({ close, show }: Props) {
   );
 }
 
-export default BoxProfile;
+export default React.memo(BoxProfile);

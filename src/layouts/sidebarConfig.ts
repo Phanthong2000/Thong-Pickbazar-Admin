@@ -25,10 +25,20 @@ const sidebarConfig = [
     path: "/groups",
   },
   {
+    icon: "fluent:text-bullet-list-square-settings-20-regular",
+    name: "Attributes",
+    path: "/attributes"
+  },
+  {
     icon: "bx:category-alt",
     name: "Categories",
     path: "/categories",
   },
+  {
+    icon: "fluent:tag-16-regular",
+    name: "Tags",
+    path: "/tags"
+  }
 ];
 
 export default sidebarConfig;

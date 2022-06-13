@@ -19,4 +19,4 @@ function Avatar({ url, shape = "circle", size, cursor, click }: Props) {
   return <Container className="border_gray_1px" src={url} onClick={click} />;
 }
 
-export default Avatar;
+export default React.memo(Avatar);

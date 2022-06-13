@@ -1,13 +1,19 @@
 import React from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import Layout from "./layouts";
+import Attribute from "./pages/Attribute";
 import Category from "./pages/Category";
+import CreateAttribute from "./pages/CreateAttribute";
 import CreateCategory from "./pages/CreateCategory";
 import CreateGroup from "./pages/CreateGroup";
+import CreateTag from "./pages/CreateTag";
 import Dashboard from "./pages/Dashboard";
 import Group from "./pages/Group";
+import Tags from "./pages/Tags";
+import UpdateAttribute from "./pages/UpdateAttribute";
 import UpdateCategory from "./pages/UpdateCategory";
 import UpdateGroup from "./pages/UpdateGroup";
+import UpdateTag from "./pages/UpdateTag";
 
 function Router() {
   return useRoutes([
@@ -42,6 +48,30 @@ function Router() {
         {
           path: "/categories/:id",
           element: <UpdateCategory />,
+        },
+        {
+          path: "/tags/",
+          element: <Tags />,
+        },
+        {
+          path: "/tags/create",
+          element: <CreateTag />,
+        },
+        {
+          path: "/tags/:slug",
+          element: <UpdateTag />,
+        },
+        {
+          path: "/attributes",
+          element: <Attribute />,
+        },
+        {
+          path: "/attributes/create",
+          element: <CreateAttribute />,
+        },
+        {
+          path: "/attributes/:name",
+          element: <UpdateAttribute />,
         },
         {
           path: "",
