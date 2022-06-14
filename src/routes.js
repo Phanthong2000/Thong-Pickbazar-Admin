@@ -6,9 +6,11 @@ import Category from "./pages/Category";
 import CreateAttribute from "./pages/CreateAttribute";
 import CreateCategory from "./pages/CreateCategory";
 import CreateGroup from "./pages/CreateGroup";
+import CreateProduct from "./pages/CreateProduct";
 import CreateTag from "./pages/CreateTag";
 import Dashboard from "./pages/Dashboard";
 import Group from "./pages/Group";
+import Product from "./pages/Product";
 import Tags from "./pages/Tags";
 import UpdateAttribute from "./pages/UpdateAttribute";
 import UpdateCategory from "./pages/UpdateCategory";
@@ -72,6 +74,14 @@ function Router() {
         {
           path: "/attributes/:name",
           element: <UpdateAttribute />,
+        },
+        {
+          path: "/products",
+          element: <Product />,
+        },
+        {
+          path: "/products/create",
+          element: <CreateProduct />,
         },
         {
           path: "",

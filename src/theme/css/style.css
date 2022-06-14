@@ -149,7 +149,7 @@ a {
   color: #f55858;
 }
 .color_primary {
-  color: var(--primary);
+  color: var(--primary) !important;
 }
 .color_primary_hover {
   color: var(--primaryHover);
@@ -235,7 +235,9 @@ a {
   height: 1px;
 }
 .menu_item,
-.box_profile_item a {
+.box_profile_item a,
+.box_filter_product,
+.icon_down_product {
   -webkit-transition: 0.5s ease-in-out;
   -moz-transition: 0.5s ease-in-out;
   -ms-transition: 0.5s ease-in-out;
@@ -294,4 +296,18 @@ textarea:focus {
 }
 .choose_image_large {
   border: 1px dashed #888;
+}
+.box_filter_product {
+  max-height: 0px;
+  opacity: 0;
+  pointer-events: none;
+}
+.show.box_filter_product {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 40px;
+  pointer-events: all;
+}
+.show.icon_down_product {
+  transform: rotate(180deg);
 }

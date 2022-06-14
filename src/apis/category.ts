@@ -98,3 +98,17 @@ export const updateCategory = async (header: {}, body: {}, param: {}) => {
     console.log(error);
   }
 };
+
+export const getAllCategoriesByGroup = async (header: {}, body: {}, param: {}, groupId: string) => {
+  try {
+    const result = await axios.get(`${hostname}/detail/groupId/${groupId}`, {
+      headers: {
+        ...header
+      }
+    });
+    if (result.status === 200) return result.data.categories;
+    else return null;
+  } catch (error) {
+    console.log(error)
+  }
+}

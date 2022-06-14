@@ -3,12 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { getAttributeByName } from "../apis/attribute";
+import { getAttributeByName, updateAttribute } from "../apis/attribute";
 import { AttributeType } from "../interfaces";
 import AttributeValue from "../components/attribute/AttributeValue";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import themeSlice from "../redux/slices/themeSlice";
+import attributeSlice from "../redux/slices/attributeSlice";
 
 const schema = yup.object({
   name_vi: yup.string().required("Name Vietnamese is required"),
@@ -16,7 +17,7 @@ const schema = yup.object({
 });
 function UpdateAttribute() {
   const { name } = useParams();
-  const [attribute, setAttribute] = useState<AttributeType>();
+  const [attribute, setAttribute] = useState<any>();
   const [attributesValue, setAttributesValue] = useState<any[]>([]);
   const [errorImage, setErrorImage] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
@@ -58,13 +59,32 @@ function UpdateAttribute() {
         })
       );
       setErrorImage("");
-      const attribute = {
+      const newAttribute = {
+        id: attribute.id,
         name_en: data.name_en,
         name_vi: data.name_vi,
         values: attributesValue,
       };
-      //   saveAttribute(attribute);
-      console.log(attribute);
+      saveAttribute(newAttribute);
+    }
+  };
+  const saveAttribute = async (attribute: any) => {
+    const result = await updateAttribute({}, attribute, {});
+    if (result) {
+      dispatch(attributeSlice.actions.updateAttribute(result));
+      dispatch(
+        themeSlice.actions.hideBackdrop({
+          isShow: false,
+          content: "",
+        })
+      );
+      dispatch(
+        themeSlice.actions.showToast({
+          content: "Successfully update Attribute",
+          type: "success",
+        })
+      );
+      navigate("/attributes");
     }
   };
   const handleAddValue = () => {

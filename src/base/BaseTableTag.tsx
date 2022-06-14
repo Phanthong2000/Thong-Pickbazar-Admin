@@ -41,7 +41,7 @@ function BaseTableTag({ data, handleDelete, handleUpdate }: Props) {
       textAlign: textAlign("center"),
     },
     {
-      name: "Slug",
+      name: "Group",
       width: "15%",
       textAlign: textAlign("center"),
     },
