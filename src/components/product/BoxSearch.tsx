@@ -94,4 +94,4 @@ function BoxSearch() {
   );
 }
 
-export default BoxSearch;
+export default React.memo(BoxSearch);

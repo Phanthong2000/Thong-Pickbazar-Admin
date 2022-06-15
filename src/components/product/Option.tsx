@@ -198,4 +198,4 @@ function Option({
   );
 }
 
-export default Option;
+export default React.memo(Option);

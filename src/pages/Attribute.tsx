@@ -74,4 +74,4 @@ function Attribute() {
   );
 }
 
-export default Attribute;
+export default React.memo(Attribute);

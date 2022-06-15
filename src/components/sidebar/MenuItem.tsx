@@ -26,4 +26,4 @@ function MenuItem({ menu }: Props) {
   );
 }
 
-export default MenuItem;
+export default React.memo(MenuItem);

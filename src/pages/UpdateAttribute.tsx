@@ -224,4 +224,4 @@ function UpdateAttribute() {
     </form>
   );
 }
-export default UpdateAttribute;
+export default React.memo(UpdateAttribute);

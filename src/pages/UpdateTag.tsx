@@ -187,4 +187,4 @@ function UpdateTag() {
   );
 }
 
-export default UpdateTag;
+export default React.memo(UpdateTag);

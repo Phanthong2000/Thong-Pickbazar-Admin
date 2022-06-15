@@ -4,17 +4,23 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Icon } from "@iconify/react";
 import Select from "react-select";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { allGroupsSelector } from "../redux/slices/groupSlice";
 import { getAllCategoriesByGroup } from "../apis/category";
 import { allTagsSelector } from "../redux/slices/tagSlice";
 import Option from "../components/product/Option";
 import { allAttributesSelector } from "../redux/slices/attributeSlice";
+import BaseFileChosen from "../base/BaseFileChosen";
+import { saveImage } from "../utils/firebase";
+import { AppDispatch } from "../redux/store";
+import { createProduct } from "../apis/product";
+import themeSlice from "../redux/slices/themeSlice";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object({
   name_vi: yup.string().required("Name Vietnamese is required"),
   name_en: yup.string().required("Name English is required"),
-  icon: yup.string().required("Icon is required"),
+  unit: yup.string().required("Unit is required"),
   group: yup.string().required("Group is required"),
   category: yup.string().required("Category is required"),
   tag: yup.string().required("Tag is required"),
@@ -32,6 +38,8 @@ const options4 = [
 ];
 
 function CreateProduct() {
+  const chooseFeatureRef = useRef<HTMLInputElement>(null);
+  const chooseGalleryRef = useRef<HTMLInputElement>(null);
   const groups = useSelector(allGroupsSelector);
   const allTags = useSelector(allTagsSelector);
   const allAttributes = useSelector(allAttributesSelector);
@@ -41,7 +49,15 @@ function CreateProduct() {
   const [categories, setCategories] = useState<any[]>([]);
   const [status, setStatus] = useState<string>("public");
   const [tags, setTags] = useState<any[]>([]);
-  const [type, setType] = useState<string | any>("variable");
+  const [type, setType] = useState<string | any>("simple");
+  const [feature, setFeature] = useState<any[]>([]);
+  const [gallery, setGallery] = useState<any[]>([]);
+  const [price, setPrice] = useState<string | any>();
+  const [salePrice, setSalePrice] = useState<string | any>();
+  const [quantity, setQuantity] = useState<string | any>();
+  const [width, setWidth] = useState<string | any>("");
+  const [height, setHeight] = useState<string | any>("");
+  const [length, setLength] = useState<string | any>("");
   const [attributes, setAttributes] = useState<any[]>([
     {
       attributeId: "",
@@ -57,8 +73,10 @@ function CreateProduct() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const dispatch = useDispatch<AppDispatch>();
   const group = watch("group");
   const [errorImage, setErrorImage] = useState<string>("");
+  const navigate = useNavigate();
   useEffect(() => {
     if (groups) {
       const data: any[] = [];
@@ -84,7 +102,99 @@ function CreateProduct() {
     }
   }, [allTags]);
   const onSubmit = (data: any) => {
-    console.log(data);
+    if (feature.length === 0) setErrorImage("Must choose Featured Image");
+    else if (gallery.length === 0) setErrorImage("Must choose Gallery");
+    else if (type === "simple" && (!price || !salePrice || !quantity))
+      setErrorImage("Must type Simple product Information");
+    else {
+      let flag = true;
+      attributes.forEach((attribute) => {
+        if (attribute.attributeId === "" || attribute.values.length === 0)
+          flag = false;
+      });
+      if ((!flag || !price || !salePrice || !quantity) && type === "variable") {
+        setErrorImage("Must type Variable product Information");
+      } else {
+        setErrorImage("");
+        dispatch(
+          themeSlice.actions.showBackdrop({
+            isShow: true,
+            content: "",
+          })
+        );
+        const dataCategories = [] as any[];
+        const dataTags = [] as any[];
+        categories.forEach((category) => dataCategories.push(category.value));
+        tags.forEach((tag) => dataTags.push(tag.value));
+        const simple = {
+          price: price ? parseFloat(price) : 0,
+          salePrice: salePrice ? parseFloat(salePrice) : 0,
+          quantity: quantity ? parseInt(quantity) : 0,
+          width: width ? parseInt(width) : 0,
+          height: height ? parseInt(height) : 0,
+          length: length ? parseInt(length) : 0,
+        };
+        const product = {
+          name_en: data.name_en,
+          name_vi: data.name_vi,
+          unit: data.unit,
+          description: data.description,
+          status: status,
+          groupId: group,
+          categories: dataCategories,
+          tags: dataTags,
+          type: type,
+          simple: type === "simple" ? simple : {},
+          variable:
+            type === "variable"
+              ? {
+                  price: price ? parseFloat(price) : 0,
+                  salePrice: salePrice ? parseFloat(salePrice) : 0,
+                  quantity: quantity ? parseInt(quantity) : 0,
+                  attributes,
+                }
+              : {},
+        };
+        saveProduct(product);
+        console.log("product", product);
+      }
+    }
+  };
+  const saveProduct = async (product: any) => {
+    try {
+      const data: any[] = [];
+      const featureUrl = await saveImage("products", feature[0]);
+      gallery.forEach(async (file) => {
+        const url = await saveImage("groups", file);
+        data.push(url);
+        if (data.length === gallery.length) {
+          const body = {
+            ...product,
+            galleries: data,
+            featureImage: featureUrl,
+          };
+          const result = await createProduct({}, body, {});
+          if (result) {
+            // dispatch(groupSlice.actions.addGroup(result));
+            dispatch(
+              themeSlice.actions.hideBackdrop({
+                isShow: false,
+                content: "",
+              })
+            );
+            dispatch(
+              themeSlice.actions.showToast({
+                content: "Successfully create product",
+                type: "success",
+              })
+            );
+            navigate("/products");
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
   const handleChooseGroup = (value: any) => {
     if (value) {
@@ -134,12 +244,21 @@ function CreateProduct() {
   };
   const handleChooseType = (value: any) => {
     setType(value.value);
-    setAttributes([
-      {
-        attributeId: "",
-        values: [],
-      },
-    ]);
+    setErrorImage("");
+    if (value.value === "variable") {
+      setPrice("");
+      setSalePrice("");
+      setQuantity("");
+      setWidth("");
+      setHeight("");
+      setLength("");
+      setAttributes([
+        {
+          attributeId: "",
+          values: [],
+        },
+      ]);
+    }
   };
   const handleAddOption = () => {
     setAttributes((prevState) => [
@@ -191,8 +310,25 @@ function CreateProduct() {
         });
       }
     }
-    console.log("new state", newState);
     setAttributes(newState);
+  };
+  const onChooseGallery = (e: any) => {
+    const data = [];
+    for (let i = 0; i < e.target.files.length; i++) {
+      data.push(e.target.files[i]);
+    }
+    setGallery(data);
+  };
+  const handleDeleteFeature = (position: number) => {
+    setFeature([]);
+  };
+  const onChooseFeature = (e: any) => {
+    setFeature([e.target.files[0]]);
+  };
+  const handleDeleteGallery = (position: number) => {
+    setGallery((prevState) =>
+      prevState.filter((file, index) => index !== position)
+    );
   };
   return (
     <>
@@ -208,7 +344,7 @@ function CreateProduct() {
           </div>
           <div className="col-12 col-lg-8 box_shadow_card bg_white border_radius_5 p-4 w100_per">
             <div
-              //   onClick={() => chooseImageRef.current?.click()}
+              onClick={() => chooseFeatureRef.current?.click()}
               className="choose_image_large cursor_pointer py-2 d-flex align-items-center flex-column"
             >
               <Icon
@@ -222,15 +358,15 @@ function CreateProduct() {
               <div className="font_family_italic font12 mt-2">PNG, JPG</div>
             </div>
             <div className="d-flex flex-wrap mt-2">
-              {/* {image.map((item: any, index: any) => (
+              {feature.map((item: any, index: any) => (
                 <BaseFileChosen
                   file={true}
-                  close={handleDeleteImage}
+                  close={handleDeleteFeature}
                   index={index}
                   key={index}
                   image={item}
                 />
-              ))} */}
+              ))}
             </div>
           </div>
         </div>
@@ -244,7 +380,7 @@ function CreateProduct() {
           </div>
           <div className="col-12 col-lg-8 box_shadow_card bg_white border_radius_5 p-4 w100_per">
             <div
-              //   onClick={() => chooseImageRef.current?.click()}
+              onClick={() => chooseGalleryRef.current?.click()}
               className="choose_image_large cursor_pointer py-2 d-flex align-items-center flex-column"
             >
               <Icon
@@ -258,15 +394,15 @@ function CreateProduct() {
               <div className="font_family_italic font12 mt-2">PNG, JPG</div>
             </div>
             <div className="d-flex flex-wrap mt-2">
-              {/* {image.map((item: any, index: any) => (
+              {gallery.map((item: any, index: any) => (
                 <BaseFileChosen
                   file={true}
-                  close={handleDeleteImage}
+                  close={handleDeleteGallery}
                   index={index}
                   key={index}
                   image={item}
                 />
-              ))} */}
+              ))}
             </div>
           </div>
         </div>
@@ -396,6 +532,16 @@ function CreateProduct() {
             <div className="mt-2 font12 ml_5px color_red font_family_italic">
               {errors.name_vi?.message}
             </div>
+            <div className="font_family_bold_italic font14 mt-4">Unit</div>
+            <input
+              {...register("unit")}
+              className="mt-2 h40_px w100_per"
+              placeholder="Type Unit"
+              type="text"
+            />
+            <div className="mt-2 font12 ml_5px color_red font_family_italic">
+              {errors.unit?.message}
+            </div>
             <div className="font_family_bold_italic font14 mt-4">
               Description
             </div>
@@ -405,9 +551,7 @@ function CreateProduct() {
               className="mt-2 w100_per"
               rows={5}
             />
-            <div className="font_family_bold_italic font14 mt-4">
-              Description
-            </div>
+            <div className="font_family_bold_italic font14 mt-4">Status</div>
             <div className="mt-2 d-flex align-items-center">
               <input
                 checked={status === "public"}
@@ -475,42 +619,48 @@ function CreateProduct() {
               </div>
             </div>
             <div className="col-12 col-lg-8 box_shadow_card bg_white border_radius_5 p-4 w100_per">
-              <div className="font_family_bold_italic font14">Price (USD)</div>
+              <div className="font_family_bold_italic font14">Price* (USD)</div>
               <input
+                onChange={(e) => setPrice(e.target.value)}
                 className="mt-2 h40_px w100_per"
                 placeholder="Type price"
                 type="text"
               />
               <div className="font_family_bold_italic font14 mt-4">
-                Sale Price (USD)
+                Sale Price* (USD)
               </div>
               <input
+                onChange={(e) => setSalePrice(e.target.value)}
                 className="mt-2 h40_px w100_per"
                 placeholder="Type sale price"
                 type="text"
               />
               <div className="font_family_bold_italic font14 mt-4">
-                Quantity
+                Quantity*
               </div>
               <input
+                onChange={(e) => setQuantity(e.target.value)}
                 className="mt-2 h40_px w100_per"
                 placeholder="Type quantity"
                 type="text"
               />
               <div className="font_family_bold_italic font14 mt-4">Width</div>
               <input
+                onChange={(e) => setWidth(e.target.value)}
                 className="mt-2 h40_px w100_per"
                 placeholder="Type width"
                 type="text"
               />
               <div className="font_family_bold_italic font14 mt-4">Height</div>
               <input
+                onChange={(e) => setHeight(e.target.value)}
                 className="mt-2 h40_px w100_per"
                 placeholder="Type height"
                 type="text"
               />
               <div className="font_family_bold_italic font14 mt-4">Length</div>
               <input
+                onChange={(e) => setLength(e.target.value)}
                 className="mt-2 h40_px w100_per"
                 placeholder="Type length"
                 type="text"
@@ -552,6 +702,33 @@ function CreateProduct() {
                   Add a Option
                 </button>
               )}
+              <div className="font_family_bold_italic font14 mt-4">
+                Price* (USD)
+              </div>
+              <input
+                onChange={(e) => setPrice(e.target.value)}
+                className="mt-2 h40_px w100_per"
+                placeholder="Type price"
+                type="text"
+              />
+              <div className="font_family_bold_italic font14 mt-4">
+                Sale Price* (USD)
+              </div>
+              <input
+                onChange={(e) => setSalePrice(e.target.value)}
+                className="mt-2 h40_px w100_per"
+                placeholder="Type sale price"
+                type="text"
+              />
+              <div className="font_family_bold_italic font14 mt-4">
+                Quantity*
+              </div>
+              <input
+                onChange={(e) => setQuantity(e.target.value)}
+                className="mt-2 h40_px w100_per"
+                placeholder="Type quantity"
+                type="text"
+              />
             </div>
           </div>
         )}
@@ -574,8 +751,29 @@ function CreateProduct() {
           </button>
         </div>
       </form>
+      <input
+        hidden
+        ref={chooseFeatureRef}
+        type="file"
+        onClick={(e: any) => {
+          e.target.value = null;
+        }}
+        accept=".png, .jpg"
+        onChange={onChooseFeature}
+      />
+      <input
+        hidden
+        ref={chooseGalleryRef}
+        type="file"
+        onClick={(e: any) => {
+          e.target.value = null;
+        }}
+        multiple
+        accept=".png, .jpg"
+        onChange={onChooseGallery}
+      />
     </>
   );
 }
 
-export default CreateProduct;
+export default React.memo(CreateProduct);

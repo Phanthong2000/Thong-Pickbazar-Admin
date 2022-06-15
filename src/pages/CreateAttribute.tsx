@@ -208,4 +208,4 @@ function CreateAttribute() {
   );
 }
 
-export default CreateAttribute;
+export default React.memo(CreateAttribute);

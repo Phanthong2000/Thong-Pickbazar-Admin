@@ -56,4 +56,4 @@ function AttributeValue({
   );
 }
 
-export default AttributeValue;
+export default React.memo(AttributeValue);
