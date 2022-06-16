@@ -13,7 +13,7 @@ export const getAllProducts = async (header: {}, body: {}, param: {}) => {
                 ...header
             }
         });
-        return result.data.products
+        return result.data;
     } catch (error) {
         console.log(error)
     }
@@ -27,6 +27,21 @@ export const createProduct = async (header: {}, body: {}, param: {}) => {
                 ...header
             }
         });
+        if (result.status === 200) return result.data.product;
+        else return null;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const deleteProduct = async (header: {}, body: {}, param: {}, id: string) => {
+    try {
+        const result = await axios.delete(`${hostname}/delete/${id}`,
+            {
+                headers: {
+                    ...header
+                }
+            });
         if (result.status === 200) return result.data.product;
         else return null;
     } catch (error) {

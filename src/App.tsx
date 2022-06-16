@@ -5,8 +5,9 @@ import { themeSelector } from "./redux/slices/themeSlice";
 import Router from "./routes";
 import "./theme/css/style.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import 'bootstrap/dist/js/bootstrap.min.js';
+import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/js/src/collapse.js";
+import 'rsuite/dist/rsuite.min.css';
 import Redux from "./utils/Redux";
 
 const queryClient = new QueryClient({

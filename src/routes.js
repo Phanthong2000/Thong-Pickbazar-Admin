@@ -6,6 +6,7 @@ import Category from "./pages/Category";
 import CreateAttribute from "./pages/CreateAttribute";
 import CreateCategory from "./pages/CreateCategory";
 import CreateGroup from "./pages/CreateGroup";
+import CreateOrder from "./pages/CreateOrder";
 import CreateProduct from "./pages/CreateProduct";
 import CreateTag from "./pages/CreateTag";
 import Dashboard from "./pages/Dashboard";
@@ -82,6 +83,10 @@ function Router() {
         {
           path: "/products/create",
           element: <CreateProduct />,
+        },
+        {
+          path: "/orders/create",
+          element: <CreateOrder />,
         },
         {
           path: "",

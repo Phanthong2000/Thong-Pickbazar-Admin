@@ -38,6 +38,11 @@ const sidebarConfig = [
     icon: "fluent:tag-16-regular",
     name: "Tags",
     path: "/tags"
+  },
+  {
+    icon: "icon-park-outline:medical-box",
+    name: "Create Order",
+    path: "/orders/create"
   }
 ];
 

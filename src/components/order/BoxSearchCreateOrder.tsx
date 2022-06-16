@@ -2,7 +2,6 @@ import { Icon } from "@iconify/react";
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Select from "react-select";
 import { getAllCategoriesByGroup } from "../../apis/category";
 import { allGroupsSelector } from "../../redux/slices/groupSlice";
@@ -10,7 +9,7 @@ import { allGroupsSelector } from "../../redux/slices/groupSlice";
 type Props = {
   handleFilter: (text: string, group: string, category: string) => void;
 };
-function BoxSearch({ handleFilter }: Props) {
+function BoxSearchCreateOrder({ handleFilter }: Props) {
   const allGroups = useSelector(allGroupsSelector);
   const [isFilter, setIsFilter] = useState<boolean>(false);
   const [text, setText] = useState<string>("");
@@ -18,7 +17,6 @@ function BoxSearch({ handleFilter }: Props) {
   const [options2, setOptions2] = useState<any[]>([]);
   const [groupId, setGroupId] = useState<string>("");
   const [categoryId, setCategoryId] = useState<string>("");
-
   useEffect(() => {
     if (allGroups) {
       const data: any[] = [];
@@ -71,13 +69,13 @@ function BoxSearch({ handleFilter }: Props) {
   };
   return (
     <div className="box_shadow_card bg_white p-4 border_radius_3">
-      <div className="row p-0 m-0">
+      <div className="row p-0 m-0 d-flex align-items-center">
         <div className="col-12 col-lg-3">
-          <div className="font_family_bold font20">Products</div>
+          <div className="font_family_bold font20">Create Order</div>
         </div>
         <div className="col-12 col-lg-9">
           <div className="row m-0 p-0">
-            <div className="col-6 col-lg-7">
+            <div className="col-6 col-lg-10">
               <input
                 onChange={(e) => {
                   handleFilter(e.target.value, groupId, categoryId);
@@ -88,7 +86,7 @@ function BoxSearch({ handleFilter }: Props) {
                 type="text"
               />
             </div>
-            <div className="col-6 col-lg-5 d-flex justify-content-end">
+            <div className="col-6 col-lg-2 d-flex justify-content-end">
               <button
                 onClick={handleShowFilter}
                 className="d-flex align-items-center btn color_primary font_family_bold_italic font16"
@@ -103,11 +101,6 @@ function BoxSearch({ handleFilter }: Props) {
                   icon="akar-icons:arrow-down"
                 />
               </button>
-              <Link to="/products/create">
-                <button className="btn bg_primary color_white font14 font_family_bold h40_px ml_10px">
-                  + Add product
-                </button>
-              </Link>
             </div>
           </div>
         </div>
@@ -175,4 +168,4 @@ function BoxSearch({ handleFilter }: Props) {
   );
 }
 
-export default React.memo(BoxSearch);
+export default BoxSearchCreateOrder;

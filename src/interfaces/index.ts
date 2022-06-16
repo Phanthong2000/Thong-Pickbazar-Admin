@@ -52,3 +52,20 @@ export type AttributeType = {
   name_vi: string;
   values: Array<AttributeValueType>
 }
+
+export type ProductType = {
+  id: string;
+  name_en: string;
+  name_vi: string;
+  unit: string;
+  description: string;
+  status: string;
+  featuredImage: string;
+  galleries: Array<string>;
+  groupId: string;
+  categories: Array<string>;
+  tags: Array<string>;
+  type: string;
+  simple: any;
+  variable: any
+}

@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct } from "../apis/product";
-import BaseTableProduct from "../base/BaseTableProduct";
+import BoxCart from "../components/cart/BoxCart";
+import BoxSearchCreateOrder from "../components/order/BoxSearchCreateOrder";
+import DrawerCart from "../components/order/DrawerCart";
+import ProductItem from "../components/order/ProductItem";
 import Pagination from "../components/Pagination";
-import BoxSearch from "../components/product/BoxSearch";
-import { ProductType } from "../interfaces";
-import productSlice, {
-  allProductsSelector,
-} from "../redux/slices/productSlice";
-import themeSlice from "../redux/slices/themeSlice";
+import { cartSelector } from "../redux/slices/orderSlice";
+import { allProductsSelector } from "../redux/slices/productSlice";
 import { AppDispatch } from "../redux/store";
-import alert2 from "../utils/Sweetalert2";
 
-const countPerRow = 10;
-function Product() {
+const countPerRow = 8;
+function CreateOrder() {
   const allProducts = useSelector(allProductsSelector);
+  const cartString = useSelector(cartSelector);
   const [products, setProducts] = useState<any[]>([]);
+  const [cart, setCart] = useState<any[]>([]);
+  const [showCart, setShowCart] = useState<boolean>(false);
   const [productsByPage, setProductsByPage] = useState<any[]>([]);
   const [page, setPage] = useState<number>(1);
   const [pages, setPages] = useState<number[]>([]);
@@ -26,51 +26,12 @@ function Product() {
     }
   }, [allProducts]);
   useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem("cart") || "[]"));
+  }, [cartString]);
+  useEffect(() => {
     setPage(1);
     setProductsByPage(products.slice(0, countPerRow));
   }, [products]);
-  const handleDelete = (product: ProductType) => {
-    const handleConfirm = async () => {
-      dispatch(
-        themeSlice.actions.showBackdrop({
-          isShow: true,
-          content: "",
-        })
-      );
-      const result = await deleteProduct({}, {}, {}, product.id);
-      if (result) {
-        dispatch(productSlice.actions.deleteProduct(product));
-        dispatch(
-          themeSlice.actions.hideBackdrop({
-            isShow: false,
-            content: "",
-          })
-        );
-        dispatch(
-          themeSlice.actions.showToast({
-            type: "success",
-            content: "Successfully delete product",
-          })
-        );
-      }
-    };
-    alert2(
-      "Delete",
-      "question",
-      true,
-      "Delete",
-      "#f55858",
-      true,
-      "Cancel",
-      "#000",
-      "Delete",
-      "Are you sure, you want to delete?",
-      handleConfirm
-    );
-  };
-  const handleUpdate = (name: string) => {
-    console.log(name);
-  };
   const handleFilter = (text: string, group: string, category: string) => {
     if (!text && !group && !category) {
       setProducts(allProducts);
@@ -97,6 +58,9 @@ function Product() {
         })
       );
     }
+  };
+  const handleDrawerCart = (status: boolean) => {
+    setShowCart(status);
   };
   const handleChoosePage = (value: any) => {
     setPage(value);
@@ -139,12 +103,14 @@ function Product() {
   };
   return (
     <>
-      <BoxSearch handleFilter={handleFilter} />
-      <BaseTableProduct
-        data={productsByPage}
-        handleDelete={handleDelete}
-        handleUpdate={handleUpdate}
-      />
+      <div className="px-2">
+        <BoxSearchCreateOrder handleFilter={handleFilter} />
+      </div>
+      <div className="row m-0 p-0 mt-4">
+        {productsByPage.map((item, index) => (
+          <ProductItem cart={cart} product={item} key={index} />
+        ))}
+      </div>
       <div className="d-flex align-items-center justify-content-end mt-4 pagination">
         <Pagination type="change" click={handlePrevPage} value="prev" />
         {handleGetListPageCurrent().map((item, index) => (
@@ -166,8 +132,10 @@ function Product() {
         />
         <Pagination type="change" click={handleNextPage} value="next" />
       </div>
+      <BoxCart handleDrawerCart={handleDrawerCart} />
+      <DrawerCart isShow={showCart} handleDrawer={handleDrawerCart} />
     </>
   );
 }
 
-export default React.memo(Product);
+export default React.memo(CreateOrder);

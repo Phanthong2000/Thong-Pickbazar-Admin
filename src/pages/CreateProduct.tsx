@@ -16,6 +16,7 @@ import { AppDispatch } from "../redux/store";
 import { createProduct } from "../apis/product";
 import themeSlice from "../redux/slices/themeSlice";
 import { useNavigate } from "react-router-dom";
+import productSlice from "../redux/slices/productSlice";
 
 const schema = yup.object({
   name_vi: yup.string().required("Name Vietnamese is required"),
@@ -58,6 +59,7 @@ function CreateProduct() {
   const [width, setWidth] = useState<string | any>("");
   const [height, setHeight] = useState<string | any>("");
   const [length, setLength] = useState<string | any>("");
+  const [groupTemp, setGroupTemp] = useState<any>();
   const [attributes, setAttributes] = useState<any[]>([
     {
       attributeId: "",
@@ -82,7 +84,7 @@ function CreateProduct() {
       const data: any[] = [];
       groups.forEach((group: any) => {
         data.push({
-          value: group.id,
+          value: group,
           label: group.name_en,
         });
       });
@@ -175,7 +177,12 @@ function CreateProduct() {
           };
           const result = await createProduct({}, body, {});
           if (result) {
-            // dispatch(groupSlice.actions.addGroup(result));
+            dispatch(
+              productSlice.actions.addProduct({
+                ...result,
+                group: groupTemp,
+              })
+            );
             dispatch(
               themeSlice.actions.hideBackdrop({
                 isShow: false,
@@ -198,8 +205,9 @@ function CreateProduct() {
   };
   const handleChooseGroup = (value: any) => {
     if (value) {
-      setValue("group", `${value.value}`);
-      handleGetCategoriesByGroup(value.value);
+      setValue("group", `${value.value.id}`);
+      handleGetCategoriesByGroup(value.value.id);
+      setGroupTemp(value.value);
     } else {
       setValue("group", ``);
       setCategories([]);
