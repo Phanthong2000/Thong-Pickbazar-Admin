@@ -11,6 +11,7 @@ import CreateProduct from "./pages/CreateProduct";
 import CreateTag from "./pages/CreateTag";
 import Dashboard from "./pages/Dashboard";
 import Group from "./pages/Group";
+import Login from "./pages/Login";
 import Product from "./pages/Product";
 import Tags from "./pages/Tags";
 import UpdateAttribute from "./pages/UpdateAttribute";
@@ -93,6 +94,10 @@ function Router() {
           element: <Navigate to="/dashboard" />,
         },
       ],
+    },
+    {
+      path: "/login",
+      element: <Login />,
     },
   ]);
 }

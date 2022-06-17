@@ -1,14 +1,14 @@
 import axios from "axios";
-import path from "./path";
+import fetchApi from "./fetchApi";
 
 const version = {
     v1: "/api/v1",
 };
-const hostname = `${path}${version.v1}/products`;
+const hostname = `${version.v1}/products`;
 
 export const getAllProducts = async (header: {}, body: {}, param: {}) => {
     try {
-        const result = await axios.get(`${hostname}/list`, {
+        const result = await fetchApi.get(`${hostname}/list`, {
             headers: {
                 ...header
             }
@@ -20,7 +20,7 @@ export const getAllProducts = async (header: {}, body: {}, param: {}) => {
 }
 export const createProduct = async (header: {}, body: {}, param: {}) => {
     try {
-        const result = await axios.post(`${hostname}/create`, {
+        const result = await fetchApi.post(`${hostname}/create`, {
             ...body
         }, {
             headers: {
@@ -36,7 +36,7 @@ export const createProduct = async (header: {}, body: {}, param: {}) => {
 
 export const deleteProduct = async (header: {}, body: {}, param: {}, id: string) => {
     try {
-        const result = await axios.delete(`${hostname}/delete/${id}`,
+        const result = await fetchApi.delete(`${hostname}/delete/${id}`,
             {
                 headers: {
                     ...header

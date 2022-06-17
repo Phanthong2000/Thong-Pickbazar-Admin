@@ -65,13 +65,13 @@ a {
   font-size: 15px;
 }
 .font16 {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .font18 {
-  font-size: 18px;
+  font-size: 18px !important;
 }
 .font20 {
-  font-size: 20px;
+  font-size: 20px !important;
 }
 .font25 {
   font-size: 25px;
@@ -143,7 +143,7 @@ a {
   color: #fff !important;
 }
 .color_888 {
-  color: #888888;
+  color: #888888 !important;
 }
 .color_red {
   color: #f55858;
@@ -174,6 +174,9 @@ a {
 }
 .h40_px {
   height: 40px;
+}
+.h50_px {
+  height: 50px;
 }
 .h100_per {
   height: 100%;
@@ -217,6 +220,9 @@ a {
 .p_5px {
   padding: 5px;
 }
+.pr_20px {
+  padding-right: 40px !important;
+}
 .box_shadow_dropdown {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
@@ -226,7 +232,7 @@ a {
 }
 .divider_vertical_solid {
   width: 100%;
-  border-top: 1px solid #888;
+  border-top: 1px solid #ddd;
   height: 1px;
 }
 .divider_vertical_dashed {
@@ -260,7 +266,8 @@ a {
   opacity: 1;
   pointer-events: all;
 }
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   padding: 0px 15px;
   border: 1px solid var(--color888);
   border-radius: 3px;
@@ -268,7 +275,8 @@ input[type="text"] {
   transition: 0.25s ease-in-out;
   color: var(--color888);
 }
-input[type="text"]:focus {
+input[type="text"]:focus,
+input[type="password"]:focus {
   outline: 0px;
   box-shadow: 0px !important;
   border: 1px solid var(--primaryHover);
@@ -377,7 +385,7 @@ textarea:focus {
 .product_item_order .button_change_quantity button:hover {
   background-color: var(--primaryHover);
 }
-.checkout_cart{
+.checkout_cart {
   width: 80%;
   background-color: var(--primary);
   display: flex;
@@ -387,7 +395,7 @@ textarea:focus {
   border-radius: 30px;
   cursor: pointer;
 }
-.checkout_cart .total_cart{
+.checkout_cart .total_cart {
   height: 50px;
   background-color: var(--white);
   display: flex;
@@ -396,4 +404,17 @@ textarea:focus {
   width: 80px;
   border-radius: 30px;
   color: var(--primary);
+}
+.box_login {
+  background-color: var(--white);
+  border-radius: 10px;
+  min-width: 500px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+input[type="checkbox"]{
+  accent-color: var(--primary);
 }

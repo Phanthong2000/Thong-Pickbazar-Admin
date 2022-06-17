@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Avatar from "../components/Avatar";
 import BoxProfile from "../components/BoxProfile";
 import Logo from "../components/navbar/Logo";
+import { userSelector } from "../redux/slices/userSlice";
 import { primaryColor, primaryHoverColor } from "../theme";
 
 const Container = styled.div`
@@ -22,6 +24,7 @@ const Button = styled.button`
   }
 `;
 function Navbar() {
+  const user = useSelector(userSelector);
   const [isShowProfile, setIsProfile] = useState<boolean>(false);
   const handleShowBoxProfile = () => {
     setIsProfile(!isShowProfile);
@@ -40,7 +43,7 @@ function Navbar() {
           click={handleShowBoxProfile}
           cursor="pointer"
           shape="circle"
-          url="https://assets.goal.com/v3/assets/bltcc7a7ffd2fbf71f5/bltc5bb7c12d180d32e/60db401c993b0438464195d6/0d5815259ae6a395605fe51fb0bad3a8fe928351.jpg"
+          url={user ? user.avatar : ''}
           size={50}
         />
         <BoxProfile close={handleCloseProfile} show={isShowProfile} />

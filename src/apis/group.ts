@@ -1,18 +1,17 @@
 import axios from "axios";
-import path from "./path";
+import fetchApi from "./fetchApi";
 
 const version = {
   v1: "/api/v1",
 };
-const hostname = `${path}${version.v1}/groups`;
-
+const hostname = `${version.v1}/groups`;
 export const getAllGroups = async (header: {}, body: {}, param: {}) => {
   try {
-    const result = await axios.get(`${hostname}/list`, {
+    const result = await fetchApi.get(`${hostname}/list`, {
       headers: {
-        ...header,
-      },
-    });
+        ...header
+      }
+    })
     return result.data;
   } catch (error) {
     console.log(error);
@@ -21,7 +20,7 @@ export const getAllGroups = async (header: {}, body: {}, param: {}) => {
 
 export const createGroup = async (header: {}, body: {}, param: {}) => {
   try {
-    const result = await axios.post(
+    const result = await fetchApi.post(
       `${hostname}/create`,
       {
         ...body,
@@ -47,7 +46,7 @@ export const deleteGroup = async (
   id: string
 ) => {
   try {
-    const result = await axios.delete(`${hostname}/delete/${id}`, {
+    const result = await fetchApi.delete(`${hostname}/delete/${id}`, {
       headers: {
         ...header,
       },
@@ -66,7 +65,7 @@ export const getGroupByName = async (
   name: string
 ) => {
   try {
-    const result = await axios.get(`${hostname}/detail/name/${name}`, {
+    const result = await fetchApi.get(`${hostname}/detail/name/${name}`, {
       headers: {
         ...header,
       },
@@ -80,7 +79,7 @@ export const getGroupByName = async (
 
 export const updateGroup = async (header: {}, body: {}, param: {}) => {
   try {
-    const result = await axios.put(
+    const result = await fetchApi.put(
       `${hostname}/edit`,
       {
         ...body,

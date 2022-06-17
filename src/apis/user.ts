@@ -1,11 +1,9 @@
 import axios from 'axios';
-// import { UserType } from '../interfaces';
-import path from './path';
 
 const version = {
     v1: '/api/v1'
 }
-const hostname = `${path}${version.v1}/customers`;
+const hostname = `${version.v1}/customers`;
 
 export const getAllUsers = async (header: {}, body: {}, param: {}) => {
     try {
@@ -47,16 +45,16 @@ export const deleteUser = async (header: {}, body: {}, param: {}, id: string) =>
     }
 }
 
-export const login = async (header: {}, body: {}, param: {}) => {
-    try {
-        const result = await axios.post(`${hostname}/login`, body, {
-            headers: {
-                "Content-Type": "application/json",
-                ...header
-            }
-        });
-        return result.data;
-    } catch (error) {
-        console.log(error)
-    }
-}
+// export const login = async (header: {}, body: {}, param: {}) => {
+//     try {
+//         const result = await axios.post(`${hostname}/login`, body, {
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 ...header
+//             }
+//         });
+//         return result.data;
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }

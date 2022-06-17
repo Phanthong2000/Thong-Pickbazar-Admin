@@ -1,14 +1,15 @@
 import axios from "axios";
-import path from "./path";
+import fetchApi from "./fetchApi";
+
 
 const version = {
     v1: "/api/v1",
 };
-const hostname = `${path}${version.v1}/tags`;
+const hostname = `${version.v1}/tags`;
 
 export const getAllTags = async (header: {}, body: {}, param: {}) => {
     try {
-        const result = await axios.get(`${hostname}/list`, {
+        const result = await fetchApi.get(`${hostname}/list`, {
             headers: {
                 ...header
             }
@@ -22,7 +23,7 @@ export const getAllTags = async (header: {}, body: {}, param: {}) => {
 export const createTag = async (header: {}, body: {}, param: {}) => {
     try {
         console.log(body)
-        const result = await axios.post(`${hostname}/create`, {
+        const result = await fetchApi.post(`${hostname}/create`, {
             ...body
         }, {
             headers: {
@@ -40,7 +41,7 @@ export const createTag = async (header: {}, body: {}, param: {}) => {
 
 export const deleteTag = async (header: {}, body: {}, param: {}, id: string) => {
     try {
-        const result = await axios.delete(`${hostname}/delete/${id}`, {
+        const result = await fetchApi.delete(`${hostname}/delete/${id}`, {
             headers: {
                 ...header
             }
@@ -55,7 +56,7 @@ export const deleteTag = async (header: {}, body: {}, param: {}, id: string) => 
 
 export const getTagBySlug = async (header: {}, body: {}, param: {}, slug: string) => {
     try {
-        const result = await axios.get(`${hostname}/detail/slug/${slug}`, {
+        const result = await fetchApi.get(`${hostname}/detail/slug/${slug}`, {
             headers: {
                 ...header
             }

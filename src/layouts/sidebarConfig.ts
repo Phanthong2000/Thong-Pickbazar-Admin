@@ -43,6 +43,11 @@ const sidebarConfig = [
     icon: "icon-park-outline:medical-box",
     name: "Create Order",
     path: "/orders/create"
+  },
+  {
+    icon: "ph:users-three",
+    name: "Users",
+    path: "/users"
   }
 ];
 

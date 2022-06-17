@@ -1,7 +1,10 @@
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useClickOutSide from "../hooks/useClickOutside";
+import userSlice from "../redux/slices/userSlice";
+import { AppDispatch } from "../redux/store";
 import { primaryHoverColor } from "../theme";
 
 type Props = {
@@ -21,9 +24,18 @@ const Container = styled.div`
 `;
 function BoxProfile({ close, show }: Props) {
   const profileRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   useClickOutSide(profileRef, () => {
     close();
   });
+  const handleLogout = () => {
+    sessionStorage.removeItem("access-token");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("isLogin");
+    dispatch(userSlice.actions.logout());
+    navigate("/login");
+  };
   return (
     <Container
       ref={profileRef}
@@ -45,9 +57,13 @@ function BoxProfile({ close, show }: Props) {
         </Link>
       </div>
       <div className="py-2 px-3 cursor_pointer box_profile_item">
-        <Link className="font16 font_family_italic color_888" to="#">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="btn m-0 p-0 font16 font_family_italic color_888"
+        >
           Logout
-        </Link>
+        </button>
       </div>
     </Container>
   );

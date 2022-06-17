@@ -1,14 +1,14 @@
 import axios from "axios";
-import path from "./path";
+import fetchApi from "./fetchApi";
 
 const version = {
     v1: "/api/v1",
 };
-const hostname = `${path}${version.v1}/attributes`;
+const hostname = `${version.v1}/attributes`;
 
 export const getAllAttributes = async (header: {}, body: {}, param: {}) => {
     try {
-        const result = await axios.get(`${hostname}/list`,
+        const result = await fetchApi.get(`${hostname}/list`,
             {
                 headers: {
                     ...header
@@ -22,7 +22,7 @@ export const getAllAttributes = async (header: {}, body: {}, param: {}) => {
 
 export const createAttribute = async (header: {}, body: {}, param: {}) => {
     try {
-        const result = await axios.post(`${hostname}/create`, {
+        const result = await fetchApi.post(`${hostname}/create`, {
             ...body
         }, {
             headers: {
@@ -38,7 +38,7 @@ export const createAttribute = async (header: {}, body: {}, param: {}) => {
 
 export const deleteAttribute = async (header: {}, body: {}, param: {}, id: string) => {
     try {
-        const result = await axios.delete(`${hostname}/delete/${id}`,
+        const result = await fetchApi.delete(`${hostname}/delete/${id}`,
             {
                 headers: {
                     ...header
@@ -53,7 +53,7 @@ export const deleteAttribute = async (header: {}, body: {}, param: {}, id: strin
 
 export const updateAttribute = async (header: {}, body: {}, param: {}) => {
     try {
-        const result = await axios.put(`${hostname}/edit`, {
+        const result = await fetchApi.put(`${hostname}/edit`, {
             ...body
         }, {
             headers: {
@@ -69,12 +69,11 @@ export const updateAttribute = async (header: {}, body: {}, param: {}) => {
 
 export const getAttributeByName = async (header: {}, body: {}, param: {}, name: string) => {
     try {
-        const result = await axios.get(`${hostname}/detail/name/${name}`, {
+        const result = await fetchApi.get(`${hostname}/detail/name/${name}`, {
             headers: {
                 ...header
             }
         });
-        console.log(result.data.attribute)
         if (result.status === 200) return result.data.attribute;
         else return null;
     } catch (error) {

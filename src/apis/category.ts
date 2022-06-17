@@ -1,14 +1,15 @@
 import axios from "axios";
-import path from "./path";
+import fetchApi from "./fetchApi";
+
 
 const version = {
   v1: "/api/v1",
 };
-const hostname = `${path}${version.v1}/categories`;
+const hostname = `${version.v1}/categories`;
 
 export const getAllCategories = async (header: {}, body: {}, param: {}) => {
   try {
-    const result = await axios.get(`${hostname}/list`, {
+    const result = await fetchApi.get(`${hostname}/list`, {
       headers: {
         ...header,
       },
@@ -21,7 +22,7 @@ export const getAllCategories = async (header: {}, body: {}, param: {}) => {
 
 export const createCategory = async (header: {}, body: {}, param: {}) => {
   try {
-    const result = await axios.post(
+    const result = await fetchApi.post(
       `${hostname}/create`,
       {
         ...body,
@@ -47,7 +48,7 @@ export const deleteCategory = async (
 ) => {
   try {
     console.log(id);
-    const result = await axios.delete(`${hostname}/delete/${id}`, {
+    const result = await fetchApi.delete(`${hostname}/delete/${id}`, {
       headers: {
         ...header,
       },
@@ -66,7 +67,7 @@ export const getCategoryById = async (
   id: string
 ) => {
   try {
-    const result = await axios.get(`${hostname}/detail/${id}`, {
+    const result = await fetchApi.get(`${hostname}/detail/${id}`, {
       headers: {
         ...header,
       },
@@ -81,7 +82,7 @@ export const getCategoryById = async (
 export const updateCategory = async (header: {}, body: {}, param: {}) => {
   console.log(body);
   try {
-    const result = await axios.put(
+    const result = await fetchApi.put(
       `${hostname}/edit`,
       {
         ...body,
@@ -101,7 +102,7 @@ export const updateCategory = async (header: {}, body: {}, param: {}) => {
 
 export const getAllCategoriesByGroup = async (header: {}, body: {}, param: {}, groupId: string) => {
   try {
-    const result = await axios.get(`${hostname}/detail/groupId/${groupId}`, {
+    const result = await fetchApi.get(`${hostname}/detail/groupId/${groupId}`, {
       headers: {
         ...header
       }

@@ -5,15 +5,14 @@ const defaultState = {
     allUser: [],
     isLoadingAllUser: false,
     count: 0,
-    isLogin: window.localStorage.getItem('token') ? true : false,
-    user: JSON.parse(`${window.localStorage.getItem('user')}`)
+    isLogin: window.sessionStorage.getItem('isLogin') ? true : false,
+    user: JSON.parse(`${window.sessionStorage.getItem('user')}`)
 }
 const userSlice = createSlice({
     name: 'user',
     initialState: defaultState,
     reducers: {
         plus: (state, action) => {
-            console.log('plus' + state.count, action.payload)
             state.count = state.count + 1;
         },
         logout: (state) => {
@@ -23,7 +22,7 @@ const userSlice = createSlice({
         login: (state, action) => {
             state.isLogin = true;
             state.user = action.payload
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
