@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/js/src/collapse.js";
 import 'rsuite/dist/rsuite.min.css';
+import "react-datepicker/dist/react-datepicker.css";
 import Redux from "./utils/Redux";
 
 const queryClient = new QueryClient({

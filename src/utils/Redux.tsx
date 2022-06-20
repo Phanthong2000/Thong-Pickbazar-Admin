@@ -6,7 +6,7 @@ import { getApiAllCategories } from "../redux/slices/categorySlice";
 import { getApiAllGroups } from "../redux/slices/groupSlice";
 import { getApiAllProducts } from "../redux/slices/productSlice";
 import { getApiAllTags } from "../redux/slices/tagSlice";
-import { isLoginSelector } from "../redux/slices/userSlice";
+import { getApiAllUser, isLoginSelector } from "../redux/slices/userSlice";
 import { AppDispatch } from "../redux/store";
 
 function Redux() {
@@ -22,6 +22,7 @@ function Redux() {
       dispatch(getApiAllTags());
       dispatch(getApiAllAttributes());
       dispatch(getApiAllProducts());
+      dispatch(getApiAllUser());
     }
   }, [isLogin]);
   return null;

@@ -1,10 +1,9 @@
-import { Icon } from "@iconify/react";
 import Swal from "sweetalert2";
 
-type Icon = "success" | "error" | "warning" | "info" | "question";
+type IconType = "success" | "error" | "warning" | "info" | "question";
 const alert2 = (
   title: string,
-  icon: Icon,
+  icon: IconType,
   showConfirmButton: boolean,
   confirmButtonText: string,
   confirmButtonColor: string,

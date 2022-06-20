@@ -9,6 +9,7 @@ import CreateGroup from "./pages/CreateGroup";
 import CreateOrder from "./pages/CreateOrder";
 import CreateProduct from "./pages/CreateProduct";
 import CreateTag from "./pages/CreateTag";
+import CreateUser from "./pages/CreateUser";
 import Dashboard from "./pages/Dashboard";
 import Group from "./pages/Group";
 import Login from "./pages/Login";
@@ -18,6 +19,8 @@ import UpdateAttribute from "./pages/UpdateAttribute";
 import UpdateCategory from "./pages/UpdateCategory";
 import UpdateGroup from "./pages/UpdateGroup";
 import UpdateTag from "./pages/UpdateTag";
+import UpdateUser from "./pages/UpdateUser";
+import User from "./pages/User";
 
 function Router() {
   return useRoutes([
@@ -86,8 +89,20 @@ function Router() {
           element: <CreateProduct />,
         },
         {
+          path: "/users",
+          element: <User />,
+        },
+        {
           path: "/orders/create",
           element: <CreateOrder />,
+        },
+        {
+          path: "/users/create",
+          element: <CreateUser />,
+        },
+        {
+          path: "/users/:id",
+          element: <UpdateUser />,
         },
         {
           path: "",

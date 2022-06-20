@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import Swal from "sweetalert2";
 import { GroupType } from "../interfaces";
 
 type Props = {

@@ -5,16 +5,6 @@ const sidebarConfig = [
     path: "/dashboard",
   },
   {
-    icon: "fluent:building-shop-16-regular",
-    name: "Shops",
-    path: "/shops",
-  },
-  {
-    icon: "uil:shop",
-    name: "My Shopes",
-    path: "/my-shops",
-  },
-  {
     icon: "icon-park-outline:ad-product",
     name: "Products",
     path: "/products",
@@ -27,7 +17,7 @@ const sidebarConfig = [
   {
     icon: "fluent:text-bullet-list-square-settings-20-regular",
     name: "Attributes",
-    path: "/attributes"
+    path: "/attributes",
   },
   {
     icon: "bx:category-alt",
@@ -37,18 +27,18 @@ const sidebarConfig = [
   {
     icon: "fluent:tag-16-regular",
     name: "Tags",
-    path: "/tags"
+    path: "/tags",
   },
   {
     icon: "icon-park-outline:medical-box",
     name: "Create Order",
-    path: "/orders/create"
+    path: "/orders/create",
   },
   {
     icon: "ph:users-three",
     name: "Users",
-    path: "/users"
-  }
+    path: "/users",
+  },
 ];
 
 export default sidebarConfig;

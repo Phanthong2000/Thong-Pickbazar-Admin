@@ -10,6 +10,7 @@ html {
   --primaryHover: rgba(1, 147, 118);
   --color888: #888;
   --colorDDD: #ddd;
+  ---orangeColor: #f58d2c;
 }
 
 .enable_backdrop {
@@ -157,6 +158,9 @@ a {
 .color_gray {
   color: var(--grayColor);
 }
+.color_orange {
+  color: var(---orangeColor);
+}
 .bg_primary {
   background-color: var(--primary) !important;
 }
@@ -168,6 +172,9 @@ a {
 }
 .w100_per {
   width: 100%;
+}
+.w100_px {
+  width: 100px;
 }
 .w50_per {
   width: 50%;
@@ -415,6 +422,6 @@ textarea:focus {
   justify-content: center;
   flex-direction: column;
 }
-input[type="checkbox"]{
+input[type="checkbox"] {
   accent-color: var(--primary);
 }
