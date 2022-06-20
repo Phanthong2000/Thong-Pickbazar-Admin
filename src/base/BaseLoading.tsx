@@ -19,4 +19,4 @@ function BaseLoading() {
   );
 }
 
-export default BaseLoading;
+export default React.memo(BaseLoading);

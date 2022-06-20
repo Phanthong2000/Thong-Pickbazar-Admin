@@ -4,3 +4,4 @@ export * from './category';
 export * from './group';
 export * from './tag';
 export * from './product';
+export * from './order';

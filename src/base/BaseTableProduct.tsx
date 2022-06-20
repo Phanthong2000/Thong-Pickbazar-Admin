@@ -224,4 +224,4 @@ function BaseTableProduct({ data, handleDelete, handleUpdate }: Props) {
   );
 }
 
-export default BaseTableProduct;
+export default React.memo(BaseTableProduct);

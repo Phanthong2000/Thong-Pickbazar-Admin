@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getApiAllAttributes } from "../redux/slices/attributeSlice";
 import { getApiAllCategories } from "../redux/slices/categorySlice";
 import { getApiAllGroups } from "../redux/slices/groupSlice";
+import { getApiAllOrderStatuses } from "../redux/slices/orderSlice";
 import { getApiAllProducts } from "../redux/slices/productSlice";
 import { getApiAllTags } from "../redux/slices/tagSlice";
 import { getApiAllUser, isLoginSelector } from "../redux/slices/userSlice";
@@ -23,6 +24,7 @@ function Redux() {
       dispatch(getApiAllAttributes());
       dispatch(getApiAllProducts());
       dispatch(getApiAllUser());
+      dispatch(getApiAllOrderStatuses());
     }
   }, [isLogin]);
   return null;

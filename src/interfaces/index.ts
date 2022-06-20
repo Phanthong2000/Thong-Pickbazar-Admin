@@ -90,3 +90,10 @@ export type UserType = {
   username: string;
   password: string;
 };
+
+export type OrderStatusType = {
+  id: string;
+  name: string;
+  serial: number;
+  color: string;
+}

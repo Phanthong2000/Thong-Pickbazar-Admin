@@ -130,4 +130,4 @@ function BaseTableTag({ data, handleDelete, handleUpdate }: Props) {
   );
 }
 
-export default BaseTableTag;
+export default React.memo(BaseTableTag);

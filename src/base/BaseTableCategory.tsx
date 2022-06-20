@@ -279,4 +279,4 @@ function BaseTableCategory({ data, handleDelete, handleUpdate }: Props) {
     )
 }
 
-export default BaseTableCategory
+export default React.memo(BaseTableCategory);

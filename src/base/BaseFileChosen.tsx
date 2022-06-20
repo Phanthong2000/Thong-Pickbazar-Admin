@@ -29,4 +29,4 @@ function BaseFileChosen({ image, close, index, file }: Props) {
     )
 }
 
-export default BaseFileChosen
+export default React.memo(BaseFileChosen)

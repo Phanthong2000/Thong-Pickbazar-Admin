@@ -1,12 +1,11 @@
 import { Icon } from "@iconify/react";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { GroupType } from "../interfaces";
+import { OrderStatusType } from "../interfaces";
 
 type Props = {
-  data: Array<GroupType | any>;
-  handleDelete: (group: GroupType) => void;
-  handleUpdate: (name: string) => void;
+  data: Array<OrderStatusType | any>;
+  handleUpdate: (id: string) => void;
 };
 type Type =
   | "start"
@@ -22,7 +21,7 @@ const TableCell = styled.td`
 const TableCellHead = styled.th`
   padding: 10px;
 `;
-function BaseTableGroup({ data, handleDelete, handleUpdate }: Props) {
+function BaseTableOrderStatus({ data, handleUpdate }: Props) {
   const textAlign = (value: Type) => value;
   const header = [
     {
@@ -32,17 +31,17 @@ function BaseTableGroup({ data, handleDelete, handleUpdate }: Props) {
     },
     {
       name: "Name",
-      width: "40%",
+      width: "50%",
       textAlign: textAlign("left"),
     },
     {
-      name: "Icon",
-      width: "10%",
+      name: "Serial",
+      width: "30%",
       textAlign: textAlign("center"),
     },
     {
       name: "Actions",
-      width: "30%",
+      width: "10%",
       textAlign: textAlign("right"),
     },
   ];
@@ -81,7 +80,12 @@ function BaseTableGroup({ data, handleDelete, handleUpdate }: Props) {
                 textAlign: header.at(1)?.textAlign,
               }}
             >
-              {item.name_en}
+              <div
+                className="font16 font_family_bold"
+                style={{ color: item.color }}
+              >
+                {item.name}
+              </div>
             </TableCell>
             <TableCell
               style={{
@@ -89,7 +93,7 @@ function BaseTableGroup({ data, handleDelete, handleUpdate }: Props) {
                 textAlign: header.at(2)?.textAlign,
               }}
             >
-              <Icon className="icon30x30 color_888" icon={item.icon} />
+              {item.serial}
             </TableCell>
             <TableCell
               style={{
@@ -98,13 +102,7 @@ function BaseTableGroup({ data, handleDelete, handleUpdate }: Props) {
               }}
             >
               <button
-                onClick={() => handleDelete(item)}
-                className="btn p-0 mr_5px"
-              >
-                <Icon className="icon20x20 color_red" icon="bi:trash3" />
-              </button>
-              <button
-                onClick={() => handleUpdate(item.name_en)}
+                onClick={() => handleUpdate(item.id)}
                 className="btn p-0 m-0"
               >
                 <Icon className="icon20x20 color_888" icon="bx:edit" />
@@ -117,4 +115,4 @@ function BaseTableGroup({ data, handleDelete, handleUpdate }: Props) {
   );
 }
 
-export default React.memo(BaseTableGroup);
+export default React.memo(BaseTableOrderStatus);

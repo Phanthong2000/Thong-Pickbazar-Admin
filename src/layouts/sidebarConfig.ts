@@ -30,6 +30,11 @@ const sidebarConfig = [
     path: "/tags",
   },
   {
+    icon: "fluent:clipboard-clock-24-regular",
+    name: "Order Status",
+    path: "/order-status"
+  },
+  {
     icon: "icon-park-outline:medical-box",
     name: "Create Order",
     path: "/orders/create",
@@ -39,6 +44,11 @@ const sidebarConfig = [
     name: "Users",
     path: "/users",
   },
+  {
+    icon: "heroicons-outline:gift",
+    name: "Coupons",
+    path: "/coupons"
+  }
 ];
 
 export default sidebarConfig;

@@ -3,21 +3,26 @@ import { Navigate, useRoutes } from "react-router-dom";
 import Layout from "./layouts";
 import Attribute from "./pages/Attribute";
 import Category from "./pages/Category";
+import Coupon from "./pages/Coupon";
 import CreateAttribute from "./pages/CreateAttribute";
 import CreateCategory from "./pages/CreateCategory";
+import CreateCoupon from "./pages/CreateCoupon";
 import CreateGroup from "./pages/CreateGroup";
 import CreateOrder from "./pages/CreateOrder";
+import CreateOrderStatus from "./pages/CreateOrderStatus";
 import CreateProduct from "./pages/CreateProduct";
 import CreateTag from "./pages/CreateTag";
 import CreateUser from "./pages/CreateUser";
 import Dashboard from "./pages/Dashboard";
 import Group from "./pages/Group";
 import Login from "./pages/Login";
+import OrderStatus from "./pages/OrderStatus";
 import Product from "./pages/Product";
 import Tags from "./pages/Tags";
 import UpdateAttribute from "./pages/UpdateAttribute";
 import UpdateCategory from "./pages/UpdateCategory";
 import UpdateGroup from "./pages/UpdateGroup";
+import UpdateOrderStatus from "./pages/UpdateOrderStatus";
 import UpdateTag from "./pages/UpdateTag";
 import UpdateUser from "./pages/UpdateUser";
 import User from "./pages/User";
@@ -103,6 +108,26 @@ function Router() {
         {
           path: "/users/:id",
           element: <UpdateUser />,
+        },
+        {
+          path: "/order-status",
+          element: <OrderStatus />,
+        },
+        {
+          path: "/order-status/create",
+          element: <CreateOrderStatus />,
+        },
+        {
+          path: "/order-status/:id",
+          element: <UpdateOrderStatus />,
+        },
+        {
+          path: "/coupons",
+          element: <Coupon />,
+        },
+        {
+          path: "/coupons/create",
+          element: <CreateCoupon />,
         },
         {
           path: "",

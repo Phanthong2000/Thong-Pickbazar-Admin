@@ -29,4 +29,4 @@ function BaseBackdrop() {
   );
 }
 
-export default BaseBackdrop;
+export default React.memo(BaseBackdrop);

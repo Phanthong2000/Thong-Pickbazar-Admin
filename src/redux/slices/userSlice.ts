@@ -25,6 +25,16 @@ const userSlice = createSlice({
     addUser: (state, action) => {
       state.allUser.push(action.payload as never);
     },
+    updateUser: (state, action) => {
+      const index = state.allUser.findIndex(
+        (user: any) => user.id === action.payload.id
+      );
+      const newAllUser = state.allUser
+        .slice(0, index)
+        .concat([action.payload as never])
+        .concat(state.allUser.slice(index + 1, state.allUser.length));
+      state.allUser = newAllUser;
+    },
   },
   extraReducers: (builder) => {
     builder

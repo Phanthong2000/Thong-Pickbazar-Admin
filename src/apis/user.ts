@@ -34,7 +34,7 @@ export const createUser = async (header: {}, body: {}, param: {}) => {
         },
       }
     );
-    if (result.status === 200) return result.data.user;
+    if (result.status === 200) return result.data;
     else return null;
   } catch (error) {
     console.log(error);
@@ -54,6 +54,25 @@ export const deleteUser = async (
     console.log(error);
   }
 };
+
+export const updateUser = async (
+  header: {},
+  body: {},
+  param: {}) => {
+  try {
+    const result = await fetchApi.put(`${hostname}/edit`, {
+      ...body
+    }, {
+      headers: {
+        ...header
+      }
+    });
+    if (result.status === 200) return result.data.user;
+    else return null;
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 export const updateStatusUser = async (
   header: {},

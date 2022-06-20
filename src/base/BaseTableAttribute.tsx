@@ -124,4 +124,4 @@ function BaseTableAttribute({ data, handleDelete, handleUpdate }: Props) {
   );
 }
 
-export default BaseTableAttribute;
+export default React.memo(BaseTableAttribute);

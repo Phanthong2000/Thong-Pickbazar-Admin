@@ -147,7 +147,7 @@ a {
   color: #888888 !important;
 }
 .color_red {
-  color: #f55858;
+  color: #f55858 !important;
 }
 .color_primary {
   color: var(--primary) !important;
@@ -168,7 +168,7 @@ a {
   background-color: var(--primaryHover);
 }
 .bg_red {
-  background-color: rgba(254, 226, 226);
+  background-color: rgba(254, 226, 226) !important;
 }
 .w100_per {
   width: 100%;
@@ -253,7 +253,8 @@ a {
 .pagination .page,
 .product_item_order .button_add_to_cart,
 .product_item_order .button_change_quantity button,
-.icon_down_product {
+.icon_down_product,
+#color_picker {
   -webkit-transition: 0.5s ease-in-out;
   -moz-transition: 0.5s ease-in-out;
   -ms-transition: 0.5s ease-in-out;
@@ -274,7 +275,8 @@ a {
   pointer-events: all;
 }
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="number"] {
   padding: 0px 15px;
   border: 1px solid var(--color888);
   border-radius: 3px;
@@ -283,7 +285,8 @@ input[type="password"] {
   color: var(--color888);
 }
 input[type="text"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="number"]:focus {
   outline: 0px;
   box-shadow: 0px !important;
   border: 1px solid var(--primaryHover);
@@ -424,4 +427,14 @@ textarea:focus {
 }
 input[type="checkbox"] {
   accent-color: var(--primary);
+}
+
+#color_picker {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+#color_picker.show {
+  opacity: 1;
+  pointer-events: all;
 }
