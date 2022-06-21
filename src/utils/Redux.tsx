@@ -7,6 +7,7 @@ import { getApiAllGroups } from "../redux/slices/groupSlice";
 import {
   getApiAllCoupons,
   getApiAllOrderStatuses,
+  getApiAllShippings,
   getApiAllTaxes,
 } from "../redux/slices/orderSlice";
 import { getApiAllProducts } from "../redux/slices/productSlice";
@@ -31,6 +32,7 @@ function Redux() {
       dispatch(getApiAllOrderStatuses());
       dispatch(getApiAllCoupons());
       dispatch(getApiAllTaxes());
+      dispatch(getApiAllShippings());
     }
   }, [isLogin]);
   return null;

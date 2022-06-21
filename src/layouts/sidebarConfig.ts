@@ -30,9 +30,14 @@ const sidebarConfig = [
     path: "/tags",
   },
   {
+    icon: "fluent:box-checkmark-20-regular",
+    name: "Orders",
+    path: "/orders",
+  },
+  {
     icon: "fluent:clipboard-clock-24-regular",
     name: "Order Status",
-    path: "/order-status"
+    path: "/order-status",
   },
   {
     icon: "icon-park-outline:medical-box",
@@ -47,18 +52,23 @@ const sidebarConfig = [
   {
     icon: "heroicons-outline:gift",
     name: "Coupons",
-    path: "/coupons"
+    path: "/coupons",
   },
   {
     icon: "heroicons-outline:receipt-tax",
     name: "Taxes",
-    path: "/taxes"
+    path: "/taxes",
+  },
+  {
+    icon: "la:shipping-fast",
+    name: "Shippings",
+    path: "/shippings",
   },
   {
     icon: "ant-design:setting-outlined",
     name: "Setting",
-    path: "/setting"
-  }
+    path: "/setting",
+  },
 ];
 
 export default sidebarConfig;

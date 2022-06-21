@@ -255,6 +255,7 @@ a {
   height: 1px;
 }
 .menu_item,
+.box_profile,
 .box_profile_item a,
 .box_filter_product,
 .pagination .page,
@@ -269,7 +270,6 @@ a {
   transition: 0.5s ease-in-out;
 }
 .box_profile {
-  transition: 0.25s;
   opacity: 0;
   background-color: var(--white);
   margin-top: 5px;

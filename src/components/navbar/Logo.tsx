@@ -12,9 +12,9 @@ function Logo() {
   return (
     <Name
       href="#"
-      className="font_family_bold cursor_pointer font25"
+      className="font_family_bold cursor_pointer font20"
     >
-      ThongApp
+      ThongPickbazar
     </Name>
   );
 }

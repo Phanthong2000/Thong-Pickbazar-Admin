@@ -11,6 +11,7 @@ import CreateGroup from "./pages/CreateGroup";
 import CreateOrder from "./pages/CreateOrder";
 import CreateOrderStatus from "./pages/CreateOrderStatus";
 import CreateProduct from "./pages/CreateProduct";
+import CreateShipping from "./pages/CreateShipping";
 import CreateTag from "./pages/CreateTag";
 import CreateTax from "./pages/CreateTax";
 import CreateUser from "./pages/CreateUser";
@@ -19,6 +20,7 @@ import Group from "./pages/Group";
 import Login from "./pages/Login";
 import OrderStatus from "./pages/OrderStatus";
 import Product from "./pages/Product";
+import Shipping from "./pages/Shipping";
 import Tags from "./pages/Tags";
 import Tax from "./pages/Tax";
 import UpdateAttribute from "./pages/UpdateAttribute";
@@ -26,6 +28,7 @@ import UpdateCategory from "./pages/UpdateCategory";
 import UpdateCoupon from "./pages/UpdateCoupon";
 import UpdateGroup from "./pages/UpdateGroup";
 import UpdateOrderStatus from "./pages/UpdateOrderStatus";
+import UpdateShipping from "./pages/UpdateShipping";
 import UpdateTag from "./pages/UpdateTag";
 import UpdateTax from "./pages/UpdateTax";
 import UpdateUser from "./pages/UpdateUser";
@@ -148,6 +151,18 @@ function Router() {
         {
           path: "/taxes/:name",
           element: <UpdateTax />,
+        },
+        {
+          path: "/shippings",
+          element: <Shipping />,
+        },
+        {
+          path: "/shippings/create",
+          element: <CreateShipping />,
+        },
+        {
+          path: "/shippings/:name",
+          element: <UpdateShipping />,
         },
         {
           path: "",
