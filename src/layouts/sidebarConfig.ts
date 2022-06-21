@@ -48,6 +48,16 @@ const sidebarConfig = [
     icon: "heroicons-outline:gift",
     name: "Coupons",
     path: "/coupons"
+  },
+  {
+    icon: "heroicons-outline:receipt-tax",
+    name: "Taxes",
+    path: "/taxes"
+  },
+  {
+    icon: "ant-design:setting-outlined",
+    name: "Setting",
+    path: "/setting"
   }
 ];
 

@@ -85,6 +85,10 @@ a {
   width: 40px;
   height: 40px;
 }
+.icon36x36 {
+  width: 36px;
+  height: 36px;
+}
 .icon30x30 {
   width: 30px;
   height: 30px;
@@ -193,6 +197,9 @@ a {
 }
 .top0 {
   top: 0px;
+}
+.top2 {
+  top: 2px;
 }
 .left0 {
   left: 0px;
@@ -425,7 +432,8 @@ textarea:focus {
   justify-content: center;
   flex-direction: column;
 }
-input[type="checkbox"] {
+input[type="checkbox"],
+input[type="radio"] {
   accent-color: var(--primary);
 }
 

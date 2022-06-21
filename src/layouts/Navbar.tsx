@@ -32,6 +32,7 @@ function Navbar() {
   const handleCloseProfile = () => {
     setIsProfile(false);
   };
+  if(!user) return null;
   return (
     <Container className="d-flex align-items-center justify-content-between px-4">
       <Logo />
@@ -43,10 +44,14 @@ function Navbar() {
           click={handleShowBoxProfile}
           cursor="pointer"
           shape="circle"
-          url={user ? user.avatar : ''}
+          url={user ? user.avatar : ""}
           size={50}
         />
-        <BoxProfile close={handleCloseProfile} show={isShowProfile} />
+        <BoxProfile
+          user={user}
+          close={handleCloseProfile}
+          show={isShowProfile}
+        />
       </div>
     </Container>
   );

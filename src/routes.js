@@ -12,6 +12,7 @@ import CreateOrder from "./pages/CreateOrder";
 import CreateOrderStatus from "./pages/CreateOrderStatus";
 import CreateProduct from "./pages/CreateProduct";
 import CreateTag from "./pages/CreateTag";
+import CreateTax from "./pages/CreateTax";
 import CreateUser from "./pages/CreateUser";
 import Dashboard from "./pages/Dashboard";
 import Group from "./pages/Group";
@@ -19,11 +20,14 @@ import Login from "./pages/Login";
 import OrderStatus from "./pages/OrderStatus";
 import Product from "./pages/Product";
 import Tags from "./pages/Tags";
+import Tax from "./pages/Tax";
 import UpdateAttribute from "./pages/UpdateAttribute";
 import UpdateCategory from "./pages/UpdateCategory";
+import UpdateCoupon from "./pages/UpdateCoupon";
 import UpdateGroup from "./pages/UpdateGroup";
 import UpdateOrderStatus from "./pages/UpdateOrderStatus";
 import UpdateTag from "./pages/UpdateTag";
+import UpdateTax from "./pages/UpdateTax";
 import UpdateUser from "./pages/UpdateUser";
 import User from "./pages/User";
 
@@ -128,6 +132,22 @@ function Router() {
         {
           path: "/coupons/create",
           element: <CreateCoupon />,
+        },
+        {
+          path: "/coupons/:code",
+          element: <UpdateCoupon />,
+        },
+        {
+          path: "/taxes",
+          element: <Tax />,
+        },
+        {
+          path: "/taxes/create",
+          element: <CreateTax />,
+        },
+        {
+          path: "/taxes/:name",
+          element: <UpdateTax />,
         },
         {
           path: "",

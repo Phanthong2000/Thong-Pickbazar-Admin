@@ -1,16 +1,18 @@
-import { Icon } from "@iconify/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { getCouponByCode, updateCoupon } from "../apis";
+import { CouponType } from "../interfaces";
+import { Icon } from "@iconify/react";
+import moment from "moment";
 import DatePicker from "react-datepicker";
 import BaseFileChosen from "../base/BaseFileChosen";
-import moment from "moment";
-import { saveImage } from "../utils/firebase";
-import { createCoupon } from "../apis";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
 import themeSlice from "../redux/slices/themeSlice";
+import { saveImage } from "../utils/firebase";
 import orderSlice from "../redux/slices/orderSlice";
 
 const schema = yup.object({
@@ -18,26 +20,51 @@ const schema = yup.object({
   amount: yup.string().required("Amount is required"),
   description: yup.string(),
 });
-function CreateCoupon() {
+function UpdateCoupon() {
   const chooseImageRef = useRef<HTMLInputElement>(null);
+  const { code } = useParams();
+  const [coupon, setCoupon] = useState<CouponType>();
   const [image, setImage] = useState<any[]>([]);
-  const [type, setType] = useState<string>("usd");
-  const [from, setFrom] = useState<Date>(new Date());
-  const [to, setTo] = useState<Date>(
-    new Date(moment(new Date()).add(2, "days").format("YYYY/MM/DD"))
-  );
+  const [newImage, setNewImage] = useState<any[]>([]);
+  const [type, setType] = useState<string>("");
+  const [from, setFrom] = useState<Date>();
+  const [to, setTo] = useState<Date>();
   const [errorImage, setErrorImage] = useState<string>("");
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const getCoupon = async (code: string) => {
+    try {
+      const result = await getCouponByCode({}, {}, {}, code);
+      if (result) {
+        setCoupon(result);
+        setValue("code", result.code);
+        setImage([result.image]);
+        setType(result.type);
+        setValue("amount", result.amount);
+        setValue("description", result.description);
+        setFrom(new Date(moment(result.from).format(`YYYY/MM/DD`)));
+        setTo(new Date(moment(result.to).format(`YYYY/MM/DD`)));
+      } else {
+        navigate("/coupons");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (code) getCoupon(code);
+  }, [code]);
   const onSubmit = (data: any) => {
-    if (image.length === 0) setErrorImage("Must choose image");
+    if (image.length === 0 && newImage.length === 0)
+      setErrorImage("Must choose image");
     else {
       setErrorImage("");
       dispatch(
@@ -46,7 +73,8 @@ function CreateCoupon() {
           content: "",
         })
       );
-      const coupon = {
+      const newCoupon = {
+        id: coupon?.id,
         code: data.code,
         type,
         description: data.description ? data.description : "",
@@ -54,19 +82,21 @@ function CreateCoupon() {
         from,
         to,
       };
-      saveCoupon(coupon);
+      saveCoupon(newCoupon);
     }
   };
   const saveCoupon = async (coupon: any) => {
     try {
-      const imageUrl = await saveImage("coupons", image[0]);
+      let imageUrl: any = coupon.image;
+      if (newImage.length > 0)
+        imageUrl = await saveImage("coupons", newImage[0]);
       const body = {
         ...coupon,
         image: imageUrl,
       };
-      const result = await createCoupon({}, body, {});
+      const result = await updateCoupon({}, body, {});
       if (result) {
-        dispatch(orderSlice.actions.addCoupon(result));
+        dispatch(orderSlice.actions.updateCoupon(result));
         dispatch(
           themeSlice.actions.hideBackdrop({
             isShow: false,
@@ -75,7 +105,7 @@ function CreateCoupon() {
         );
         dispatch(
           themeSlice.actions.showToast({
-            content: "Successfully create Coupon",
+            content: "Successfully update Coupon",
             type: "success",
           })
         );
@@ -85,13 +115,17 @@ function CreateCoupon() {
       console.log(error);
     }
   };
-  const onChooseImage = (e: any) => {
-    const file = e.target.files[0];
-    setImage([file]);
-  };
-  const handleDeleteImage = (position: number) => {
+  const handleDeleteImage = (e: any) => {
     setImage([]);
   };
+  const onChooseNewImage = (e: any) => {
+    const file = e.target.files[0];
+    setNewImage([file]);
+  };
+  const handleDeleteNewImage = (e: any) => {
+    setNewImage([]);
+  };
+  if (!coupon) return null;
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -122,8 +156,17 @@ function CreateCoupon() {
             <div className="d-flex flex-wrap mt-2">
               {image.map((item: any, index: any) => (
                 <BaseFileChosen
-                  file={true}
+                  file={false}
                   close={handleDeleteImage}
+                  index={index}
+                  key={index}
+                  image={item}
+                />
+              ))}
+              {newImage.map((item: any, index: any) => (
+                <BaseFileChosen
+                  file={true}
+                  close={handleDeleteNewImage}
                   index={index}
                   key={index}
                   image={item}
@@ -280,10 +323,10 @@ function CreateCoupon() {
           e.target.value = null;
         }}
         accept=".png, .jpg"
-        onChange={onChooseImage}
+        onChange={onChooseNewImage}
       />
     </>
   );
 }
 
-export default CreateCoupon;
+export default UpdateCoupon;

@@ -10,6 +10,7 @@ import { primaryHoverColor } from "../theme";
 type Props = {
   show: boolean;
   close: () => void;
+  user: any;
 };
 const Container = styled.div`
   position: absolute;
@@ -22,7 +23,7 @@ const Container = styled.div`
     color: ${primaryHoverColor} !important;
   }
 `;
-function BoxProfile({ close, show }: Props) {
+function BoxProfile({ close, show, user }: Props) {
   const profileRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -44,11 +45,9 @@ function BoxProfile({ close, show }: Props) {
       } box_profile`}
     >
       <div className="bg_primary py-2 px-3 border_radius_5">
-        <div className="color_white font14 font_family_bold_italic">
-          Customer
-        </div>
+        <div className="color_white font14 font_family_bold_italic">Admin</div>
         <div className="font14 mt-1 color_white font_family_italic">
-          customer@gmail.com
+          {user.name}
         </div>
       </div>
       <div className="py-2 px-3 cursor_pointer box_profile_item">

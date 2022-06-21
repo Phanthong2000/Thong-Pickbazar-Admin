@@ -97,3 +97,25 @@ export type OrderStatusType = {
   serial: number;
   color: string;
 }
+
+export type CouponType = {
+  id: string;
+  code: string;
+  amount: number;
+  type: string;
+  image: string;
+  from: Date,
+  to: Date;
+  description: string;
+}
+
+export type TaxType = {
+  id: string;
+  name: string;
+  rate: number;
+  type: string;
+  status: string;
+  city: string;
+  district: string;
+  ward: string
+}
