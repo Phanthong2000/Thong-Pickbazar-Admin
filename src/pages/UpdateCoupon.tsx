@@ -9,19 +9,26 @@ import { Icon } from "@iconify/react";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import BaseFileChosen from "../base/BaseFileChosen";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import themeSlice from "../redux/slices/themeSlice";
 import { saveImage } from "../utils/firebase";
-import orderSlice from "../redux/slices/orderSlice";
+import orderSlice, {
+  allPaymentMethodsSelector,
+} from "../redux/slices/orderSlice";
+import { Collapse } from "react-bootstrap";
+import Select from "react-select";
 
 const schema = yup.object({
   code: yup.string().required("Code is required"),
   amount: yup.string().required("Amount is required"),
   description: yup.string(),
+  minTotal: yup.string().required("Min total is required"),
+  paymentMethodId: yup.string().required("Payment Method is required"),
 });
 function UpdateCoupon() {
   const chooseImageRef = useRef<HTMLInputElement>(null);
+  const allPaymentMethods = useSelector(allPaymentMethodsSelector);
   const { code } = useParams();
   const [coupon, setCoupon] = useState<CouponType>();
   const [image, setImage] = useState<any[]>([]);
@@ -30,16 +37,20 @@ function UpdateCoupon() {
   const [from, setFrom] = useState<Date>();
   const [to, setTo] = useState<Date>();
   const [errorImage, setErrorImage] = useState<string>("");
+  const [condition, setCondition] = useState<string>("");
+  const [options, setOptions] = useState<any[]>([]);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const paymentMethodId = watch("paymentMethodId");
   const getCoupon = async (code: string) => {
     try {
       const result = await getCouponByCode({}, {}, {}, code);
@@ -52,6 +63,19 @@ function UpdateCoupon() {
         setValue("description", result.description);
         setFrom(new Date(moment(result.from).format(`YYYY/MM/DD`)));
         setTo(new Date(moment(result.to).format(`YYYY/MM/DD`)));
+        if (result.condition === "all") {
+          setCondition("all");
+          setValue("minTotal", "1");
+          setValue("paymentMethodId", "ok");
+        } else if (result.condition === "total") {
+          setCondition("total");
+          setValue("minTotal", result.minTotal);
+          setValue("paymentMethodId", "ok");
+        } else if (result.condition === "paymentMethod") {
+          setCondition("paymentMethod");
+          setValue("minTotal", "1");
+          setValue("paymentMethodId", result.paymentMethodId);
+        }
       } else {
         navigate("/coupons");
       }
@@ -62,6 +86,18 @@ function UpdateCoupon() {
   useEffect(() => {
     if (code) getCoupon(code);
   }, [code]);
+  useEffect(() => {
+    if (allPaymentMethods) {
+      const data: any[] = [];
+      allPaymentMethods.forEach((paymentMethod: any) => {
+        data.push({
+          value: paymentMethod.id,
+          label: paymentMethod.name,
+        });
+      });
+      setOptions(data);
+    }
+  }, [allPaymentMethods]);
   const onSubmit = (data: any) => {
     if (image.length === 0 && newImage.length === 0)
       setErrorImage("Must choose image");
@@ -69,7 +105,7 @@ function UpdateCoupon() {
       setErrorImage("");
       dispatch(
         themeSlice.actions.showBackdrop({
-          isShow: true,
+          isShow: false,
           content: "",
         })
       );
@@ -81,6 +117,10 @@ function UpdateCoupon() {
         amount: data.amount,
         from,
         to,
+        condition: condition,
+        minTotal: condition === "total" ? data.minTotal : 0,
+        paymentMethodId:
+          condition === "paymentMethod" ? data.paymentMethodId : "",
       };
       saveCoupon(newCoupon);
     }
@@ -125,11 +165,25 @@ function UpdateCoupon() {
   const handleDeleteNewImage = (e: any) => {
     setNewImage([]);
   };
+  const handleChangeCondition = (condition: string) => {
+    setCondition(condition);
+    if (condition === "total") {
+      if (coupon?.condition === "total") setValue("minTotal", coupon?.minTotal);
+      else setValue("minTotal", "");
+    } else setValue("minTotal", "12");
+    if (condition === "paymentMethod") {
+      if (coupon?.condition === "paymentMethod") setValue("paymentMethodId", coupon?.paymentMethodId);
+      else setValue("paymentMethodId", "");
+    } else setValue("paymentMethodId", "ok");
+  };
+  const handleChoosePaymentMethod = (value: any) => {
+    setValue("paymentMethodId", value ? value.value : "");
+  };
   if (!coupon) return null;
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="font20 font_family_bold mt-2">Create New Coupon</div>
+        <div className="font20 font_family_bold mt-2">Update Coupon</div>
         <div className="my-4 divider_vertical_dashed"></div>
         <div className="row p-0 m-0 mt-4">
           <div className="col-12 col-lg-4 mt-2">
@@ -244,6 +298,89 @@ function UpdateCoupon() {
             <div className="mt-2 font12 ml_5px color_red font_family_italic">
               {errors.amount?.message}
             </div>
+            <div className="font_family_bold_italic font14 mt-4">Condition</div>
+            <div className="mt-2 d-flex align-items-center">
+              <input
+                checked={condition === "all"}
+                onChange={() => handleChangeCondition("all")}
+                className="icon20x20"
+                type="radio"
+              />
+              <span className="ml_10px font16 font_family_bold_italic">
+                All
+              </span>
+              <input
+                checked={condition === "total"}
+                onChange={() => handleChangeCondition("total")}
+                className="icon20x20 ml_20px"
+                type="radio"
+              />
+              <span className="ml_10px font16 font_family_bold_italic">
+                Total
+              </span>
+              <input
+                checked={condition === "paymentMethod"}
+                onChange={() => handleChangeCondition("paymentMethod")}
+                className="icon20x20 ml_20px"
+                type="radio"
+              />
+              <span className="ml_10px font16 font_family_bold_italic">
+                Payment Method
+              </span>
+            </div>
+            <Collapse in={condition === "total"}>
+              <div>
+                <div className="font_family_bold_italic font14 mt-4">
+                  Min total
+                </div>
+                <div className="position-relative">
+                  <input
+                    className="mt-2 h40_px w100_per"
+                    {...register("minTotal")}
+                    placeholder="Type min total"
+                    type="number"
+                  />
+                </div>
+                <div className="mt-2 font12 ml_5px color_red font_family_italic">
+                  {errors.minTotal?.message}
+                </div>
+              </div>
+            </Collapse>
+            <Collapse in={condition === "paymentMethod"}>
+              <div>
+                <div className="font_family_bold_italic font14 mt-4">
+                  Choose payment method
+                </div>
+                <Select
+                  value={options.filter(
+                    (option) => option.value === paymentMethodId
+                  )}
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      height: "40px",
+                      marginTop: "8px",
+                    }),
+                  }}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary25: "#ddd",
+                      primary50: "#ddd",
+                      primary: "rgba(0,159,127)",
+                    },
+                  })}
+                  isClearable
+                  placeholder="Choose parent"
+                  onChange={(value) => handleChoosePaymentMethod(value)}
+                  options={options}
+                />
+                <div className="mt-2 font12 ml_5px color_red font_family_italic">
+                  {errors.paymentMethodId?.message}
+                </div>
+              </div>
+            </Collapse>
             <div className="row m-0 p-0">
               <div className="col-6 mt-4 px-0">
                 <div className="font_family_bold_italic font14">
@@ -311,7 +448,7 @@ function UpdateCoupon() {
             type="submit"
             className="btn bg_primary font14 font_family_bold color_white"
           >
-            Add Coupon
+            Update Coupon
           </button>
         </div>
       </form>
@@ -329,4 +466,4 @@ function UpdateCoupon() {
   );
 }
 
-export default UpdateCoupon;
+export default React.memo(UpdateCoupon);

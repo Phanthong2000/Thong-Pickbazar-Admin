@@ -111,4 +111,4 @@ function DrawerCartItem({ product }: Props) {
   );
 }
 
-export default DrawerCartItem;
+export default React.memo(DrawerCartItem);

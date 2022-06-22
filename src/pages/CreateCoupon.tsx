@@ -1,9 +1,9 @@
 import { Icon } from "@iconify/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import BaseFileChosen from "../base/BaseFileChosen";
@@ -11,15 +11,22 @@ import moment from "moment";
 import { saveImage } from "../utils/firebase";
 import { createCoupon } from "../apis";
 import themeSlice from "../redux/slices/themeSlice";
-import orderSlice from "../redux/slices/orderSlice";
+import orderSlice, {
+  allPaymentMethodsSelector,
+} from "../redux/slices/orderSlice";
+import { Collapse } from "react-bootstrap";
+import Select from "react-select";
 
 const schema = yup.object({
   code: yup.string().required("Code is required"),
   amount: yup.string().required("Amount is required"),
   description: yup.string(),
+  minTotal: yup.string().required("Min total is required"),
+  paymentMethodId: yup.string().required("Payment Method is required"),
 });
 function CreateCoupon() {
   const chooseImageRef = useRef<HTMLInputElement>(null);
+  const allPaymentMethods = useSelector(allPaymentMethodsSelector);
   const [image, setImage] = useState<any[]>([]);
   const [type, setType] = useState<string>("usd");
   const [from, setFrom] = useState<Date>(new Date());
@@ -27,15 +34,34 @@ function CreateCoupon() {
     new Date(moment(new Date()).add(2, "days").format("YYYY/MM/DD"))
   );
   const [errorImage, setErrorImage] = useState<string>("");
+  const [condition, setCondition] = useState<string>("all");
+  const [options, setOptions] = useState<any[]>([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const paymentMethodId = watch("paymentMethodId");
+  useEffect(() => {
+    setValue("minTotal", "ok");
+    setValue("paymentMethodId", "ok");
+    if (allPaymentMethods) {
+      const data: any[] = [];
+      allPaymentMethods.forEach((paymentMethod: any) => {
+        data.push({
+          value: paymentMethod.id,
+          label: paymentMethod.name,
+        });
+      });
+      setOptions(data);
+    }
+  }, [allPaymentMethods]);
   const onSubmit = (data: any) => {
     if (image.length === 0) setErrorImage("Must choose image");
     else {
@@ -53,6 +79,10 @@ function CreateCoupon() {
         amount: data.amount,
         from,
         to,
+        condition: condition,
+        minTotal: condition === "total" ? data.minTotal : 0,
+        paymentMethodId:
+          condition === "paymentMethod" ? data.paymentMethodId : "",
       };
       saveCoupon(coupon);
     }
@@ -91,6 +121,16 @@ function CreateCoupon() {
   };
   const handleDeleteImage = (position: number) => {
     setImage([]);
+  };
+  const handleChangeCondition = (condition: string) => {
+    setCondition(condition);
+    if (condition === "total") setValue("minTotal", "");
+    else setValue("minTotal", "12");
+    if (condition === "paymentMethod") setValue("paymentMethodId", "");
+    else setValue("paymentMethodId", "ok");
+  };
+  const handleChoosePaymentMethod = (value: any) => {
+    setValue("paymentMethodId", value ? value.value : "");
   };
   return (
     <>
@@ -201,6 +241,89 @@ function CreateCoupon() {
             <div className="mt-2 font12 ml_5px color_red font_family_italic">
               {errors.amount?.message}
             </div>
+            <div className="font_family_bold_italic font14 mt-4">Condition</div>
+            <div className="mt-2 d-flex align-items-center">
+              <input
+                checked={condition === "all"}
+                onChange={() => handleChangeCondition("all")}
+                className="icon20x20"
+                type="radio"
+              />
+              <span className="ml_10px font16 font_family_bold_italic">
+                All
+              </span>
+              <input
+                checked={condition === "total"}
+                onChange={() => handleChangeCondition("total")}
+                className="icon20x20 ml_20px"
+                type="radio"
+              />
+              <span className="ml_10px font16 font_family_bold_italic">
+                Total
+              </span>
+              <input
+                checked={condition === "paymentMethod"}
+                onChange={() => handleChangeCondition("paymentMethod")}
+                className="icon20x20 ml_20px"
+                type="radio"
+              />
+              <span className="ml_10px font16 font_family_bold_italic">
+                Payment Method
+              </span>
+            </div>
+            <Collapse in={condition === "total"}>
+              <div>
+                <div className="font_family_bold_italic font14 mt-4">
+                  Min total
+                </div>
+                <div className="position-relative">
+                  <input
+                    className="mt-2 h40_px w100_per"
+                    {...register("minTotal")}
+                    placeholder="Type min total"
+                    type="number"
+                  />
+                </div>
+                <div className="mt-2 font12 ml_5px color_red font_family_italic">
+                  {errors.minTotal?.message}
+                </div>
+              </div>
+            </Collapse>
+            <Collapse in={condition === "paymentMethod"}>
+              <div>
+                <div className="font_family_bold_italic font14 mt-4">
+                  Choose payment method
+                </div>
+                <Select
+                  value={options.filter(
+                    (option) => option.value === paymentMethodId
+                  )}
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      height: "40px",
+                      marginTop: "8px",
+                    }),
+                  }}
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary25: "#ddd",
+                      primary50: "#ddd",
+                      primary: "rgba(0,159,127)",
+                    },
+                  })}
+                  isClearable
+                  placeholder="Choose parent"
+                  onChange={(value) => handleChoosePaymentMethod(value)}
+                  options={options}
+                />
+                <div className="mt-2 font12 ml_5px color_red font_family_italic">
+                  {errors.paymentMethodId?.message}
+                </div>
+              </div>
+            </Collapse>
             <div className="row m-0 p-0">
               <div className="col-6 mt-4 px-0">
                 <div className="font_family_bold_italic font14">

@@ -27,4 +27,4 @@ function BoxSearchOrderStatus({ handleFilter }: Props) {
   );
 }
 
-export default BoxSearchOrderStatus;
+export default React.memo(BoxSearchOrderStatus);

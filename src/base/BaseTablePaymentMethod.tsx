@@ -1,13 +1,16 @@
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
-import styled from "styled-components";
 import { Collapse } from "react-bootstrap";
-import { CategoryType } from "../interfaces";
+import styled from "styled-components";
+import Avatar from "../components/Avatar";
+import { PaymentMethodType } from "../interfaces";
+import BaseSwitch from "./BaseSwitch";
 
 type Props = {
-  data: Array<CategoryType | any>;
-  handleDelete: (category: CategoryType) => void;
+  data: Array<PaymentMethodType | any>;
+  handleDelete: (id: string) => void;
   handleUpdate: (id: string) => void;
+  handleChangeStatus: (id: string, status: string) => void;
 };
 type Type =
   | "start"
@@ -26,14 +29,16 @@ const TableCellHead = styled.div`
 type TableCellCollapseType = {
   row: any;
   indexParent: number;
-  handleDelete: (category: CategoryType) => void;
+  handleDelete: (id: string) => void;
   handleUpdate: (name: string) => void;
+  handleChangeStatus: (id: string, status: string) => void;
 };
 function TableCellCollapse({
   row,
   indexParent,
   handleDelete,
   handleUpdate,
+  handleChangeStatus,
 }: TableCellCollapseType) {
   const [toggle, setToggle] = useState<boolean>(false);
   const handleToggle = () => {
@@ -45,7 +50,7 @@ function TableCellCollapse({
         <TableCell
           style={{
             width: "5%",
-            textAlign: "left",
+            textAlign: "center",
           }}
         >
           {row.child.length > 0 && (
@@ -66,59 +71,42 @@ function TableCellCollapse({
         </TableCell>
         <TableCell
           style={{
-            width: "10%",
-            textAlign: "left",
-          }}
-        >
-          {indexParent + 1}
-        </TableCell>
-        <TableCell
-          style={{
-            width: "20%",
-            textAlign: "left",
-          }}
-        >
-          {row.name_en}
-        </TableCell>
-        <TableCell
-          style={{
-            width: "20%",
-            textAlign: "left",
-          }}
-        >
-          <Icon className="color_888" icon={row.detail} />
-        </TableCell>
-        <TableCell
-          style={{
-            width: "10%",
-            textAlign: "center",
-          }}
-        >
-          <img className="icon30x30 color_888" src={row.image} alt="category" />
-        </TableCell>
-        <TableCell
-          style={{
-            width: "10%",
-            textAlign: "center",
-          }}
-        >
-          <Icon className="icon30x30 color_888" icon={row.icon} />
-        </TableCell>
-        <TableCell
-          style={{
             width: "15%",
-            textAlign: "center",
+            textAlign: "left",
           }}
         >
-          {row.group.name_en}
+          <Avatar shape="rectangle" size={50} url={row.image} />
         </TableCell>
         <TableCell
           style={{
-            width: "10%",
+            width: "40%",
+            textAlign: "left",
+          }}
+        >
+          {row.name}
+        </TableCell>
+        <TableCell
+          style={{
+            width: "20%",
+            textAlign: "center",
+          }}
+        >
+          <BaseSwitch
+            checked={row.status === "active"}
+            handleOff={() => handleChangeStatus(row.id, "inactive")}
+            handleOn={() => handleChangeStatus(row.id, "active")}
+          />
+        </TableCell>
+        <TableCell
+          style={{
+            width: "20%",
             textAlign: "right",
           }}
         >
-          <button onClick={() => handleDelete(row)} className="btn p-0 mr_5px">
+          <button
+            onClick={() => handleDelete(row.id)}
+            className="btn p-0 mr_5px"
+          >
             <Icon className="icon20x20 color_red" icon="bi:trash3" />
           </button>
           <button onClick={() => handleUpdate(row.id)} className="btn p-0 m-0">
@@ -143,64 +131,40 @@ function TableCellCollapse({
               </TableCell>
               <TableCell
                 style={{
-                  width: "10%",
+                  width: "15%",
                   textAlign: "left",
                 }}
               >
-                {indexParent + 1}-{index + 1}
+                <Avatar shape="rectangle" size={50} url={item.image} />
+              </TableCell>
+              <TableCell
+                style={{
+                  width: "40%",
+                  textAlign: "left",
+                }}
+              >
+                {item.name}
               </TableCell>
               <TableCell
                 style={{
                   width: "20%",
-                  textAlign: "left",
-                }}
-              >
-                {item.name_en}
-              </TableCell>
-              <TableCell
-                style={{
-                  width: "20%",
-                  textAlign: "left",
-                }}
-              >
-                <Icon className="color_888" icon={item.detail} />
-              </TableCell>
-              <TableCell
-                style={{
-                  width: "10%",
                   textAlign: "center",
                 }}
               >
-                <img
-                  className="icon30x30 color_888"
-                  src={item.image}
-                  alt="category"
+                <BaseSwitch
+                  checked={item.status === "active"}
+                  handleOff={() => handleChangeStatus(item._id, "inactive")}
+                  handleOn={() => handleChangeStatus(item._id, "active")}
                 />
               </TableCell>
               <TableCell
                 style={{
-                  width: "10%",
-                  textAlign: "center",
-                }}
-              >
-                <Icon className="icon30x30 color_888" icon={item.icon} />
-              </TableCell>
-              <TableCell
-                style={{
-                  width: "15%",
-                  textAlign: "center",
-                }}
-              >
-                {row.group.name_en}
-              </TableCell>
-              <TableCell
-                style={{
-                  width: "10%",
+                  width: "20%",
                   textAlign: "right",
                 }}
               >
                 <button
-                  onClick={() => handleDelete(item)}
+                  onClick={() => handleDelete(item._id)}
                   className="btn p-0 mr_5px"
                 >
                   <Icon className="icon20x20 color_red" icon="bi:trash3" />
@@ -219,7 +183,12 @@ function TableCellCollapse({
     </>
   );
 }
-function BaseTableCategory({ data, handleDelete, handleUpdate }: Props) {
+function BaseTablePaymentMethod({
+  data,
+  handleDelete,
+  handleUpdate,
+  handleChangeStatus,
+}: Props) {
   const textAlign = (value: Type) => value;
   const header = [
     {
@@ -228,38 +197,23 @@ function BaseTableCategory({ data, handleDelete, handleUpdate }: Props) {
       textAlign: textAlign("left"),
     },
     {
-      name: "ID",
-      width: "10%",
+      name: "Image",
+      width: "15%",
       textAlign: textAlign("left"),
     },
     {
       name: "Name",
-      width: "20%",
+      width: "40%",
       textAlign: textAlign("left"),
     },
     {
-      name: "Detail",
+      name: "Status",
       width: "20%",
-      textAlign: textAlign("left"),
-    },
-    {
-      name: "Image",
-      width: "10%",
-      textAlign: textAlign("center"),
-    },
-    {
-      name: "Icon",
-      width: "10%",
-      textAlign: textAlign("center"),
-    },
-    {
-      name: "Group",
-      width: "15%",
       textAlign: textAlign("center"),
     },
     {
       name: "Actions",
-      width: "10%",
+      width: "20%",
       textAlign: textAlign("right"),
     },
   ];
@@ -284,6 +238,7 @@ function BaseTableCategory({ data, handleDelete, handleUpdate }: Props) {
       <div>
         {data.map((item, index) => (
           <TableCellCollapse
+            handleChangeStatus={handleChangeStatus}
             handleDelete={handleDelete}
             handleUpdate={handleUpdate}
             key={index}
@@ -296,4 +251,4 @@ function BaseTableCategory({ data, handleDelete, handleUpdate }: Props) {
   );
 }
 
-export default React.memo(BaseTableCategory);
+export default BaseTablePaymentMethod;

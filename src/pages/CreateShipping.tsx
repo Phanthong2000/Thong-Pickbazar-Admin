@@ -75,7 +75,7 @@ function CreateShipping() {
                     <div className="mt-2 font12 ml_5px color_red font_family_italic">
                         {errors.name?.message}
                     </div>
-                    <div className="font_family_bold_italic font14 mt-4">Fee ($ per km)</div>
+                    <div className="font_family_bold_italic font14 mt-4">Fee</div>
                     <input
                         className="mt-2 h40_px w100_per"
                         {...register("fee")}

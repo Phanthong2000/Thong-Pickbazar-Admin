@@ -38,7 +38,7 @@ function BaseTableShipping({ data, handleDelete, handleUpdate }: Props) {
             textAlign: textAlign("left"),
         },
         {
-            name: "Fee ($ per km)",
+            name: "Fee",
             width: "20%",
             textAlign: textAlign("center"),
         },

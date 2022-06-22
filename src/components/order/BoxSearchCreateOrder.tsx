@@ -168,4 +168,4 @@ function BoxSearchCreateOrder({ handleFilter }: Props) {
   );
 }
 
-export default BoxSearchCreateOrder;
+export default React.memo(BoxSearchCreateOrder);

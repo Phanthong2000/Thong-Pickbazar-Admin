@@ -9,6 +9,7 @@ const hostnameStatus = `${version.v1}/order-statuses`;
 const hostnameCoupon = `${version.v1}/coupons`;
 const hostnameTax = `${version.v1}/taxes`;
 const hostnameShipping = `${version.v1}/shippings`;
+const hostnamePaymentMethod = `${version.v1}/payment-methods`
 
 export const getAllOrderStatuses = async (header: {}, body: {}, param: {}) => {
   try {
@@ -377,6 +378,117 @@ export const getShippingByName = async (
       }
     );
     if (result.status === 200) return result.data.shipping;
+    else return null;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllPaymentMethod = async (header: {}, body: {}, param: {}) => {
+  try {
+    const result = await fetchApi.get(`${hostnamePaymentMethod}/list`, {
+      headers: {
+        ...header,
+      },
+    });
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createPaymentMethod = async (header: {}, body: {}, param: {}) => {
+  try {
+    const result = await fetchApi.post(
+      `${hostnamePaymentMethod}/create`,
+      {
+        ...body,
+      },
+      {
+        headers: {
+          ...header,
+        },
+      }
+    );
+    if (result.status === 200) return result.data.paymentMethod;
+    else return null;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deletePaymentMethod = async (
+  header: {},
+  body: {},
+  param: {},
+  id: string
+) => {
+  try {
+    const result = await fetchApi.delete(`${hostnamePaymentMethod}/delete/${id}`, {
+      headers: {
+        ...header,
+      },
+    });
+    if (result.status === 200) return result.data.paymentMethod;
+    else return null;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updatePaymentMethod = async (header: {}, body: {}, param: {}) => {
+  try {
+    const result = await fetchApi.put(
+      `${hostnamePaymentMethod}/edit`,
+      {
+        ...body,
+      },
+      {
+        headers: {
+          ...header,
+        },
+      }
+    );
+    if (result.status === 200) return result.data.paymentMethod;
+    else return null;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getPaymentMethodById = async (header: {}, body: {}, param: {}, id: string) => {
+  try {
+    const result = await fetchApi.get(`${hostnamePaymentMethod}/detail/${id}`, {
+      headers: {
+        ...header
+      }
+    });
+    if (result.status === 200) return result.data.paymentMethod;
+    else return null;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const updateStatusPaymentStatus = async (
+  header: {},
+  body: {},
+  param: {},
+  id: string
+) => {
+  try {
+    const result = await fetchApi.put(
+      `${hostnamePaymentMethod}/edit/${id}`,
+      {
+        ...body,
+      },
+      {
+        headers: {
+          ...header,
+        },
+      }
+    );
+    if (result.status === 200) return result.data.paymentMethod;
     else return null;
   } catch (error) {
     console.log(error);

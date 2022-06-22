@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Drawer } from "rsuite";
 import { cartSelector } from "../../redux/slices/orderSlice";
 import { currencyFormat } from "../../utils/format";
@@ -14,6 +15,7 @@ type Props = {
 function DrawerCart({ isShow, handleDrawer }: Props) {
   const cartString = useSelector(cartSelector);
   const [cart, setCart] = useState<any[]>([]);
+  const navigate = useNavigate();
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart") || "[]"));
   }, [cartString]);
@@ -27,6 +29,9 @@ function DrawerCart({ isShow, handleDrawer }: Props) {
       (item) => (total = total + item.quantity * item.product.price)
     );
     return currencyFormat(total);
+  };
+  const goToCheckout = () => {
+    navigate("/create-order/checkout");
   };
   return (
     <Drawer
@@ -54,7 +59,7 @@ function DrawerCart({ isShow, handleDrawer }: Props) {
             <DrawerCartItem product={item} key={index} />
           ))}
         </div>
-        <div className="checkout_cart">
+        <div onClick={goToCheckout} className="checkout_cart">
           <div className="ml_20px color_white font16 font_family_bold">
             Checkout
           </div>
@@ -67,4 +72,4 @@ function DrawerCart({ isShow, handleDrawer }: Props) {
   );
 }
 
-export default DrawerCart;
+export default React.memo(DrawerCart);

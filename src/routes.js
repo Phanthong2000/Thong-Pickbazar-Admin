@@ -3,6 +3,7 @@ import { Navigate, useRoutes } from "react-router-dom";
 import Layout from "./layouts";
 import Attribute from "./pages/Attribute";
 import Category from "./pages/Category";
+import Checkout from "./pages/Checkout";
 import Coupon from "./pages/Coupon";
 import CreateAttribute from "./pages/CreateAttribute";
 import CreateCategory from "./pages/CreateCategory";
@@ -10,6 +11,7 @@ import CreateCoupon from "./pages/CreateCoupon";
 import CreateGroup from "./pages/CreateGroup";
 import CreateOrder from "./pages/CreateOrder";
 import CreateOrderStatus from "./pages/CreateOrderStatus";
+import CreatePaymentMethod from "./pages/CreatePaymentMethod";
 import CreateProduct from "./pages/CreateProduct";
 import CreateShipping from "./pages/CreateShipping";
 import CreateTag from "./pages/CreateTag";
@@ -18,7 +20,9 @@ import CreateUser from "./pages/CreateUser";
 import Dashboard from "./pages/Dashboard";
 import Group from "./pages/Group";
 import Login from "./pages/Login";
+import Orders from "./pages/Orders";
 import OrderStatus from "./pages/OrderStatus";
+import PaymentMethod from "./pages/PaymentMethod";
 import Product from "./pages/Product";
 import Shipping from "./pages/Shipping";
 import Tags from "./pages/Tags";
@@ -28,6 +32,7 @@ import UpdateCategory from "./pages/UpdateCategory";
 import UpdateCoupon from "./pages/UpdateCoupon";
 import UpdateGroup from "./pages/UpdateGroup";
 import UpdateOrderStatus from "./pages/UpdateOrderStatus";
+import UpdatePaymentMethod from "./pages/UpdatePaymentMethod";
 import UpdateShipping from "./pages/UpdateShipping";
 import UpdateTag from "./pages/UpdateTag";
 import UpdateTax from "./pages/UpdateTax";
@@ -105,7 +110,7 @@ function Router() {
           element: <User />,
         },
         {
-          path: "/orders/create",
+          path: "/create-order",
           element: <CreateOrder />,
         },
         {
@@ -119,6 +124,10 @@ function Router() {
         {
           path: "/order-status",
           element: <OrderStatus />,
+        },
+        {
+          path: "/orders",
+          element: <Orders />,
         },
         {
           path: "/order-status/create",
@@ -163,6 +172,22 @@ function Router() {
         {
           path: "/shippings/:name",
           element: <UpdateShipping />,
+        },
+        {
+          path: "/payment-methods",
+          element: <PaymentMethod />,
+        },
+        {
+          path: "/payment-methods/create",
+          element: <CreatePaymentMethod />,
+        },
+        {
+          path: "/payment-methods/:id",
+          element: <UpdatePaymentMethod />,
+        },
+        {
+          path: "/create-order/checkout",
+          element: <Checkout />,
         },
         {
           path: "",

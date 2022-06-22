@@ -54,9 +54,7 @@ function Category() {
           content: "",
         })
       );
-      console.log("row", category);
       const result = await deleteCategory({}, {}, {}, category._id);
-      console.log("réult", result);
       if (result) {
         dispatch(getApiAllCategories());
         dispatch(

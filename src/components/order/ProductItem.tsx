@@ -14,7 +14,7 @@ const Container = styled.div`
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between
+  justify-content: space-between;
 `;
 function ProductItem({ product, cart }: Props) {
   const dispatch = useDispatch<AppDispatch>();
@@ -121,4 +121,4 @@ function ProductItem({ product, cart }: Props) {
   );
 }
 
-export default ProductItem;
+export default React.memo(ProductItem);

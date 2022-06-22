@@ -42,7 +42,7 @@ const sidebarConfig = [
   {
     icon: "icon-park-outline:medical-box",
     name: "Create Order",
-    path: "/orders/create",
+    path: "/create-order",
   },
   {
     icon: "ph:users-three",
@@ -63,6 +63,11 @@ const sidebarConfig = [
     icon: "la:shipping-fast",
     name: "Shippings",
     path: "/shippings",
+  },
+  {
+    icon: "fluent:money-hand-20-regular",
+    name: "Payment methods",
+    path: "/payment-methods"
   },
   {
     icon: "ant-design:setting-outlined",

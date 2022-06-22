@@ -107,6 +107,9 @@ export type CouponType = {
   from: Date;
   to: Date;
   description: string;
+  condition: string;
+  minTotal: number;
+  paymentMethodId: string
 };
 
 export type TaxType = {
@@ -125,3 +128,12 @@ export type ShippingType = {
   name: string;
   fee: number;
 };
+
+export type PaymentMethodType = {
+  id: string;
+  name: string;
+  type: string;
+  status: string;
+  parentId: string;
+  child: []
+}
