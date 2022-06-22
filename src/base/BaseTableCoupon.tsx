@@ -128,7 +128,7 @@ function BaseTableCoupon({ data, handleDelete, handleUpdate }: Props) {
                 textAlign: header.at(4)?.textAlign,
               }}
             >
-              {item.type === "usd"
+              {item.type === "vnd"
                 ? currencyFormat(item.amount)
                 : `${item.amount} %`}
             </TableCell>

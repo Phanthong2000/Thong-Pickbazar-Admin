@@ -1,9 +1,9 @@
-import { replace } from 'lodash';
-import numeral from 'numeral';
+import { replace } from "lodash";
+import numeral from "numeral";
 
 export const currencyFormat = (num: number) => {
-    return '$ ' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-}
+  return num.toLocaleString("en-US", { style: "currency", currency: "VND" });
+};
 export function fShortenNumber(num: number) {
-    return replace(numeral(num).format('0.00a'), '.00', '');
+  return replace(numeral(num).format("0.00a"), ".00", "");
 }

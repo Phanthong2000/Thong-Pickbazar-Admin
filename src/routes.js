@@ -24,6 +24,7 @@ import Orders from "./pages/Orders";
 import OrderStatus from "./pages/OrderStatus";
 import PaymentMethod from "./pages/PaymentMethod";
 import Product from "./pages/Product";
+import Setting from "./pages/Setting";
 import Shipping from "./pages/Shipping";
 import Tags from "./pages/Tags";
 import Tax from "./pages/Tax";
@@ -188,6 +189,10 @@ function Router() {
         {
           path: "/create-order/checkout",
           element: <Checkout />,
+        },
+        {
+          path: "/setting",
+          element: <Setting />,
         },
         {
           path: "",

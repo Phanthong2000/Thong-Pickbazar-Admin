@@ -109,7 +109,7 @@ export type CouponType = {
   description: string;
   condition: string;
   minTotal: number;
-  paymentMethodId: string
+  paymentMethodId: string;
 };
 
 export type TaxType = {
@@ -135,5 +135,43 @@ export type PaymentMethodType = {
   type: string;
   status: string;
   parentId: string;
-  child: []
-}
+  child: [];
+};
+export type SettingType = {
+  logo: string;
+  title: string;
+  subTitle: string;
+  currency: string;
+  minimumOrderAmount: number;
+  optCheckout: boolean;
+  seo: {
+    metaTitle: string;
+    metaDescription: string;
+    metaTags: string;
+    canonicalUrl: string;
+    ogTitle: string;
+    ogDescription: string;
+  };
+  deliverySchedule: [
+    {
+      title: string;
+      description: string;
+    }
+  ];
+  shop: {
+    address: {
+      city: string;
+      district: string;
+      ward: string;
+      street: string;
+    };
+    phone: string;
+    social: [
+      {
+        icon: string;
+        name: string;
+        url: string;
+      }
+    ];
+  };
+};

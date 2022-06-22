@@ -4,6 +4,7 @@ import categorySlice from "./slices/categorySlice";
 import groupSlice from "./slices/groupSlice";
 import orderSlice from "./slices/orderSlice";
 import productSlice from "./slices/productSlice";
+import settingSlice from "./slices/settingSlice";
 import tagSlice from "./slices/tagSlice";
 import themeSlice from "./slices/themeSlice";
 import userSlice from "./slices/userSlice";
@@ -17,7 +18,8 @@ const store = configureStore({
     tag: tagSlice.reducer,
     attribute: attributeSlice.reducer,
     product: productSlice.reducer,
-    order: orderSlice.reducer
+    order: orderSlice.reducer,
+    setting: settingSlice.reducer,
   },
 });
 export type AppDispatch = typeof store.dispatch;

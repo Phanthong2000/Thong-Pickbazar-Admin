@@ -28,7 +28,7 @@ function CreateCoupon() {
   const chooseImageRef = useRef<HTMLInputElement>(null);
   const allPaymentMethods = useSelector(allPaymentMethodsSelector);
   const [image, setImage] = useState<any[]>([]);
-  const [type, setType] = useState<string>("usd");
+  const [type, setType] = useState<string>("vnd");
   const [from, setFrom] = useState<Date>(new Date());
   const [to, setTo] = useState<Date>(
     new Date(moment(new Date()).add(2, "days").format("YYYY/MM/DD"))
@@ -203,13 +203,13 @@ function CreateCoupon() {
             <div className="font_family_bold_italic font14 mt-4">Type</div>
             <div className="mt-2 d-flex align-items-center">
               <input
-                checked={type === "usd"}
-                onChange={() => setType("usd")}
+                checked={type === "vnd"}
+                onChange={() => setType("vnd")}
                 className="icon20x20"
                 type="radio"
               />
               <span className="ml_10px font16 font_family_bold_italic">
-                USD
+                VND
               </span>
               <input
                 checked={type === "percent"}
@@ -222,7 +222,7 @@ function CreateCoupon() {
               </span>
             </div>
             <div className="font_family_bold_italic font14 mt-4">
-              Amount {type === "usd" ? `(USD)` : `(%)`}
+              Amount {type === "vnd" ? `(VND)` : `(%)`}
             </div>
             <div className="position-relative">
               <input
@@ -233,7 +233,7 @@ function CreateCoupon() {
               />
               <Icon
                 icon={
-                  type === "usd" ? `cryptocurrency:usd` : `mdi:ticket-percent`
+                  type === "vnd" ? `cryptocurrency:vnd` : `mdi:ticket-percent`
                 }
                 className="icon36x36 position-absolute top2 mt-2 mr_5px right0 color_primary"
               />

@@ -129,6 +129,9 @@ a {
 .border_radius_20 {
   border-radius: 20px;
 }
+.border_radius_25 {
+  border-radius: 25px;
+}
 .bg_white {
   background-color: #fff;
 }
@@ -445,4 +448,7 @@ input[type="radio"] {
 #color_picker.show {
   opacity: 1;
   pointer-events: all;
+}
+.button_choose_checkout:hover {
+  text-decoration: underline;
 }
