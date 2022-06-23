@@ -159,12 +159,7 @@ export type SettingType = {
     }
   ];
   shop: {
-    address: {
-      city: string;
-      district: string;
-      ward: string;
-      street: string;
-    };
+    address: string;
     phone: string;
     social: [
       {

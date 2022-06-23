@@ -40,9 +40,9 @@ export const createSetting = async (header: {}, body: {}, param: {}) => {
   }
 };
 
-export const updatSetting = async (header: {}, body: {}, param: {}) => {
+export const updateSettingApi = async (header: {}, body: {}, param: {}) => {
   try {
-    const result = await fetchApi.post(
+    const result = await fetchApi.put(
       `${hostname}/edit`,
       {
         ...body,
