@@ -13,6 +13,7 @@ import { AppDispatch } from "../redux/store";
 import themeSlice from "../redux/slices/themeSlice";
 import { useNavigate } from "react-router-dom";
 import { isLoginSelector } from "../redux/slices/userSlice";
+import { settingSelector } from "../redux/slices/settingSlice";
 
 const Container = styled.form`
   background: ${grayColor};
@@ -30,6 +31,7 @@ const schema = yup.object({
 const crypto_key = process.env.REACT_APP_CRYPTO_KEY || "1";
 function Login() {
   const isLogin = useSelector(isLoginSelector);
+  const setting = useSelector(settingSelector)
   const [error, setError] = useState<string>("");
   const [rememberMe, setRememberMe] = useState<boolean>(
     localStorage.getItem("rememberMe") ? true : false
@@ -88,7 +90,7 @@ function Login() {
   return (
     <Container onSubmit={handleSubmit(onSubmit)}>
       <div className="box_shadow_card box_login">
-        <Logo />
+        <Logo url={setting.logo} />
         <div className="mt-3 font16 font_family_italic color_888">
           Login to Admin
         </div>

@@ -452,3 +452,14 @@ input[type="radio"] {
 .button_choose_checkout:hover {
   text-decoration: underline;
 }
+
+.modal_choose_customer {
+  min-height: 550px;
+}
+#modal_update_contact_number {
+  width: 400px;
+  margin-top: 0px;
+}
+#modal_update_contact_number .rs-modal-body {
+  max-height: 100px;
+}

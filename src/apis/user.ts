@@ -55,24 +55,25 @@ export const deleteUser = async (
   }
 };
 
-export const updateUser = async (
-  header: {},
-  body: {},
-  param: {}) => {
+export const updateUser = async (header: {}, body: {}, param: {}) => {
   try {
-    const result = await fetchApi.put(`${hostname}/edit`, {
-      ...body
-    }, {
-      headers: {
-        ...header
+    const result = await fetchApi.put(
+      `${hostname}/edit`,
+      {
+        ...body,
+      },
+      {
+        headers: {
+          ...header,
+        },
       }
-    });
+    );
     if (result.status === 200) return result.data.user;
     else return null;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 export const updateStatusUser = async (
   header: {},
@@ -117,6 +118,24 @@ export const getUserById = async (
   }
 };
 
+export const getAllCustomerByStatus = async (
+  header: {},
+  body: {},
+  param: {},
+  status: string
+) => {
+  try {
+    const result = await fetchApi.get(`${hostname}/list/customer/${status}`, {
+      headers: {
+        ...header,
+      },
+    });
+    if (result.status === 200) return result.data.users;
+    else return null;
+  } catch (error) {
+    console.log(error);
+  }
+};
 // export const login = async (header: {}, body: {}, param: {}) => {
 //     try {
 //         const result = await axios.post(`${hostname}/login`, body, {

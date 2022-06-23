@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   getAllCoupons,
+  getAllOrders,
   getAllOrderStatuses,
   getAllPaymentMethod,
   getAllShippings,
@@ -23,7 +24,7 @@ const defaultState = {
   allCoupons: [],
   allTaxes: [],
   allShippings: [],
-  allPaymentMethods: []
+  allPaymentMethods: [],
 };
 
 const orderSlice = createSlice({
@@ -110,7 +111,8 @@ const orderSlice = createSlice({
     },
     deletePaymentMethod: (state, action) => {
       const newAllPaymentMethod = state.allPaymentMethods.filter(
-        (paymentMethod: PaymentMethodType) => paymentMethod.id !== action.payload.id
+        (paymentMethod: PaymentMethodType) =>
+          paymentMethod.id !== action.payload.id
       );
       state.allPaymentMethods = newAllPaymentMethod;
     },
@@ -121,7 +123,12 @@ const orderSlice = createSlice({
       const newAllPaymentMethod = state.allPaymentMethods
         .slice(0, index)
         .concat([action.payload as never])
-        .concat(state.allPaymentMethods.slice(index + 1, state.allPaymentMethods.length));
+        .concat(
+          state.allPaymentMethods.slice(
+            index + 1,
+            state.allPaymentMethods.length
+          )
+        );
       state.allPaymentMethods = newAllPaymentMethod;
     },
   },
@@ -140,8 +147,11 @@ const orderSlice = createSlice({
         state.allShippings = action.payload;
       })
       .addCase(getApiAllPaymentMethods.fulfilled, (state, action) => {
-        state.allPaymentMethods = action.payload
+        state.allPaymentMethods = action.payload;
       })
+      .addCase(getApiAllOrders.fulfilled, (state, action) => {
+        state.allOrders = action.payload;
+      });
   },
 });
 
@@ -195,14 +205,30 @@ export const getApiAllShippings = createAsyncThunk(
   }
 );
 
-export const getApiAllPaymentMethods = createAsyncThunk("order/getApiAllPaymentMethods", async () => {
-  try {
-    const result = await getAllPaymentMethod({}, {}, {});
-    return result.paymentMethods
-  } catch (error) {
-    console.log(error)
+export const getApiAllPaymentMethods = createAsyncThunk(
+  "order/getApiAllPaymentMethods",
+  async () => {
+    try {
+      const result = await getAllPaymentMethod({}, {}, {});
+      return result.paymentMethods;
+    } catch (error) {
+      console.log(error);
+    }
   }
-})
+);
+
+export const getApiAllOrders = createAsyncThunk(
+  "order/getApiAllOrders",
+  async () => {
+    try {
+      const result = await getAllOrders({}, {}, {});
+      console.log("orders", result.orders);
+      return result.orders;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 export const cartSelector = (state: any) => state.order.cart;
 export const allOrderStatusesSelector = (state: any) =>
@@ -210,4 +236,6 @@ export const allOrderStatusesSelector = (state: any) =>
 export const allCouponsSelector = (state: any) => state.order.allCoupons;
 export const allTaxesSelector = (state: any) => state.order.allTaxes;
 export const allShippingsSelector = (state: any) => state.order.allShippings;
-export const allPaymentMethodsSelector = (state: any) => state.order.allPaymentMethods
+export const allPaymentMethodsSelector = (state: any) =>
+  state.order.allPaymentMethods;
+export const allOrdersSelector = (state: any) => state.order.allOrders;

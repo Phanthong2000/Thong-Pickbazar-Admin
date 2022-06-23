@@ -28,7 +28,6 @@ export const getApiSetting = createAsyncThunk(
   async () => {
     try {
       const result = await getSetting({}, {}, {});
-      console.log("seting", result);
       return result;
     } catch (error) {
       console.log(error);

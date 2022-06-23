@@ -2,19 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import { primaryColor } from "../../theme";
 
+type Props = {
+  url?: string;
+}
 const Name = styled.a`
   color: ${primaryColor};
   &:hover {
     color: ${primaryColor};
   }
 `;
-function Logo() {
+function Logo({ url }: Props) {
   return (
     <Name
       href="#"
-      className="font_family_bold cursor_pointer font20"
+      className="cursor_pointer"
     >
-      ThongPickbazar
+      <img src={url} alt="logo" />
     </Name>
   );
 }

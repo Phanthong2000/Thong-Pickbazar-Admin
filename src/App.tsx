@@ -10,6 +10,7 @@ import "bootstrap/js/src/collapse.js";
 import 'rsuite/dist/rsuite.min.css';
 import "react-datepicker/dist/react-datepicker.css";
 import Redux from "./utils/Redux";
+import { settingSelector } from "./redux/slices/settingSlice";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,10 +22,13 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const setting = useSelector(settingSelector);
   return (
     <QueryClientProvider client={queryClient}>
       <Redux />
-      <Router />
+      {
+        setting && <Router />
+      }
     </QueryClientProvider>
   );
 }

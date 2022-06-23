@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Avatar from "../components/Avatar";
 import BoxProfile from "../components/BoxProfile";
 import Logo from "../components/navbar/Logo";
+import { settingSelector } from "../redux/slices/settingSlice";
 import { userSelector } from "../redux/slices/userSlice";
 import { primaryColor, primaryHoverColor } from "../theme";
 
@@ -25,6 +26,7 @@ const Button = styled.button`
 `;
 function Navbar() {
   const user = useSelector(userSelector);
+  const setting = useSelector(settingSelector)
   const [isShowProfile, setIsProfile] = useState<boolean>(false);
   const handleShowBoxProfile = () => {
     setIsProfile(!isShowProfile);
@@ -32,10 +34,10 @@ function Navbar() {
   const handleCloseProfile = () => {
     setIsProfile(false);
   };
-  if(!user) return null;
+  if (!user || !setting) return null;
   return (
     <Container className="d-flex align-items-center justify-content-between px-4">
-      <Logo />
+      <Logo url={setting.logo} />
       <div className="position-relative">
         <Button className="btn color_white font_family_bold font14 mr_20px">
           Create Shop

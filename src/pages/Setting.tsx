@@ -174,7 +174,7 @@ function Setting() {
           url: item.url,
         });
       });
-      const setting = {
+      const newSetting = {
         logo: "",
         title: data.title,
         subTitle: data.subTitle,
@@ -200,15 +200,14 @@ function Setting() {
         },
       };
       if (setting) {
-        updateSetting(setting);
+        updateSetting(newSetting);
       } else {
-        saveSetting(setting);
+        saveSetting(newSetting);
       }
     }
   };
   const saveSetting = async (setting: any) => {
     try {
-      console.log("save");
       const logoUrl = await saveImage("setting", logo[0]);
       const ogImageUrl = await saveImage("setting", ogImage[0]);
       const body = {
@@ -230,7 +229,7 @@ function Setting() {
         dispatch(
           themeSlice.actions.showToast({
             content: "Successfully update Setting",
-            type: "error",
+            type: "success",
           })
         );
       }
@@ -239,7 +238,6 @@ function Setting() {
     }
   };
   const updateSetting = async (newSetting: any) => {
-    console.log("update");
     try {
       let logoUrl = logo[0];
       if (logoUrl !== setting?.logo)
@@ -708,9 +706,8 @@ function Setting() {
         <div className="row mt-3">
           <div className="col-12 col-lg-4"></div>
           <div
-            className={`col-12 col-lg-8 border_radius_5 py-2 px-4 color_red ${
-              errorImage.length > 0 ? `bg_red` : `d-none`
-            }`}
+            className={`col-12 col-lg-8 border_radius_5 py-2 px-4 color_red ${errorImage.length > 0 ? `bg_red` : `d-none`
+              }`}
           >
             {errorImage}
           </div>
