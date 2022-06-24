@@ -108,6 +108,9 @@ a {
 .border_gray_1px {
   border: 1px solid var(--grayColor);
 }
+.outline_primary_1px {
+  outline: 1px solid var(--primary);
+}
 .border_top_gray_1px {
   border-top: 1px solid #ddd;
 }

@@ -144,6 +144,7 @@ export type SettingType = {
   currency: string;
   minimumOrderAmount: number;
   optCheckout: boolean;
+  shippingId: string;
   seo: {
     metaTitle: string;
     metaDescription: string;
@@ -170,3 +171,30 @@ export type SettingType = {
     ];
   };
 };
+
+export interface OrderType {
+  id: string;
+  customerId: string;
+  phone: string;
+  billAddress: string;
+  shippingAddress: string;
+  deliverySchedule: {
+    title: string;
+    description: string;
+  };
+  products: [
+    {
+      productId: string;
+      price: number;
+      quantity: number;
+      unit: string
+    }
+  ];
+  taxId: string;
+  shippingId: string;
+  couponId: string;
+  orderStatusId: string;
+  paymentMethodId: string;
+  internetBankingImage: string;
+  total: number;
+}

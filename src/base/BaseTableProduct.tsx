@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import Avatar from "../components/Avatar";
 import { ProductType } from "../interfaces";
+import { currencyFormat } from "../utils/format";
 
 type Props = {
   data: Array<ProductType | any>;
@@ -137,7 +138,7 @@ function BaseTableProduct({ data, handleDelete, handleUpdate }: Props) {
                   }}
                   className="font14"
                 >
-                  $ {item.simple.price}
+                  {currencyFormat(item.simple.price)}
                 </TableCell>
                 <TableCell
                   style={{
@@ -146,7 +147,7 @@ function BaseTableProduct({ data, handleDelete, handleUpdate }: Props) {
                   }}
                   className="font14"
                 >
-                  $ {item.simple.salePrice}
+                  {currencyFormat(item.simple.salePrice)}
                 </TableCell>
                 <TableCell
                   style={{
@@ -167,7 +168,7 @@ function BaseTableProduct({ data, handleDelete, handleUpdate }: Props) {
                   }}
                   className="font14"
                 >
-                  $ {item.variable.price}
+                  {currencyFormat(item.variable.price)}
                 </TableCell>
                 <TableCell
                   style={{
@@ -196,7 +197,9 @@ function BaseTableProduct({ data, handleDelete, handleUpdate }: Props) {
               }}
               className="font14"
             >
-              <div className="d-inline px-3 py-1 border_radius_10 color_white font_family_bold_italic bg_primary">{item.status}</div>
+              <div className="d-inline px-3 py-1 border_radius_10 color_white font_family_bold_italic bg_primary">
+                {item.status}
+              </div>
             </TableCell>
             <TableCell
               style={{

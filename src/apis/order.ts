@@ -291,6 +291,22 @@ export const getTaxByName = async (
   }
 };
 
+export const getTaxForOrder = async (header: {},
+  body: {},
+  param: {}) => {
+  try {
+    const result = await fetchApi.get(`${hostnameTax}/detail/order/active`, {
+      headers: {
+        ...header
+      }
+    });
+    if (result.status === 200) return result.data.tax;
+    else return null;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const getAllShippings = async (header: {}, body: {}, param: {}) => {
   try {
     const result = await fetchApi.get(`${hostnameShipping}/list`, {

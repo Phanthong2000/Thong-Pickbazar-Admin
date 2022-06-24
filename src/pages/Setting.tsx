@@ -15,12 +15,14 @@ import { saveImage } from "../utils/firebase";
 import { createSetting, updateSettingApi } from "../apis/setting";
 import { AppDispatch } from "../redux/store";
 import themeSlice from "../redux/slices/themeSlice";
+import { allShippingsSelector } from "../redux/slices/orderSlice";
 
 const schema = yup.object({
   title: yup.string().required("Title is required"),
   subTitle: yup.string().required("Sub title English is required"),
   currency: yup.string().required("Currency is required"),
   minimumOrderAmount: yup.number().required("Minimum Order Amount is required"),
+  shipping: yup.string().required("Shipping is required"),
   metaTitle: yup.string().required("Meta Title is required").default("test"),
   metaDescription: yup
     .string()
@@ -70,6 +72,7 @@ function Setting() {
   const chooseLogoRef = useRef<HTMLInputElement>(null);
   const chooseOGImageRef = useRef<HTMLInputElement>(null);
   const settingSelect = useSelector(settingSelector);
+  const allShipping = useSelector(allShippingsSelector);
   const [setting, setSetting] = useState<SettingType | any>();
   const [checkout, setCheckout] = useState<boolean>(false);
   const [logo, setLogo] = useState<any[]>([]);
@@ -89,6 +92,7 @@ function Setting() {
     resolver: yupResolver(schema),
   });
   const currency = watch("currency");
+  const shipping = watch("shipping");
   useEffect(() => {
     if (settingSelect) {
       setSetting(settingSelect);
@@ -111,6 +115,7 @@ function Setting() {
       setValue("address", settingSelect.shop.address);
       setValue("phone", settingSelect.shop.phone);
       setValue("website", settingSelect.shop.website);
+      setValue("shipping", settingSelect.shippingId);
       const data: any[] = [];
       settingSelect.shop.social.forEach((item: any) => {
         data.push({
@@ -126,6 +131,7 @@ function Setting() {
     } else {
       setSetting(settingSelect);
       setValue("currency", "vnd");
+      setValue("shipping", "");
       setValue("minimumOrderAmount", 0);
       setSchedule([
         {
@@ -145,6 +151,18 @@ function Setting() {
       ]);
     }
   }, [settingSelect]);
+  useEffect(() => {
+    if (allShipping) {
+      const data: any = [];
+      allShipping.forEach((item: any) => {
+        data.push({
+          label: item.name,
+          value: item.id,
+        });
+      });
+      console.log(data);
+    }
+  }, [allShipping]);
   const onSubmit = (data: any) => {
     let flagSchedule = true;
     let flagSocial = true;
@@ -706,8 +724,9 @@ function Setting() {
         <div className="row mt-3">
           <div className="col-12 col-lg-4"></div>
           <div
-            className={`col-12 col-lg-8 border_radius_5 py-2 px-4 color_red ${errorImage.length > 0 ? `bg_red` : `d-none`
-              }`}
+            className={`col-12 col-lg-8 border_radius_5 py-2 px-4 color_red ${
+              errorImage.length > 0 ? `bg_red` : `d-none`
+            }`}
           >
             {errorImage}
           </div>

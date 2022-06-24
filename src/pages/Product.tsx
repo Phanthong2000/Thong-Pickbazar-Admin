@@ -133,7 +133,6 @@ function Product() {
     const end = Math.ceil(products.length / countPerRow);
     if (page < 4 || end <= 4) return [1, 2, 3, 4, end];
     else if (end - page < 4) {
-      console.log("first");
       return [1, end - 3, end - 2, end - 1, end];
     } else return [page - 1, page, page + 1, page + 2];
   };
