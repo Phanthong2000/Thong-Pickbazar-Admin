@@ -53,6 +53,7 @@ export const updateSettingApi = async (header: {}, body: {}, param: {}) => {
         },
       }
     );
+    console.log('result', body)
     if (result.status === 200) return result.data.setting;
     else return null;
   } catch (error) {

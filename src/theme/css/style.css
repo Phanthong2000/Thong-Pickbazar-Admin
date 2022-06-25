@@ -117,6 +117,9 @@ a {
 .border_dashed_gray_2px {
   border: 2px dashed var(--grayColor);
 }
+.border_black_1px {
+  border: 1px solid var(--color888) !important;
+}
 .outline_gray_1px {
   outline: 1px solid var(--grayColor);
 }
@@ -212,6 +215,9 @@ a {
 }
 .right0 {
   right: 0px;
+}
+.right10 {
+  right: 10px;
 }
 .cursor_pointer {
   cursor: pointer;

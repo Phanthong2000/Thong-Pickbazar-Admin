@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import orderSlice from "../../redux/slices/orderSlice";
 import { AppDispatch } from "../../redux/store";
+import { currencyFormat } from "../../utils/format";
 
 type Props = {
   product: any;
@@ -82,7 +83,7 @@ function ProductItem({ product, cart }: Props) {
           {product.type === "simple" ? (
             <>
               <div className="font16 font_family_bold">
-                ${product.simple.salePrice}
+                {currencyFormat(product.simple.salePrice)}
               </div>
               <div className="mt-2 font14 font_family_italic color_888">
                 {product.name_en}
@@ -91,7 +92,7 @@ function ProductItem({ product, cart }: Props) {
           ) : (
             <>
               <div className="font16 font_family_bold">
-                ${product.variable.salePrice}
+                {currencyFormat(product.variable.salePrice)}
               </div>
               <div className="mt-2 font14 font_family_italic color_888">
                 {product.name_en}

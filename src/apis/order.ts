@@ -175,6 +175,19 @@ export const getCouponByCode = async (
   }
 };
 
+export const getAllCouponsActive = async (header: {}, body: {}, param: {}) => {
+  try {
+    const result = await fetchApi.get(`${hostnameCoupon}/list/active`, {
+      headers: {
+        ...header
+      }
+    });
+    return result.data.coupons
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const getAllTaxes = async (header: {}, body: {}, param: {}) => {
   try {
     const result = await fetchApi.get(`${hostnameTax}/list`, {

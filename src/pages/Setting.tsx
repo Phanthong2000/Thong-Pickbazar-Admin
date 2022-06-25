@@ -81,6 +81,7 @@ function Setting() {
   const [schedule, setSchedule] = useState<any[]>([]);
   const [socials, setSocials] = useState<Array<SocialType>>([]);
   const [errorImage, setErrorImage] = useState<string>("");
+  const [optionsShipping, setOptionsShipping] = useState<any[]>([]);
   const dispatch = useDispatch<AppDispatch>();
   const {
     register,
@@ -160,7 +161,7 @@ function Setting() {
           value: item.id,
         });
       });
-      console.log(data);
+      setOptionsShipping(data);
     }
   }, [allShipping]);
   const onSubmit = (data: any) => {
@@ -199,6 +200,7 @@ function Setting() {
         currency: data.currency,
         minimumOrderAmount: data.minimumOrderAmount,
         otpCheckOut: otp,
+        shippingId: data.shipping,
         seo: {
           metaTitle: data.metaTitle,
           metaDescription: data.metaDescription,
@@ -263,10 +265,6 @@ function Setting() {
       let ogImageUrl = ogImage[0];
       if (ogImageUrl !== setting?.seo?.ogImage)
         ogImageUrl = await saveImage("setting", ogImage[0]);
-      console.log("logoUrl", logoUrl);
-      console.log("newSetting.logo", setting?.logo);
-      console.log("ogImageUrl", ogImageUrl);
-      console.log("setting.shop.ogImage", setting?.seo?.ogImage);
       const body = {
         ...newSetting,
         logo: logoUrl,
@@ -387,6 +385,9 @@ function Setting() {
     });
     setSocials(newData);
   };
+  const handleChooseShipping = (value: any) => {
+    setValue("shipping", value ? value.value : "");
+  };
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -502,6 +503,35 @@ function Setting() {
                 handleOn={() => setOtp(true)}
                 handleOff={() => setOtp(false)}
               />
+            </div>
+            <div className="font_family_bold_italic font14 mt-4">Shipping</div>
+            <Select
+              value={optionsShipping.filter(
+                (option) => option.value === shipping
+              )}
+              styles={{
+                control: (provided, state) => ({
+                  ...provided,
+                  height: "40px",
+                  marginTop: "8px",
+                }),
+              }}
+              theme={(theme) => ({
+                ...theme,
+                colors: {
+                  ...theme.colors,
+                  primary25: "#ddd",
+                  primary50: "#ddd",
+                  primary: "rgba(0,159,127)",
+                },
+              })}
+              isClearable
+              placeholder="Choose Shipping"
+              onChange={(value) => handleChooseShipping(value)}
+              options={optionsShipping}
+            />
+            <div className="mt-2 font12 ml_5px color_red font_family_italic">
+              {errors.shipping?.message}
             </div>
           </div>
         </div>

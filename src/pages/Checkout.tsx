@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import { getTaxForOrder } from "../apis";
 import DeliveryScheduleItem from "../components/order/DeliveryScheduleItem";
 import ModalChooseAddress from "../components/order/ModalChooseAddress";
+import ModalChooseCoupon from "../components/order/ModalChooseCoupon";
 import ModalChooseCustomer from "../components/order/ModalChooseCustomer";
 import ModalUpdateContactNumber from "../components/order/ModalUpdateContactNumber";
-import { UserType } from "../interfaces";
+import { CouponType, UserType } from "../interfaces";
 import { checkoutSelector } from "../redux/slices/orderSlice";
 import { settingSelector } from "../redux/slices/settingSlice";
 import { currencyFormat } from "../utils/format";
@@ -18,7 +19,9 @@ function Checkout() {
   const [modalCustomer, setModalCustomer] = useState<boolean>(false);
   const [modalContactNumber, setModalContactNumber] = useState<boolean>(false);
   const [modalAddress, setModalAddress] = useState<boolean>(false);
+  const [modalCoupon, setModalCoupon] = useState<boolean>(false);
   const [cart, setCart] = useState<any[]>([]);
+  const [paymentMethodId, setPaymentMethodId] = useState<string>("");
   const { isLoading, data } = useQuery("getTaxForOrder", () =>
     getTaxForOrder({}, {}, {})
   );
@@ -80,6 +83,13 @@ function Checkout() {
   const handleCloseModalAddress = () => {
     setModalAddress(false);
   };
+  const handleChooseCoupon = (coupon: CouponType) => {};
+  const handleOpenModalCoupon = () => {
+    setModalCoupon(true);
+  };
+  const handleCloseCoupon = () => {
+    setModalCoupon(false);
+  };
   const handleChooseAddress = (type: string, address: string) => {
     const newCheckout = {
       customer: checkout?.customer ? checkout.customer : {},
@@ -123,8 +133,10 @@ function Checkout() {
     return total;
   };
   const getTax = (): number => {
-    console.log(data);
     return ((data ? data.rate : 0) * getSubTotal()) / 100;
+  };
+  const getDiscount = (): number => {
+    return 0;
   };
   return (
     <>
@@ -296,6 +308,27 @@ function Checkout() {
                   </div>
                   <div>{currencyFormat(getTax())}</div>
                 </div>
+                <div className="d-flex align-items-center justify-content-between mt-2">
+                  <div className="font14 font_family_regular color_888">
+                    Shipping
+                  </div>
+                  <div>{currencyFormat(setting.shipping.fee)}</div>
+                </div>
+                <div className="d-flex align-items-center justify-content-between mt-2">
+                  <div className="font14 font_family_regular color_888">
+                    Discount
+                  </div>
+                  <div>{currencyFormat(getDiscount())}</div>
+                </div>
+                <div className="divider_vertical_solid my-4"></div>
+                <div>
+                  <button
+                    onClick={handleOpenModalCoupon}
+                    className="btn p-0 m-0 color_primary font16 font_family_bold_italic"
+                  >
+                    Choose Coupon
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -315,6 +348,13 @@ function Checkout() {
         open={modalAddress}
         handleChoose={handleChooseAddress}
         handleClose={handleCloseModalAddress}
+      />
+      <ModalChooseCoupon
+        subTotal={getSubTotal()}
+        handleChoose={handleChooseCoupon}
+        handleClose={handleCloseCoupon}
+        open={modalCoupon}
+        paymentMethodId={paymentMethodId}
       />
     </>
   );
