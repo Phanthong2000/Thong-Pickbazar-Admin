@@ -4,6 +4,7 @@ import Layout from "./layouts";
 import Attribute from "./pages/Attribute";
 import Category from "./pages/Category";
 import Checkout from "./pages/Checkout";
+import ConfirmPayment from "./pages/ConfirmPayment";
 import Coupon from "./pages/Coupon";
 import CreateAttribute from "./pages/CreateAttribute";
 import CreateCategory from "./pages/CreateCategory";
@@ -189,6 +190,10 @@ function Router() {
         {
           path: "/create-order/checkout",
           element: <Checkout />,
+        },
+        {
+          path: "/create-order/confirm-payment",
+          element: <ConfirmPayment />,
         },
         {
           path: "/setting",

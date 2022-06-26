@@ -179,14 +179,14 @@ export const getAllCouponsActive = async (header: {}, body: {}, param: {}) => {
   try {
     const result = await fetchApi.get(`${hostnameCoupon}/list/active`, {
       headers: {
-        ...header
-      }
+        ...header,
+      },
     });
-    return result.data.coupons
+    return result.data.coupons;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 export const getAllTaxes = async (header: {}, body: {}, param: {}) => {
   try {
@@ -304,21 +304,19 @@ export const getTaxByName = async (
   }
 };
 
-export const getTaxForOrder = async (header: {},
-  body: {},
-  param: {}) => {
+export const getTaxForOrder = async (header: {}, body: {}, param: {}) => {
   try {
     const result = await fetchApi.get(`${hostnameTax}/detail/order/active`, {
       headers: {
-        ...header
-      }
+        ...header,
+      },
     });
     if (result.status === 200) return result.data.tax;
     else return null;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 export const getAllShippings = async (header: {}, body: {}, param: {}) => {
   try {
@@ -527,6 +525,24 @@ export const updateStatusPaymentStatus = async (
       }
     );
     if (result.status === 200) return result.data.paymentMethod;
+    else return null;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllPaymentMethodsActive = async (
+  header: {},
+  body: {},
+  param: {}
+) => {
+  try {
+    const result = await fetchApi.get(`${hostnamePaymentMethod}/list/active`, {
+      headers: {
+        ...header,
+      },
+    });
+    if (result.status === 200) return result.data.paymentMethods;
     else return null;
   } catch (error) {
     console.log(error);

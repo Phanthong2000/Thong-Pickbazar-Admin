@@ -50,7 +50,7 @@ function BoxCart({ handleDrawerCart }: Props) {
           {checkQuantityCart()}
         </span>
       </div>
-      <div className="mt-2 bg_white color_primary py-1 border_radius_5 font16 font_family_italic">
+      <div className="mt-2 bg_white color_primary py-1 border_radius_5 font16 font_family_italic px-2">
         {getTotal()}
       </div>
     </Container>

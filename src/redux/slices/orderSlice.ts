@@ -25,18 +25,22 @@ const defaultState = {
   allTaxes: [],
   allShippings: [],
   allPaymentMethods: [],
-  checkout: localStorage.getItem('checkout') || JSON.stringify(null)
+  checkout: localStorage.getItem("checkout") || JSON.stringify(null),
+  stepOrder: 0,
 };
 
 const orderSlice = createSlice({
   name: "order",
   initialState: defaultState,
   reducers: {
+    setStepOrder: (state, action) => {
+      state.stepOrder = action.payload;
+    },
     setCart: (state, action) => {
       state.cart = action.payload;
     },
     setCheckout: (state, action) => {
-      state.checkout = action.payload
+      state.checkout = action.payload;
     },
     addOrderStatus: (state, action) => {
       state.allOrderStatuses.push(action.payload as never);
@@ -244,3 +248,4 @@ export const allPaymentMethodsSelector = (state: any) =>
   state.order.allPaymentMethods;
 export const allOrdersSelector = (state: any) => state.order.allOrders;
 export const checkoutSelector = (state: any) => state.order.checkout;
+export const stepOrderSelector = (state: any) => state.order.stepOrder;

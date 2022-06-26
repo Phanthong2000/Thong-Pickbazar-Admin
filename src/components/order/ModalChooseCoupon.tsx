@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Modal } from "rsuite";
 import { getAllCouponsActive } from "../../apis";
-import { CouponType } from "../../interfaces";
+import { CouponType, PaymentMethodType } from "../../interfaces";
 import CouponItem from "./CouponItem";
 
 type Props = {
   subTotal: number;
-  paymentMethodId: string;
+  paymentMethod: PaymentMethodType;
   open: boolean;
   handleClose: () => void;
   handleChoose: (coupon: any) => void;
@@ -17,12 +17,13 @@ function ModalChooseCoupon({
   handleChoose,
   handleClose,
   open,
-  paymentMethodId,
-  subTotal,
+  paymentMethod,
+  subTotal = 0,
 }: Props) {
   const [isLoadingApply, setIsLoadingApply] = useState<boolean>(false);
   const [coupons, setCoupons] = useState<Array<CouponType>>([]);
   const [code, setCode] = useState<string>("");
+  const [isShowNotFound, setIsShowNotFound] = useState<boolean>(false)
   const getCoupons = async () => {
     try {
       const result = await getAllCouponsActive({}, {}, {});
@@ -36,7 +37,21 @@ function ModalChooseCoupon({
   }, []);
   const handleClearInput = () => {
     setCode("");
+    setIsShowNotFound(false)
+    getCoupons();
   };
+  const checkQuantityCoupon = () => {
+    if (coupons.length <= 1) return `${coupons.length} coupon`;
+    return `${coupons.length} coupons`;
+  }
+  const handleSearchCoupon = () => {
+    const data = coupons.filter((coupon) => coupon.code === code);
+    if (data.length === 0) setIsShowNotFound(true)
+    else {
+      setIsShowNotFound(false)
+      setCoupons(data);
+    }
+  }
   return (
     <Modal open={open} onClose={handleClose}>
       <Modal.Header>
@@ -64,9 +79,17 @@ function ModalChooseCoupon({
                   <Icon icon="ci:off-close" className="icon20x20 color_888" />
                 </button>
               )}
+              <div className={`position-absolute bg_red p-2 bottom0 coupon_code_not_found top0 w100_per font14 d-flex align-items-center ${isShowNotFound && 'show'}`}>
+                <button className="btn color_red p-0 m-0">
+                  <Icon icon="ant-design:close-circle-outlined" className="icon20x20" />
+                </button>
+                <div className="ml_10px color_red text-center font14">
+                  Coupon code not found
+                </div>
+              </div>
             </div>
             <div className="col-3 px-2">
-              <button
+              <button onClick={handleSearchCoupon}
                 disabled={Boolean(!code)}
                 type="button"
                 className="btn px-4 btn-light border_black_1px h40_px font14 font_family_regular"
@@ -83,9 +106,13 @@ function ModalChooseCoupon({
             </div>
           </div>
         </div>
-        <div className="mt-4">
+        <div className="d-flex align-items-center justify-content-between mt-2">
+          <div className="font16 font_family_bold">Coupons</div>
+          <div className="font14 font_family_regular">{checkQuantityCoupon()}</div>
+        </div>
+        <div className="mt-2 box_coupon_modal_choose_coupon">
           {coupons.map((item, index) => (
-            <CouponItem coupon={item} key={index} />
+            <CouponItem handleChoose={handleChoose} subTotal={subTotal} paymentMethod={paymentMethod} coupon={item} key={index} />
           ))}
         </div>
       </Modal.Body>

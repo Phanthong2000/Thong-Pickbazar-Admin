@@ -110,6 +110,7 @@ export type CouponType = {
   condition: string;
   minTotal: number;
   paymentMethodId: string;
+  paymentMethod: any;
 };
 
 export type TaxType = {
@@ -187,13 +188,23 @@ export interface OrderType {
       productId: string;
       price: number;
       quantity: number;
-      unit: string
+      unit: string;
     }
   ];
-  taxId: string;
-  shippingId: string;
-  couponId: string;
-  orderStatusId: string;
+  tax: {
+    taxId: string;
+    rate: number;
+  };
+  shipping: {
+    shippingId: string;
+    fee: number;
+  };
+  coupon: {
+    couponId: string;
+    type: string;
+    amount: number;
+  };
+  orderStatus: number;
   paymentMethodId: string;
   internetBankingImage: string;
   total: number;

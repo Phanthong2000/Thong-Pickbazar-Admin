@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { Collapse } from "react-bootstrap";
 import { useQuery } from "react-query";
-import { useSelector } from "react-redux";
-import { getTaxForOrder } from "../apis";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getAllPaymentMethodsActive, getTaxForOrder } from "../apis";
+import ChoosePaymentMethodItem from "../components/ChoosePaymentMethodItem";
 import DeliveryScheduleItem from "../components/order/DeliveryScheduleItem";
 import ModalChooseAddress from "../components/order/ModalChooseAddress";
 import ModalChooseCoupon from "../components/order/ModalChooseCoupon";
 import ModalChooseCustomer from "../components/order/ModalChooseCustomer";
 import ModalUpdateContactNumber from "../components/order/ModalUpdateContactNumber";
-import { CouponType, UserType } from "../interfaces";
-import { checkoutSelector } from "../redux/slices/orderSlice";
+import { CouponType, PaymentMethodType, UserType } from "../interfaces";
+import orderSlice, { checkoutSelector, stepOrderSelector } from "../redux/slices/orderSlice";
 import { settingSelector } from "../redux/slices/settingSlice";
+import { AppDispatch } from "../redux/store";
 import { currencyFormat } from "../utils/format";
 
 function Checkout() {
+  const stepOrder = useSelector(stepOrderSelector);
   const setting = useSelector(settingSelector);
   const checkoutString = useSelector(checkoutSelector);
   const [checkout, setCheckout] = useState<any>();
@@ -21,11 +26,17 @@ function Checkout() {
   const [modalAddress, setModalAddress] = useState<boolean>(false);
   const [modalCoupon, setModalCoupon] = useState<boolean>(false);
   const [cart, setCart] = useState<any[]>([]);
-  const [paymentMethodId, setPaymentMethodId] = useState<string>("");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethodType | any>();
+  const [paymentMethodChild, setPaymentMethodChild] = useState<any>();
+  const [coupon, setCoupon] = useState<CouponType | any>();
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>()
   const { isLoading, data } = useQuery("getTaxForOrder", () =>
     getTaxForOrder({}, {}, {})
   );
+  const getAllPaymentMethodsActiveApi = useQuery('getAllPaymentMethodsActive', () => getAllPaymentMethodsActive({}, {}, {}))
   useEffect(() => {
+    if (stepOrder === 0) return navigate('/create-order')
     setCheckout(JSON.parse(localStorage.getItem("checkout") || "null"));
     setCart(JSON.parse(localStorage.getItem("cart") || "[]"));
   }, [checkoutString]);
@@ -44,9 +55,9 @@ function Checkout() {
       deliverySchedule: checkout
         ? checkout?.deliverySchedule
         : {
-            title: "",
-            description: "",
-          },
+          title: "",
+          description: "",
+        },
     };
     localStorage.setItem("checkout", JSON.stringify(newCheckout));
     setCheckout(newCheckout);
@@ -69,9 +80,9 @@ function Checkout() {
       deliverySchedule: checkout
         ? checkout?.deliverySchedule
         : {
-            title: "",
-            description: "",
-          },
+          title: "",
+          description: "",
+        },
     };
     localStorage.setItem("checkout", JSON.stringify(newCheckout));
     setCheckout(newCheckout);
@@ -83,7 +94,10 @@ function Checkout() {
   const handleCloseModalAddress = () => {
     setModalAddress(false);
   };
-  const handleChooseCoupon = (coupon: CouponType) => {};
+  const handleChooseCoupon = (coupon: CouponType) => {
+    setModalCoupon(false);
+    setCoupon(coupon)
+  };
   const handleOpenModalCoupon = () => {
     setModalCoupon(true);
   };
@@ -101,9 +115,9 @@ function Checkout() {
       deliverySchedule: checkout
         ? checkout?.deliverySchedule
         : {
-            title: "",
-            description: "",
-          },
+          title: "",
+          description: "",
+        },
     };
     if (type === "billing") newCheckout.billAddress = address;
     else newCheckout.shippingAddress = address;
@@ -136,12 +150,72 @@ function Checkout() {
     return ((data ? data.rate : 0) * getSubTotal()) / 100;
   };
   const getDiscount = (): number => {
-    return 0;
+    if (!coupon) return 0;
+    if (coupon?.type === 'vnd') return coupon.amount;
+    return getSubTotal() * coupon.amount / 100;
   };
+  const handleChoosePaymentMethod = (paymentMethod: PaymentMethodType) => {
+    setPaymentMethod(paymentMethod);
+    setPaymentMethodChild(null)
+  }
+  const handleChoosePaymentMethodChild = (paymentMethodChild: any) => {
+    setPaymentMethodChild(paymentMethodChild)
+  }
+  const getTotal = () => {
+    return getSubTotal() + getTax() + setting.shipping.fee - getDiscount()
+  }
+  const checkEnablePayment = () => {
+    if (checkout && checkout.customer && checkout.contactNumber && checkout.billAddress && checkout.shippingAddress && checkout.deliverySchedule.title) {
+      if (paymentMethod && paymentMethod.child.length > 0 && paymentMethodChild) return false;
+      else if (paymentMethod && paymentMethod.child.length === 0) return false;
+      return true
+    }
+    return true
+  }
+  const goToConfirmPayment = () => {
+    const products: any[] = [];
+    cart.forEach((product) => {
+      products.push({
+        productId: product.product.id,
+        price: product.product.price,
+        quantity: product.quantity,
+        unit: product.product.unit
+      })
+    })
+    const order = {
+      customerId: checkout.customer.id,
+      phone: checkout.contactNumber,
+      billAddress: checkout.billAddress,
+      shippingAddress: checkout.shippingAddress,
+      deliverySchedule: checkout.deliverySchedule,
+      products: products,
+      tax: {
+        taxId: data ? data.id : '',
+        rate: data ? data.rate : 0,
+      },
+      shipping: {
+        shippingId: setting.shipping._id,
+        fee: setting.shipping.fee,
+      },
+      coupon: {
+        couponId: coupon ? coupon.id : '',
+        type: coupon ? coupon.type : '',
+        amount: coupon ? coupon.amount : 0,
+      },
+      orderStatus: 1,
+      paymentMethodId: paymentMethodChild ? paymentMethodChild._id : paymentMethod.id,
+      internetBankingImage: '',
+      total: getTotal(),
+    }
+    localStorage.setItem('order', JSON.stringify(order));
+    dispatch(orderSlice.actions.setStepOrder(2));
+    navigate('/create-order/confirm-payment')
+  }
   return (
     <>
       <div className="w100_per">
         <div className="container">
+          <div className="font20 font_family_bold_italic px-4 mb-4">Checkout</div>
           <div className="row m-0 p-0">
             <div className="col-12 col-lg-8 px-4">
               <div className="bg_white box_shadow_card border_radius_3 p-4">
@@ -321,6 +395,12 @@ function Checkout() {
                   <div>{currencyFormat(getDiscount())}</div>
                 </div>
                 <div className="divider_vertical_solid my-4"></div>
+                <div className="d-flex align-items-center justify-content-between mb-4">
+                  <div className="font16 font_family_bold color_888">
+                    Total
+                  </div>
+                  <div>{currencyFormat(getTotal())}</div>
+                </div>
                 <div>
                   <button
                     onClick={handleOpenModalCoupon}
@@ -329,11 +409,39 @@ function Checkout() {
                     Choose Coupon
                   </button>
                 </div>
+                <div className="bg_white border_radius_5 py-4 px-2 mt-4">
+                  <div className="px-1 font16 font_family_bold_italic">
+                    Choose Payment Method
+                  </div>
+                  <div className="px-1">
+                    {
+                      getAllPaymentMethodsActiveApi.isLoading ? <div>loadding</div>
+                        : <div className="row p-0 m-0">
+                          {
+                            getAllPaymentMethodsActiveApi.data.map((item: PaymentMethodType, index: number) => <ChoosePaymentMethodItem handleChoose={handleChoosePaymentMethod} current={paymentMethod} paymentMethod={item} />)
+                          }
+                        </div>
+                    }
+                  </div>
+                  <Collapse in={Boolean(paymentMethod?.child.length > 0)}>
+                    <div className="px-1">
+                      {
+                        <div className="row p-0 m-0">
+                          {
+                            paymentMethod &&
+                            paymentMethod.child.map((item: PaymentMethodType, index: number) => <ChoosePaymentMethodItem handleChoose={handleChoosePaymentMethodChild} current={paymentMethodChild} paymentMethod={item} />)
+                          }
+                        </div>
+                      }
+                    </div>
+                  </Collapse>
+                </div>
+                <button onClick={goToConfirmPayment} disabled={checkEnablePayment()} className="btn bg_primary mt-4 color_white font16 font_family_bold_italic d-block w100_per py-2">Payment</button>
               </div>
             )}
           </div>
         </div>
-      </div>
+      </div >
       <ModalChooseCustomer
         handleChoose={handleChooseCustomer}
         open={modalCustomer}
@@ -354,7 +462,7 @@ function Checkout() {
         handleChoose={handleChooseCoupon}
         handleClose={handleCloseCoupon}
         open={modalCoupon}
-        paymentMethodId={paymentMethodId}
+        paymentMethod={paymentMethod}
       />
     </>
   );

@@ -1,9 +1,10 @@
 import { Icon } from "@iconify/react";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Drawer } from "rsuite";
-import { cartSelector } from "../../redux/slices/orderSlice";
+import orderSlice, { cartSelector } from "../../redux/slices/orderSlice";
+import { AppDispatch } from "../../redux/store";
 import { currencyFormat } from "../../utils/format";
 import DrawerCartItem from "./DrawerCartItem";
 
@@ -15,6 +16,7 @@ type Props = {
 function DrawerCart({ isShow, handleDrawer }: Props) {
   const cartString = useSelector(cartSelector);
   const [cart, setCart] = useState<any[]>([]);
+  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate();
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart") || "[]"));
@@ -31,7 +33,11 @@ function DrawerCart({ isShow, handleDrawer }: Props) {
     return currencyFormat(total);
   };
   const goToCheckout = () => {
-    navigate("/create-order/checkout");
+    if (cart.length > 0) {
+      dispatch(orderSlice.actions.setStepOrder(1))
+      navigate("/create-order/checkout");
+    }
+
   };
   return (
     <Drawer
@@ -54,16 +60,26 @@ function DrawerCart({ isShow, handleDrawer }: Props) {
         </Drawer.Actions>
       </Drawer.Header>
       <Drawer.Body className="p-0 m-0 d-flex flex-column align-items-center justify-content-between">
-        <div className="w100_per">
-          {cart.map((item, index) => (
-            <DrawerCartItem product={item} key={index} />
-          ))}
-        </div>
+        {
+          cart.length === 0 ?
+            <div className="mt-4 h100_per d-flex align-items-center justify-content-center flex-column">
+              <Icon className="icon100x100 color_primary" icon="bi:cart-x-fill" />
+              <div className="font18 font_family_bold_italic color_primary mt-4">
+                Cart is Empty
+              </div>
+            </div>
+            :
+            <div className="w100_per">
+              {cart.map((item, index) => (
+                <DrawerCartItem product={item} key={index} />
+              ))}
+            </div>
+        }
         <div onClick={goToCheckout} className="checkout_cart">
           <div className="ml_20px color_white font16 font_family_bold">
             Checkout
           </div>
-          <div className="font16 font_family_bold_italic total_cart">
+          <div className="font16 font_family_bold_italic total_cart px-2">
             {getTotal()}
           </div>
         </div>

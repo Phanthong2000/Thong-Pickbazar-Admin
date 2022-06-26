@@ -77,6 +77,10 @@ a {
 .font25 {
   font-size: 25px;
 }
+.icon100x100 {
+  width: 100px;
+  height: 100px;
+}
 .icon50x50 {
   width: 50px;
   height: 50px;
@@ -172,7 +176,7 @@ a {
   color: var(--grayColor);
 }
 .color_orange {
-  color: var(---orangeColor);
+  color: var(---orangeColor) !important;
 }
 .bg_primary {
   background-color: var(--primary) !important;
@@ -274,6 +278,7 @@ a {
 .product_item_order .button_add_to_cart,
 .product_item_order .button_change_quantity button,
 .icon_down_product,
+.box_condition_choose_coupon,
 #color_picker {
   -webkit-transition: 0.5s ease-in-out;
   -moz-transition: 0.5s ease-in-out;
@@ -430,7 +435,6 @@ textarea:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
   border-radius: 30px;
   color: var(--primary);
 }
@@ -471,4 +475,35 @@ input[type="radio"] {
 }
 #modal_update_contact_number .rs-modal-body {
   max-height: 100px;
+}
+
+.box_coupon_modal_choose_coupon {
+  min-height: 400px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: var(--grayColor);
+}
+
+.coupon_code_not_found {
+  margin-top: 41px;
+  border: 1px solid red;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.coupon_code_not_found.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.box_condition_choose_coupon {
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 10px;
+  min-width: 200px;
+  opacity: 0;
+  pointer-events: none;
+}
+.box_condition_choose_coupon.show {
+  opacity: 1;
+  pointer-events: all;
 }
