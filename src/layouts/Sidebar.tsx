@@ -16,7 +16,7 @@ const Container = styled.div`
 `;
 function Sidebar() {
   return (
-    <Container>
+    <Container id="sidebar">
       {sidebarConfig.map((menu, index) => (
         <MenuItem menu={menu} key={index} />
       ))}

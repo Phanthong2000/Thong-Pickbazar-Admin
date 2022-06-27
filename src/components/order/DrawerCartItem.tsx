@@ -29,10 +29,13 @@ const BoxQuantity = styled.div`
 function DrawerCartItem({ product }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const handlePlusQuantity = () => {
+    const quantity = product.product.quantity;
+    let quantityPlus = 0;
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     const newCart = [];
     for (let i = 0; i < cart.length; i++) {
       if (cart[i].product.id === product.product.id) {
+        quantityPlus = cart[i].quantity + 1
         newCart.push({
           ...cart[i],
           quantity: cart[i].quantity + 1,
@@ -41,8 +44,10 @@ function DrawerCartItem({ product }: Props) {
         newCart.push(cart[i]);
       }
     }
-    localStorage.setItem("cart", JSON.stringify(newCart));
-    dispatch(orderSlice.actions.setCart(JSON.stringify(newCart)));
+    if (quantity - quantityPlus >= 0) {
+      localStorage.setItem("cart", JSON.stringify(newCart));
+      dispatch(orderSlice.actions.setCart(JSON.stringify(newCart)));
+    }
   };
   const handleMinusQuantity = () => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");

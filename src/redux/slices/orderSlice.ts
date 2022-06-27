@@ -29,13 +29,16 @@ const defaultState = {
   checkout: localStorage.getItem("checkout") || JSON.stringify(null),
   stepOrder: 0,
   isLoadingDashboard: true,
-  dashboard: null
+  dashboard: {} as any,
 };
 
 const orderSlice = createSlice({
   name: "order",
   initialState: defaultState,
   reducers: {
+    addUserAllUser: (state, action) => {
+      state.dashboard.totalUser += 1;
+    },
     setStepOrder: (state, action) => {
       state.stepOrder = action.payload;
     },
@@ -149,14 +152,9 @@ const orderSlice = createSlice({
       const newAllOrders = state.allOrders
         .slice(0, index)
         .concat([action.payload as never])
-        .concat(
-          state.allOrders.slice(
-            index + 1,
-            state.allOrders.length
-          )
-        );
+        .concat(state.allOrders.slice(index + 1, state.allOrders.length));
       state.allOrders = newAllOrders;
-    }
+    },
   },
   extraReducers: (build) => {
     build
@@ -180,9 +178,8 @@ const orderSlice = createSlice({
       })
       .addCase(getApiDashboard.fulfilled, (state, action) => {
         state.isLoadingDashboard = false;
-        console.log(state.isLoadingDashboard)
-        state.dashboard = action.payload
-      })
+        state.dashboard = action.payload;
+      });
   },
 });
 
@@ -260,15 +257,17 @@ export const getApiAllOrders = createAsyncThunk(
   }
 );
 
-export const getApiDashboard = createAsyncThunk('order/getApiDashboard', async () => {
-  try {
-    const result = await getDashboard({}, {}, {});
-    console.log('dashboard', result)
-    return result;
-  } catch (error) {
-    console.log(error)
+export const getApiDashboard = createAsyncThunk(
+  "order/getApiDashboard",
+  async () => {
+    try {
+      const result = await getDashboard({}, {}, {});
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
   }
-})
+);
 export const cartSelector = (state: any) => state.order.cart;
 export const allOrderStatusesSelector = (state: any) =>
   state.order.allOrderStatuses;
@@ -280,5 +279,6 @@ export const allPaymentMethodsSelector = (state: any) =>
 export const allOrdersSelector = (state: any) => state.order.allOrders;
 export const checkoutSelector = (state: any) => state.order.checkout;
 export const stepOrderSelector = (state: any) => state.order.stepOrder;
-export const isLoadingDashboardSelector = (state: any) => state.order.isLoadingDashboard;
-export const dashboardSelector = (state: any) => state.order.dashboard
+export const isLoadingDashboardSelector = (state: any) =>
+  state.order.isLoadingDashboard;
+export const dashboardSelector = (state: any) => state.order.dashboard;

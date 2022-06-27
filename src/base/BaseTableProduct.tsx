@@ -177,7 +177,7 @@ function BaseTableProduct({ data, handleDelete, handleUpdate }: Props) {
                   }}
                   className="font14"
                 >
-                  $ {item.variable.salePrice}
+                  {currencyFormat(item.variable.salePrice)}
                 </TableCell>
                 <TableCell
                   style={{

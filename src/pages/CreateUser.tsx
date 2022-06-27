@@ -14,6 +14,7 @@ import { AppDispatch } from "../redux/store";
 import themeSlice from "../redux/slices/themeSlice";
 import userSlice from "../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import orderSlice from "../redux/slices/orderSlice";
 
 const schema = yup.object({
   name: yup.string().required("Name is required"),
@@ -90,20 +91,17 @@ function CreateUser() {
     };
     const result = await createUser({}, body, {});
     if (result.user) {
-      dispatch(
-        themeSlice.actions.hideBackdrop({
-          isShow: false,
-          content: "",
-        })
-      );
-      console.log("result", {
-        ...result.user,
-        role: result.role,
-      });
+      dispatch(orderSlice.actions.addUserAllUser({}))
       dispatch(
         userSlice.actions.addUser({
           ...result.user,
           role: result.role,
+        })
+      );
+      dispatch(
+        themeSlice.actions.hideBackdrop({
+          isShow: false,
+          content: "",
         })
       );
       dispatch(
@@ -367,9 +365,8 @@ function CreateUser() {
         <div className="row mt-3">
           <div className="col-12 col-lg-4"></div>
           <div
-            className={`col-12 col-lg-8 border_radius_5 py-2 px-4 color_red ${
-              errorImage.length > 0 ? `bg_red` : `d-none`
-            }`}
+            className={`col-12 col-lg-8 border_radius_5 py-2 px-4 color_red ${errorImage.length > 0 ? `bg_red` : `d-none`
+              }`}
           >
             {errorImage}
           </div>

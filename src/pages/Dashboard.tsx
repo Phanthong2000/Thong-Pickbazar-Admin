@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import BaseAnalytic from "../base/BaseAnalytic";
 import BaseLoading2 from "../base/BaseLoading2";
 import SaleHistoryChart from "../components/analytic/SaleHistoryChart";
+import TablePopularProduct from "../components/analytic/TablePopularProduct";
+import TableRecentOrder from "../components/analytic/TableRecentOrder";
+import TableTop10Customers from "../components/analytic/TableTop10Customers";
 import {
   dashboardSelector,
   isLoadingDashboardSelector,
@@ -77,6 +80,19 @@ function Dashboard() {
       </div>
       <div className="px-2 mt-4">
         <SaleHistoryChart />
+      </div>
+      <div className="row m-0 p-0">
+        <div className="col-12 col-lg-6 px-2 mt-4">
+          <TableRecentOrder data={dashboard.recentOrders} />
+        </div>
+        <div className="col-12 col-lg-6 px-2 mt-4">
+          <TableTop10Customers data={dashboard.top10Customers} />
+        </div>
+      </div>
+      <div className="row m-0 p-0">
+        <div className="col-12 px-2 mt-4">
+          <TablePopularProduct data={dashboard.popularProducts} />
+        </div>
       </div>
     </>
   );

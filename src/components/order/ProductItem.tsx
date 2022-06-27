@@ -32,6 +32,7 @@ function ProductItem({ product, cart }: Props) {
         name: product.name_en,
         image: product.featureImage,
         price: isSimple ? product.simple.salePrice : product.variable.salePrice,
+        type: product.type,
         quantity: isSimple
           ? product.simple.quantity
           : product.variable.quantity,
@@ -43,10 +44,13 @@ function ProductItem({ product, cart }: Props) {
     dispatch(orderSlice.actions.setCart(JSON.stringify(cart)));
   };
   const handlePlusQuantity = () => {
+    const quantity = product.type === "simple" ? product.simple.quantity : product.variable.quantity;
+    let quantityPlus = 0;
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     const newCart = [];
     for (let i = 0; i < cart.length; i++) {
       if (cart[i].product.id === product.id) {
+        quantityPlus = cart[i].quantity + 1;
         newCart.push({
           ...cart[i],
           quantity: cart[i].quantity + 1,
@@ -55,8 +59,10 @@ function ProductItem({ product, cart }: Props) {
         newCart.push(cart[i]);
       }
     }
-    localStorage.setItem("cart", JSON.stringify(newCart));
-    dispatch(orderSlice.actions.setCart(JSON.stringify(newCart)));
+    if (quantity - quantityPlus >= 0) {
+      localStorage.setItem("cart", JSON.stringify(newCart));
+      dispatch(orderSlice.actions.setCart(JSON.stringify(newCart)));
+    }
   };
   const handleMinusQuantity = () => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -78,7 +84,7 @@ function ProductItem({ product, cart }: Props) {
   return (
     <div className="col-12 col-md-6 col-lg-4 col-xl-3 p-2">
       <Container className="box_shadow_card border_radius_10 product_item_order">
-        <img src={product.featureImage} />
+        <img src={product.featureImage} alt="product" />
         <div className="py-2 px-3">
           {product.type === "simple" ? (
             <>
@@ -100,23 +106,32 @@ function ProductItem({ product, cart }: Props) {
             </>
           )}
         </div>
-        {item ? (
-          <div className="button_change_quantity font_family_bold_italic font18">
-            <button onClick={handleMinusQuantity} className="btn">
-              <Icon icon="akar-icons:minus" />
+        {
+          product.simple?.quantity <= 0 || product.variable?.quantity <= 0 ?
+            <button className="btn bg_red font14 font_family_bold_italic">
+              Sold out
             </button>
-            {item.quantity}
-            <button onClick={handlePlusQuantity} className="btn">
-              <Icon icon="akar-icons:plus" />
-            </button>
-          </div>
-        ) : (
-          <button onClick={handleAddToCart} className="btn button_add_to_cart">
-            <div></div>
-            <div className="font14 font_family_bold_italic">Add</div>
-            <Icon icon="akar-icons:plus" />
-          </button>
-        )}
+            :
+            <>
+              {item ? (
+                <div className="button_change_quantity font_family_bold_italic font18">
+                  <button onClick={handleMinusQuantity} className="btn">
+                    <Icon icon="akar-icons:minus" />
+                  </button>
+                  {item.quantity}
+                  <button onClick={handlePlusQuantity} className="btn">
+                    <Icon icon="akar-icons:plus" />
+                  </button>
+                </div>
+              ) : (
+                <button onClick={handleAddToCart} className="btn button_add_to_cart">
+                  <div></div>
+                  <div className="font14 font_family_bold_italic">Add</div>
+                  <Icon icon="akar-icons:plus" />
+                </button>
+              )}
+            </>
+        }
       </Container>
     </div>
   );

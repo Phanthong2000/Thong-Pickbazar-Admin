@@ -280,7 +280,15 @@ function UpdateOrder() {
         </div>
         <div className="mt-4">
           <div className="row m-0 p-0">
-            <div className="col-12 col-lg-6"></div>
+            <div className="col-12 col-lg-6">
+              <div className="font16 font_family_bold mt-4">
+                Delivery Schedule
+              </div>
+              <div className="mt-4 font14 font_family_bold">
+                {order?.deliverySchedule?.title}
+              </div>
+              <div className="font14 font_family_regular color_888 mt-1">{order?.deliverySchedule?.description}</div>
+            </div>
             <div className="col-12 col-lg-6 border_top_gray_1px font16 font_family_regular color_888">
               <div className="d-flex align-items-center justify-content-between mt-4">
                 <div>Sub total</div>
@@ -308,7 +316,7 @@ function UpdateOrder() {
           </div>
         </div>
         <div className="mt-4 row p-0">
-          <div className="col-12 col-lg-6 m-0 px-4">
+          <div className="col-12 col-lg-6 m-0 px-2">
             <div className="font16 font_family_bold">Billing Address</div>
             <div className="divider_vertical_solid d-block my-3"></div>
             <div className="font14 font_family_regular">

@@ -5,12 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import NumberFormat from 'react-number-format';
 import BaseFileChosen from '../base/BaseFileChosen';
 import { OrderType } from '../interfaces';
-import orderSlice, { getApiAllOrders, stepOrderSelector } from '../redux/slices/orderSlice';
+import orderSlice, { getApiAllOrders, getApiDashboard, stepOrderSelector } from '../redux/slices/orderSlice';
 import { AppDispatch } from '../redux/store';
 import { currencyFormat } from '../utils/format';
 import { saveImage } from '../utils/firebase';
 import { createOrder } from '../apis';
 import themeSlice from '../redux/slices/themeSlice';
+import { getApiAllProducts } from '../redux/slices/productSlice';
 
 function ConfirmPayment() {
     const imageRef = useRef<HTMLInputElement>(null);
@@ -57,16 +58,30 @@ function ConfirmPayment() {
             dispatch(themeSlice.actions.showBackdrop({
                 isShow: true,
                 content: ""
-            }))
+            }));
+            const products: any[] = [];
+            const cart = JSON.parse(localStorage.getItem('cart') || "[]");
+            cart.forEach((item: any) => {
+                products.push({
+                    id: item.product.id,
+                    quantity: item.product.quantity - item.quantity,
+                    type: item.product.type,
+                })
+            });
             let internetBankingImage = ''
             if (image.length > 0)
                 internetBankingImage = await saveImage("orders", image[0]) as never;
             const body = {
-                ...order,
-                internetBankingImage
+                order: {
+                    ...order,
+                    internetBankingImage
+                },
+                products
             }
             const result = await createOrder({}, body, {});
             if (result) {
+                dispatch(getApiDashboard())
+                dispatch(getApiAllProducts());
                 dispatch(getApiAllOrders());
                 dispatch(themeSlice.actions.hideBackdrop({
                     isShow: false,
