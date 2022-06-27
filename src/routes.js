@@ -1,5 +1,6 @@
 import React from "react";
 import { Navigate, useRoutes } from "react-router-dom";
+import UpdateOrder from "./pages/UpdateOrder";
 import Layout from "./layouts";
 import Attribute from "./pages/Attribute";
 import Category from "./pages/Category";
@@ -130,6 +131,10 @@ function Router() {
         {
           path: "/orders",
           element: <Orders />,
+        },
+        {
+          path: "/orders/:id",
+          element: <UpdateOrder />,
         },
         {
           path: "/order-status/create",

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import NumberFormat from 'react-number-format';
 import BaseFileChosen from '../base/BaseFileChosen';
 import { OrderType } from '../interfaces';
-import orderSlice, { stepOrderSelector } from '../redux/slices/orderSlice';
+import orderSlice, { getApiAllOrders, stepOrderSelector } from '../redux/slices/orderSlice';
 import { AppDispatch } from '../redux/store';
 import { currencyFormat } from '../utils/format';
 import { saveImage } from '../utils/firebase';
@@ -67,6 +67,7 @@ function ConfirmPayment() {
             }
             const result = await createOrder({}, body, {});
             if (result) {
+                dispatch(getApiAllOrders());
                 dispatch(themeSlice.actions.hideBackdrop({
                     isShow: false,
                     content: ""

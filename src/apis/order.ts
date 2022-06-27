@@ -620,3 +620,22 @@ export const deleteOrder = async (
     console.log(error);
   }
 };
+
+export const getOrderById = async (
+  header: {},
+  body: {},
+  param: {},
+  id: string
+) => {
+  try {
+    const result = await fetchApi.get(`${hostnameOrder}/detail/${id}`, {
+      headers: {
+        ...header,
+      },
+    });
+    if (result.status === 200) return result.data.order;
+    else return null;
+  } catch (error) {
+    console.log(error);
+  }
+};

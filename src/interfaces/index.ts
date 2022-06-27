@@ -208,4 +208,7 @@ export interface OrderType {
   paymentMethodId: string;
   internetBankingImage: string;
   total: number;
+  customer: UserType;
+  orderStatusOrder: OrderStatusType;
+  createdAt: any;
 }
