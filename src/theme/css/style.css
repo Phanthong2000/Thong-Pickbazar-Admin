@@ -223,6 +223,9 @@ a {
 .right10 {
   right: 10px;
 }
+.mt_40vh {
+  margin-top: 40vh;
+}
 .cursor_pointer {
   cursor: pointer;
 }
@@ -513,7 +516,7 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.step_order_status{
+.step_order_status {
   overflow-x: auto;
   max-width: 100%;
   height: 150px;

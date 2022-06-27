@@ -11,6 +11,7 @@ import {
   getApiAllPaymentMethods,
   getApiAllShippings,
   getApiAllTaxes,
+  getApiDashboard,
 } from "../redux/slices/orderSlice";
 import { getApiAllProducts } from "../redux/slices/productSlice";
 import { getApiSetting } from "../redux/slices/settingSlice";
@@ -23,12 +24,13 @@ function Redux() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch(getApiSetting())
-  }, [])
+    dispatch(getApiSetting());
+  }, []);
   useEffect(() => {
     if (!isLogin) {
       navigate("/login");
     } else {
+      dispatch(getApiDashboard());
       dispatch(getApiAllGroups());
       dispatch(getApiAllCategories());
       dispatch(getApiAllTags());
@@ -40,7 +42,7 @@ function Redux() {
       dispatch(getApiAllTaxes());
       dispatch(getApiAllShippings());
       dispatch(getApiAllPaymentMethods());
-      dispatch(getApiAllOrders())
+      dispatch(getApiAllOrders());
     }
   }, [isLogin]);
   return null;

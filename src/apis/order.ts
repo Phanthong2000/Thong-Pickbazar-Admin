@@ -639,3 +639,20 @@ export const getOrderById = async (
     console.log(error);
   }
 };
+
+
+
+export const getDashboard = async (header: {},
+  body: {},
+  param: {}) => {
+  try {
+    const result = await fetchApi.get(`${hostnameOrder}/dashboard`, {
+      headers: {
+        ...header
+      }
+    });
+    return result.data.dashboard;
+  } catch (error) {
+    console.log(error)
+  }
+}

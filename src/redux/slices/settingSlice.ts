@@ -16,8 +16,8 @@ const settingSlice = createSlice({
   },
   extraReducers: (build) =>
     build.addCase(getApiSetting.fulfilled, (state, action) => {
+      state.isLoadingSetting = false;
       state.setting = action.payload;
-      state.isLoadingSetting = true;
     }),
 });
 

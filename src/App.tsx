@@ -7,10 +7,11 @@ import "./theme/css/style.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap/js/src/collapse.js";
-import 'rsuite/dist/rsuite.min.css';
+import "rsuite/dist/rsuite.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Redux from "./utils/Redux";
 import { settingSelector } from "./redux/slices/settingSlice";
+import BaseLoading2 from "./base/BaseLoading2";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,9 +27,17 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Redux />
-      {
-        setting && <Router />
-      }
+      {setting ? (
+        <Router />
+      ) : (
+        <BaseLoading2
+          top="mt_40vh"
+          size="icon100x100"
+          justify="justify-content-center"
+          display="d-flex"
+          align="align-items-center"
+        />
+      )}
     </QueryClientProvider>
   );
 }

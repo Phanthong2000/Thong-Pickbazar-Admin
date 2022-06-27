@@ -7,3 +7,6 @@ export const currencyFormat = (num: number) => {
 export function fShortenNumber(num: number) {
   return replace(numeral(num).format("0.00a"), ".00", "");
 }
+export const thousandFormat = (num: number) => {
+  return num.toLocaleString(`es-US`)
+}

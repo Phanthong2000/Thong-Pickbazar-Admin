@@ -189,6 +189,7 @@ export interface OrderType {
       price: number;
       quantity: number;
       unit: string;
+      product: ProductType
     }
   ];
   tax: {

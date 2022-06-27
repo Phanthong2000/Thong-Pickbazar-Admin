@@ -6,6 +6,7 @@ import {
   getAllPaymentMethod,
   getAllShippings,
   getAllTaxes,
+  getDashboard,
 } from "../../apis";
 import { getAllProducts } from "../../apis/product";
 import {
@@ -27,6 +28,8 @@ const defaultState = {
   allPaymentMethods: [],
   checkout: localStorage.getItem("checkout") || JSON.stringify(null),
   stepOrder: 0,
+  isLoadingDashboard: true,
+  dashboard: null
 };
 
 const orderSlice = createSlice({
@@ -139,6 +142,21 @@ const orderSlice = createSlice({
         );
       state.allPaymentMethods = newAllPaymentMethod;
     },
+    updateOrder: (state, action) => {
+      const index = state.allOrders.findIndex(
+        (order: any) => order.id === action.payload.id
+      );
+      const newAllOrders = state.allOrders
+        .slice(0, index)
+        .concat([action.payload as never])
+        .concat(
+          state.allOrders.slice(
+            index + 1,
+            state.allOrders.length
+          )
+        );
+      state.allOrders = newAllOrders;
+    }
   },
   extraReducers: (build) => {
     build
@@ -159,7 +177,12 @@ const orderSlice = createSlice({
       })
       .addCase(getApiAllOrders.fulfilled, (state, action) => {
         state.allOrders = action.payload;
-      });
+      })
+      .addCase(getApiDashboard.fulfilled, (state, action) => {
+        state.isLoadingDashboard = false;
+        console.log(state.isLoadingDashboard)
+        state.dashboard = action.payload
+      })
   },
 });
 
@@ -230,7 +253,6 @@ export const getApiAllOrders = createAsyncThunk(
   async () => {
     try {
       const result = await getAllOrders({}, {}, {});
-      console.log("orders", result.orders);
       return result.orders;
     } catch (error) {
       console.log(error);
@@ -238,6 +260,15 @@ export const getApiAllOrders = createAsyncThunk(
   }
 );
 
+export const getApiDashboard = createAsyncThunk('order/getApiDashboard', async () => {
+  try {
+    const result = await getDashboard({}, {}, {});
+    console.log('dashboard', result)
+    return result;
+  } catch (error) {
+    console.log(error)
+  }
+})
 export const cartSelector = (state: any) => state.order.cart;
 export const allOrderStatusesSelector = (state: any) =>
   state.order.allOrderStatuses;
@@ -249,3 +280,5 @@ export const allPaymentMethodsSelector = (state: any) =>
 export const allOrdersSelector = (state: any) => state.order.allOrders;
 export const checkoutSelector = (state: any) => state.order.checkout;
 export const stepOrderSelector = (state: any) => state.order.stepOrder;
+export const isLoadingDashboardSelector = (state: any) => state.order.isLoadingDashboard;
+export const dashboardSelector = (state: any) => state.order.dashboard
