@@ -37,7 +37,6 @@ function DrawerCart({ isShow, handleDrawer }: Props) {
       dispatch(orderSlice.actions.setStepOrder(1))
       navigate("/create-order/checkout");
     }
-
   };
   return (
     <Drawer

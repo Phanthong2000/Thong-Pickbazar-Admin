@@ -30,7 +30,7 @@ function BaseTableOrder({ data, handleDetail, page, countPerRow }: Props) {
     const header = [
         {
             name: "ID",
-            width: "10%",
+            width: "5%",
             textAlign: textAlign("center"),
         },
         {
@@ -65,7 +65,7 @@ function BaseTableOrder({ data, handleDetail, page, countPerRow }: Props) {
         },
         {
             name: "Shipping Address",
-            width: "20%",
+            width: "25%",
             textAlign: textAlign("left"),
         },
         {
