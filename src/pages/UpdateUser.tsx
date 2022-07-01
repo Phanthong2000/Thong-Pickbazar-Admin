@@ -62,7 +62,7 @@ function UpdateUser() {
         setValue("district", result.address.district);
         setValue("ward", result.address.ward);
         setValue("street", result.address.street);
-        setBirthday(result.birthday);
+        setBirthday(result.birthday ? result.birthday : new Date());
         setAvatar([result.avatar]);
       } else {
         navigate("/users");
