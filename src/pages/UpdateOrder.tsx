@@ -216,7 +216,7 @@ function UpdateOrder() {
         <div className="mt-4">
           <Steps
             current={order.orderStatus}
-            className="d-flex w100_per justify-content-between align-items-center flex-row step_order_status"
+            className="d-flex w100_per justify-content-between flex-row step_order_status m-4"
           >
             {orderStatuses.map((item: OrderStatusType, index: number) => (
               <Steps.Item
